@@ -1,9 +1,6 @@
 package dbrighthd.qahalloween2026.mainloop;
 
-import dbrighthd.qahalloween2026.attachments.BindData;
-import dbrighthd.qahalloween2026.attachments.DashData;
 import dbrighthd.qahalloween2026.bind.BindSystem;
-import dbrighthd.qahalloween2026.dash.DashSystem;
 import dbrighthd.qahalloween2026.events.EventsStorage;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
@@ -11,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
+import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.isLookingAtSun;
 
 public class TickLoop {
@@ -57,9 +54,9 @@ public class TickLoop {
 
     public static void stringBar(ServerPlayer player)
     {
-        float progress = (player.getInventory().countItem(Items.STRING)%64)/64f;
-        int stacks = player.getInventory().countItem(Items.STRING)/64;
-        player.connection.send(new ClientboundSetExperiencePacket(progress, 64, stacks));
+        float progress = (player.getInventory().countItem(Items.STRING)% stringRequiredForBind)/(float) stringRequiredForBind;
+        int stacks = player.getInventory().countItem(Items.STRING)/ stringRequiredForBind;
+        player.connection.send(new ClientboundSetExperiencePacket(progress, stringRequiredForBind, stacks));
     }
     private static UUID dashBossBarId(ServerPlayer player) {
         return UUID.nameUUIDFromBytes(

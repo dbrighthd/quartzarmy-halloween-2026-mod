@@ -1,0 +1,4 @@
+classTweaker v1 official
+accessible field net/minecraft/world/entity/monster/Creeper explosionRadius I
+accessible field net/minecraft/world/entity/monster/Creeper swell I
+accessible field net/minecraft/world/entity/monster/Creeper maxSwell I

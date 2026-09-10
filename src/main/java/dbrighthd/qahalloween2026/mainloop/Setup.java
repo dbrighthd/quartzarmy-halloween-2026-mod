@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.gamerules.GameRules;
 
 public class Setup {
+
     public static void actOneSetup(MinecraftServer server)
     {
         ServerLevel level = server.overworld();

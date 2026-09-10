@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026;
 
+import dbrighthd.qahalloween2026.mainloop.OnEntityLoad;
 import dbrighthd.qahalloween2026.mainloop.Setup;
 import dbrighthd.qahalloween2026.mainloop.TickLoop;
 import net.fabricmc.api.ModInitializer;
@@ -12,6 +13,7 @@ public class Qahalloween2026 implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(Setup::actOneSetup);
+        OnEntityLoad.init();
         TickLoop.init();
     }
 }

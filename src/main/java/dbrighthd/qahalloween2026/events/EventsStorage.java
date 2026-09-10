@@ -8,10 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static dbrighthd.qahalloween2026.mainloop.Config.stringPerDamage;
+
 public class EventsStorage {
     public static Map<UUID,Integer> hurtThisTick = new HashMap<>();
     public static Map<UUID,Integer> attackedThisTick = new HashMap<>();
-    public static final int stringAmount = 2;
 
     public static void refreshAndDoStuff(ServerLevel serverLevel)
     {
@@ -32,8 +33,13 @@ public class EventsStorage {
     {
         for(var pair : attackedThisTick.entrySet())
         {
-            BindSystem.giveString((ServerPlayer)serverLevel.getPlayerByUUID(pair.getKey()),pair.getValue()*stringAmount);
+           handleAttack((ServerPlayer)serverLevel.getPlayerByUUID(pair.getKey()),pair.getValue());
         }
         attackedThisTick.clear();
+    }
+
+    public static void handleAttack(ServerPlayer player, int amount)
+    {
+        BindSystem.giveString(player,amount* stringPerDamage);
     }
 }

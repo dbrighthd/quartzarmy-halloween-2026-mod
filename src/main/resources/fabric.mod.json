@@ -3,6 +3,7 @@
   "id": "qahalloween2026",
   "version": "${version}",
   "name": "qahalloween2026",
+  "accessWidener" : "qahalloween2026.classtweaker",
   "description": "",
   "authors": [],
   "contact": {},

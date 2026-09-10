@@ -1,18 +1,17 @@
 package dbrighthd.qahalloween2026.utils;
 
-import net.minecraft.data.worldgen.DimensionTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.dimension.DimensionType;
+
+import javax.swing.text.html.parser.Entity;
 
 public class PlayerMethodUtils {
-    public static void playSoundAtPlayer(ServerPlayer player, SoundEvent sound, float volume, float pitch)
+    public static void playSoundAtEntity(LivingEntity entity, SoundEvent sound, float volume, float pitch)
     {
-        player.level().playSound(null, player.blockPosition(), sound, SoundSource.MASTER, volume, pitch);
+        entity.level().playSound(null, entity.blockPosition(), sound, SoundSource.MASTER, volume, pitch);
     }
 
     public static boolean isLookingAtSun(ServerPlayer player)
