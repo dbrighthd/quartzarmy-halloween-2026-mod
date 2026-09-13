@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.stringPerDamage;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.triggerWindBurst;
 
 public class EventsStorage {
     public static Map<UUID,Integer> hurtThisTick = new HashMap<>();
@@ -40,6 +41,11 @@ public class EventsStorage {
 
     public static void handleAttack(ServerPlayer player, int amount)
     {
+        if(!player.onGround())
+        {
+            triggerWindBurst(player,0.5);
+            amount *= 2;
+        }
         BindSystem.giveString(player,amount* stringPerDamage);
     }
 }

@@ -1,18 +1,36 @@
 package dbrighthd.qahalloween2026.utils;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-
-import javax.swing.text.html.parser.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class PlayerMethodUtils {
     public static void playSoundAtEntity(LivingEntity entity, SoundEvent sound, float volume, float pitch)
     {
         entity.level().playSound(null, entity.blockPosition(), sound, SoundSource.MASTER, volume, pitch);
     }
+
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntity(LivingEntity entity, T particleType, float dx, float dy, float dz, int count, int speed)
+    {
+        ((ServerLevel)(entity.level())).sendParticles(
+                particleType,
+                entity.getX(),
+                entity.getY(),
+                entity.getZ(),
+                count,
+                dx,
+                dy,
+                dz,
+                speed
+        );    }
 
     public static boolean isLookingAtSun(ServerPlayer player)
     {
@@ -48,5 +66,26 @@ public class PlayerMethodUtils {
             time = (6000 + (6000-time));
         }
         return (float)(1.596 + (20902/(6117.3-time)));
+    }
+
+    public static void addAndSendMovementIfPlayer(Entity entity, Vec3 acceleration, boolean resetVert)
+    {
+        if(resetVert)
+        {
+            entity.setDeltaMovement(entity.getDeltaMovement().multiply(1,0,1));
+        }
+        entity.addDeltaMovement(acceleration);
+        if(entity instanceof ServerPlayer player)
+        {
+            player.connection.send(new ClientboundSetEntityMotionPacket(player));
+        }
+    }
+
+    public static void triggerWindBurst(ServerPlayer player, double vertAmount)
+    {
+        player.setIgnoreFallDamageFromCurrentImpulse(true,player.position());
+        particleAtEntity(player, ParticleTypes.GUST_EMITTER_SMALL,0,0,0,1,1);
+        playSoundAtEntity(player, SoundEvents.WIND_CHARGE_BURST.value(), 1, 1);
+        addAndSendMovementIfPlayer(player, new Vec3(0, vertAmount,0), true);
     }
 }

@@ -23,7 +23,6 @@ loom {
 
     runs {
         client {
-            // Add a single argument
             vmArg "-XX:StackShadowPages=32"
 
         }
