@@ -11,4 +11,7 @@ public class Config {
     public final static int bindTimeTicks = 27;
     public final static int stringRequiredForBind = 64;
 
+    public static double breakMissChance = 0.5;
+    public static double placeMissChance = 0.5;
+
 }
