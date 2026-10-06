@@ -3,11 +3,19 @@ package dbrighthd.qahalloween2026.mixin;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,28 +35,36 @@ public class PlayerUseItemOnMixin {
             method = "handleUseItemOn",
             at = @At("STORE"),
             name = "blockHit")
-    private BlockHitResult changePlacementTarget(BlockHitResult originalHit) {
+    private BlockHitResult changePlacementTarget(BlockHitResult originalHit, ServerboundUseItemOnPacket packet) {
         BlockPos clicked = originalHit.getBlockPos();
         Direction intendedDirection = originalHit.getDirection();
 
+        InteractionHand hand = packet.hand();
+        ItemStack stack = player.getItemInHand(hand);
+        if(!(stack.getItem() instanceof BlockItem blockItem))
+        {
+            return originalHit;
+        }
+        BlockPlaceContext contect = new BlockPlaceContext(new UseOnContext(player, hand, originalHit));
+        BlockState placementState = blockItem.getBlock().getStateForPlacement(contect);
+
+        if (!player.level().isUnobstructed(placementState,clicked.relative(intendedDirection), CollisionContext.of(player)))
+        {
+            return originalHit;
+        }
+
         BlockPos intended = clicked.relative(intendedDirection);
-        BlockPos target = getRandomPlaceTarget(clicked, intended);
+        BlockPos target = getRandomPlaceTarget(placementState, intended);
 
         if (target.equals(intended)) {
             return originalHit;
         }
 
-        Direction targetDirection = getDirectionBetween(clicked, target);
-
-        if (targetDirection == null) {
-            return originalHit;
-        }
-
-        return new BlockHitResult(Vec3.atCenterOf(clicked), targetDirection, clicked, false);
+        return new BlockHitResult(Vec3.atCenterOf(target).subtract(0,-1,0), Direction.UP, target, false);
     }
 
     @Unique
-    private BlockPos getRandomPlaceTarget(BlockPos clicked, BlockPos intended)
+    private BlockPos getRandomPlaceTarget(BlockState placementState, BlockPos intended)
     {
         if (Config.placeMissChance <= 0.0)
         {
@@ -59,16 +75,15 @@ public class PlayerUseItemOnMixin {
 
         for (Direction direction : Direction.values())
         {
-            BlockPos target = clicked.relative(direction);
+            BlockPos target = intended.relative(direction);
 
             if (target.equals(intended))
             {
                 continue;
             }
-
+            boolean canPlace = placementState.canSurvive(player.level(), target) && player.level().isUnobstructed(placementState, target, CollisionContext.of(player));
             BlockState state = player.level().getBlockState(target);
-
-            if (state.isAir())
+            if (canPlace && state.canBeReplaced())
             {
                 candidates.add(target);
             }
@@ -78,39 +93,12 @@ public class PlayerUseItemOnMixin {
         {
             return intended;
         }
-
         if (player.level().getRandom().nextDouble() >= Config.placeMissChance)
         {
             return intended;
         }
-
-        return candidates.get(player.level().getRandom().nextInt(candidates.size()));
-    }
-
-    @Unique
-    private Direction getDirectionBetween(BlockPos from, BlockPos to)
-    {
-        int dx = to.getX() - from.getX();
-        int dy = to.getY() - from.getY();
-        int dz = to.getZ() - from.getZ();
-        if (dx == 1 && dy == 0 && dz == 0) {
-            return Direction.EAST;
-        }
-        if (dx == -1 && dy == 0 && dz == 0) {
-            return Direction.WEST;
-        }
-        if (dx == 0 && dy == 1 && dz == 0) {
-            return Direction.UP;
-        }
-        if (dx == 0 && dy == -1 && dz == 0) {
-            return Direction.DOWN;
-        }
-        if (dx == 0 && dy == 0 && dz == 1) {
-            return Direction.SOUTH;
-        }
-        if (dx == 0 && dy == 0 && dz == -1) {
-            return Direction.NORTH;
-        }
-        return null;
+        BlockPos out =  candidates.get(player.level().getRandom().nextInt(candidates.size()));
+        System.out.println(out);
+        return out;
     }
 }
