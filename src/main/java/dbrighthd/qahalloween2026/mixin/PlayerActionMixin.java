@@ -3,6 +3,7 @@ package dbrighthd.qahalloween2026.mixin;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,7 +53,7 @@ public class PlayerActionMixin {
         gameMode.destroyBlock(target);
 
         player.connection.send(new ClientboundBlockUpdatePacket(original, state));
-
+        player.connection.send(new ClientboundBlockDestructionPacket(player.getId(), original, -1));
         ((ServerGamePacketListenerImpl) (Object) this).ackBlockChangesUpTo(packet.getSequence());
     }
 

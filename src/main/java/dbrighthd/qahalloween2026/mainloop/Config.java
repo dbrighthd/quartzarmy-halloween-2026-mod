@@ -14,4 +14,6 @@ public class Config {
     public static double breakMissChance = 0.5;
     public static double placeMissChance = 0.5;
 
+    public static int stackAmounts = 3;
+
 }
