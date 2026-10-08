@@ -1,9 +1,12 @@
 package dbrighthd.qahalloween2026.mainloop;
 
-import dbrighthd.qahalloween2026.bind.BindSystem;
+import dbrighthd.qahalloween2026.attachments.DataAttachments;
+import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.events.EventsStorage;
+import dbrighthd.qahalloween2026.systems.WetSystem;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
@@ -12,15 +15,18 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
+import static dbrighthd.qahalloween2026.mainloop.Config.bindTimeTicks;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.isLookingAtSun;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class TickLoop {
     public static void init()
@@ -49,6 +55,36 @@ public class TickLoop {
             {
                 entity.kill(serverLevel);
             }
+            if (entity instanceof Arrow arrow)
+            {
+                Entity target = serverLevel.getEntity(
+                        arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA).target()
+                );
+
+                if (target != null && arrow.tickCount <= Config.arrowTrackTime)
+                {
+
+                    Vec3 targetPos = new Vec3(
+                            target.getX(),
+                            target.getY(0.5),
+                            target.getZ()
+                    );
+
+                    Vec3 direction = targetPos
+                            .subtract(arrow.position())
+                            .normalize();
+
+                    arrow.setDeltaMovement(direction.scale(Config.arrowSpeed));
+                    particleAtEntity(arrow,new TrailParticleOption(target.position().add(0,1,0), 0xFF0000, 5), 0f, 0f, 0f,10, 0);
+
+                    sendPacketToAllPlayers(serverLevel, new ClientboundSetEntityMotionPacket(arrow));
+
+                }
+                if(arrow.tickCount > Config.arrowLifeTime)
+                {
+                    arrow.kill(serverLevel);
+                }
+            }
         }
     }
 
@@ -73,6 +109,7 @@ public class TickLoop {
             serverLevel.setBlockAndUpdate(standingOn,Blocks.DIRT_PATH.defaultBlockState());
         }
         BindSystem.bindTick(player);
+        WetSystem.wetTick(player);
         if(isLookingAtSun(player))
         {
             lookAtSun(player);

@@ -1,6 +1,6 @@
 package dbrighthd.qahalloween2026.events;
 
-import dbrighthd.qahalloween2026.bind.BindSystem;
+import dbrighthd.qahalloween2026.systems.BindSystem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 

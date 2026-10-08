@@ -1,8 +1,7 @@
-package dbrighthd.qahalloween2026.bind;
+package dbrighthd.qahalloween2026.systems;
 
 import dbrighthd.qahalloween2026.attachments.BindData;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;

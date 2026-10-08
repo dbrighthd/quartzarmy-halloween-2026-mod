@@ -4,6 +4,7 @@
   "package": "dbrighthd.qahalloween2026.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "AbstractSkeletonMixin",
     "CreeperSwellMixin",
     "HurtEntityMixin",
     "HurtMixin",

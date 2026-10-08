@@ -3,6 +3,8 @@ package dbrighthd.qahalloween2026.mixin;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -24,6 +26,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.informMiss;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public class PlayerUseItemOnMixin {
@@ -59,7 +63,7 @@ public class PlayerUseItemOnMixin {
         if (target.equals(intended)) {
             return originalHit;
         }
-
+        informMiss(player);
         return new BlockHitResult(Vec3.atCenterOf(target).subtract(0,-1,0), Direction.UP, target, false);
     }
 

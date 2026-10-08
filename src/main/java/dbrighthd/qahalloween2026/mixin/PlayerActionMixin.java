@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.informMiss;
 @Mixin(ServerGamePacketListenerImpl.class)
 public class PlayerActionMixin {
 
@@ -51,7 +52,7 @@ public class PlayerActionMixin {
         BlockState state = player.level().getBlockState(original);
 
         gameMode.destroyBlock(target);
-
+        informMiss(player);
         player.connection.send(new ClientboundBlockUpdatePacket(original, state));
         player.connection.send(new ClientboundBlockDestructionPacket(player.getId(), original, -1));
         ((ServerGamePacketListenerImpl) (Object) this).ackBlockChangesUpTo(packet.getSequence());

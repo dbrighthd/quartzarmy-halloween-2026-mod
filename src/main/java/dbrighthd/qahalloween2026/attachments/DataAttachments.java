@@ -18,4 +18,14 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "bind_data"),
                     () -> BindData.defaultState
             );
+    public static final AttachmentType<WetData> WET_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "wet_data"),
+                    () -> WetData.defaultState
+            );
+    public static final AttachmentType<TargetData> TARGET_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "target_data"),
+                    () -> TargetData.defaultState
+            );
 }
