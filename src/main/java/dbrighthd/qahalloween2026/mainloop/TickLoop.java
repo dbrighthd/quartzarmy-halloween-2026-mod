@@ -15,12 +15,14 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
@@ -57,33 +59,34 @@ public class TickLoop {
             }
             if (entity instanceof Arrow arrow)
             {
-                Entity target = serverLevel.getEntity(
-                        arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA).target()
-                );
+                Entity target = serverLevel.getEntity(arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA).target());
 
+                if(arrow.tickCount > Config.arrowBurst)
+                {
+                    arrow.setBaseDamage(20);
+                }
                 if (target != null && arrow.tickCount <= Config.arrowTrackTime)
                 {
 
-                    Vec3 targetPos = new Vec3(
-                            target.getX(),
-                            target.getY(0.5),
-                            target.getZ()
-                    );
+                    Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
 
-                    Vec3 direction = targetPos
-                            .subtract(arrow.position())
-                            .normalize();
+                    Vec3 direction = targetPos.subtract(arrow.position()).normalize();
 
-                    arrow.setDeltaMovement(direction.scale(Config.arrowSpeed));
-                    particleAtEntity(arrow,new TrailParticleOption(target.position().add(0,1,0), 0xFF0000, 5), 0f, 0f, 0f,10, 0);
+                    arrow.setDeltaMovement(direction.scale(arrow.tickCount >= Config.arrowBurst ? Config.arrowSpeed : Config.arrowBurstSpeed));
+                    particleAtEntity(arrow,new TrailParticleOption(target.position().add(0,1,0), 0xFF0000, 10), 0f, 0f, 0f,10, 0);
 
-                    sendPacketToAllPlayers(serverLevel, new ClientboundSetEntityMotionPacket(arrow));
 
                 }
                 if(arrow.tickCount > Config.arrowLifeTime)
                 {
                     arrow.kill(serverLevel);
                 }
+                sendPacketToAllPlayers(serverLevel, new ClientboundSetEntityMotionPacket(arrow));
+                PositionMoveRotation change = new PositionMoveRotation(arrow.position(), arrow.getDeltaMovement(), arrow.getYRot(), arrow.getXRot());
+                ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(arrow.getId(), change, Set.of(), arrow.onGround());
+                sendPacketToAllPlayers(serverLevel, teleportPacket);
+
+
             }
         }
     }

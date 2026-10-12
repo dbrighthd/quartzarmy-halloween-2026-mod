@@ -20,11 +20,15 @@ public class Config {
     public static int maxWet = 200;
     public static double maxSlipperyFriction = 0.5;
 
-    public static double arrowSpeed = 0.2;
+    public static double arrowSpeed = 0.1;
+    public static double arrowBurstSpeed = 0.6;
     public static int arrowTrackTime = 80;
     public static int arrowLifeTime = 160;
+    public static int arrowBurst = 5;
 
     public static int stackAmounts = 3;
+
+    public static int arrowInterval = 15;
 
     public static SoundEvent missSound = SoundEvents.PLAYER_BREATH;
 }

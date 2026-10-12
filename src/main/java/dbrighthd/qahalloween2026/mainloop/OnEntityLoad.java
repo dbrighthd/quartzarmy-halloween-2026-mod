@@ -54,7 +54,7 @@ public class OnEntityLoad {
                         UUID targetUUID = target.getUUID();
                         arrow.setAttached(DataAttachments.TARGET_DATA,new TargetData(targetUUID));
                     }
-                    arrow.setBaseDamage(30);
+                    arrow.setBaseDamage(0);
                 }
             }
             if (entity instanceof Skeleton skeleton)
