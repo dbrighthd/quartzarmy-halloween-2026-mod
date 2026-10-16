@@ -5,20 +5,33 @@ import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.events.EventsStorage;
 import dbrighthd.qahalloween2026.systems.WetSystem;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
+import net.minecraft.data.worldgen.DimensionTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.PositionMoveRotation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enderman;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.SwingAnimation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
 import java.nio.charset.StandardCharsets;
@@ -56,6 +69,14 @@ public class TickLoop {
             if(entity instanceof ExperienceOrb)
             {
                 entity.kill(serverLevel);
+            }
+            if(entity instanceof  Zombie zombie)
+            {
+                zombieTick(zombie, serverLevel);
+            }
+            if(entity instanceof  Enderman enderman)
+            {
+                endermanTick(enderman, serverLevel);
             }
             if (entity instanceof Arrow arrow)
             {
@@ -117,6 +138,21 @@ public class TickLoop {
         {
             lookAtSun(player);
         }
+        if(player.level().dimension().equals(Level.END))
+        {
+            var attribute = player.getAttribute(Attributes.GRAVITY);
+            if(attribute != null)
+            {
+                if(player.getY() < 0)
+                {
+                    attribute.setBaseValue(-0.5);
+                }
+                else
+                {
+                    attribute.setBaseValue(0.08);
+                }
+            }
+        }
     }
 
     public static void lookAtSun(ServerPlayer player)
@@ -129,6 +165,42 @@ public class TickLoop {
 
         }
 
+    }
+
+    public static void endermanTick(Enderman enderman, ServerLevel serverLevel)
+    {
+        particleAtEntityOffset(enderman, new Vec3(0,1.5,0), ParticleTypes.SOUL,0.25f,1f,0.25f,5,0);
+    }
+
+
+    public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
+    {
+        Vec3 belowBlock = zombie.position().subtract(0,1,0);
+        boolean clutch = (zombie.fallDistance > 4);
+        boolean inDanger = false;
+
+        if(serverLevel.getNearestPlayer(zombie,3) != null)
+        {
+            inDanger = true;
+            if(zombie.onGround())
+            {
+                zombie.jumpFromGround();
+            }
+            zombie.lookAt(EntityAnchorArgument.Anchor.EYES, belowBlock);
+        }
+        zombie.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(clutch ? Items.WATER_BUCKET : inDanger ? Items.OAK_PLANKS : Items.AIR,1));
+        if(!zombie.onGround() && zombie.getDeltaMovement().y <= 0 && !serverLevel.getBlockState(BlockPos.containing(belowBlock.subtract(0,1,0))).isAir()) {
+            if(clutch)
+            {
+                serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.WATER.defaultBlockState());
+            }
+            else
+            {
+                serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.OAK_PLANKS.defaultBlockState());
+
+            }
+            zombie.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT);
+        }
     }
 
     public static void hideEntityFromPlayer(ServerPlayer player, Entity targetEntity) {

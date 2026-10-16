@@ -20,6 +20,10 @@ public class BindSystem {
 
     public static void bindTick(ServerPlayer player)
     {
+        if(player == null)
+        {
+            return;
+        }
         BindData data = player.getAttachedOrCreate(DataAttachments.BIND_DATA);
         inBind(player,data);
     }

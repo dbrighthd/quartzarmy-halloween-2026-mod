@@ -25,7 +25,12 @@ public class EventsStorage {
     {
         for(UUID uuid : hurtThisTick.keySet())
         {
-            BindSystem.cancelBind((ServerPlayer)serverLevel.getPlayerByUUID(uuid));
+            ServerPlayer player = (ServerPlayer)serverLevel.getPlayerByUUID(uuid);
+            if(player == null)
+            {
+                continue;
+            }
+            BindSystem.cancelBind(player);
         }
         hurtThisTick.clear();
     }

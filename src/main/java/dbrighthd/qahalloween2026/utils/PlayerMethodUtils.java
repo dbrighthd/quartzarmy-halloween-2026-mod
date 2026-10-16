@@ -64,7 +64,19 @@ public class PlayerMethodUtils {
                 dz,
                 speed
         );    }
-
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffset(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, int speed)
+    {
+        ((ServerLevel)(entity.level())).sendParticles(
+                particleType,
+                entity.getX() + offset.x,
+                entity.getY() + offset.y,
+                entity.getZ() + offset.z,
+                count,
+                dx,
+                dy,
+                dz,
+                speed
+        );    }
     public static boolean isLookingAtSun(ServerPlayer player)
     {
         if(player.level().dimension() == Level.OVERWORLD)
