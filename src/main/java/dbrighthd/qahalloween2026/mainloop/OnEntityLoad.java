@@ -20,20 +20,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class OnEntityLoad {
-    public static void init()
-    {
+    public static void init() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if (entity instanceof Creeper creeper) {
                 creeper.explosionRadius = 0;
                 creeper.maxSwell = 50;
                 creeper.setSilent(false);
             }
-            if (entity instanceof ItemEntity item)
-            {
+            if (entity instanceof ItemEntity item) {
                 ItemStack stack = item.getItem();
 
-                if (!stack.has(DataComponents.CUSTOM_MODEL_DATA) && !stack.is(Items.STRING))
-                {
+                if (!stack.has(DataComponents.CUSTOM_MODEL_DATA) && !stack.is(Items.STRING)) {
                     int modelData = level.getRandom().nextInt(Config.stackAmounts) + 1;
 
                     stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of((float) modelData), List.of(), List.of(), List.of()));
@@ -41,24 +38,20 @@ public class OnEntityLoad {
                     item.setItem(stack);
                 }
             }
-            if (entity instanceof Arrow arrow)
-            {
+            if (entity instanceof Arrow arrow) {
                 arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
                 arrow.setNoGravity(true);
                 Entity owner = arrow.getOwner();
-                if(owner instanceof Mob mob)
-                {
+                if (owner instanceof Mob mob) {
                     Entity target = mob.getTarget();
-                    if(target != null)
-                    {
+                    if (target != null) {
                         UUID targetUUID = target.getUUID();
-                        arrow.setAttached(DataAttachments.TARGET_DATA,new TargetData(targetUUID));
+                        arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID));
                     }
                     arrow.setBaseDamage(0);
                 }
             }
-            if (entity instanceof Skeleton skeleton)
-            {
+            if (entity instanceof Skeleton skeleton) {
                 skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.CARVED_PUMPKIN));
             }
         });

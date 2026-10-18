@@ -46,6 +46,10 @@ public class EventsStorage {
 
     public static void handleAttack(ServerPlayer player, int amount)
     {
+        if(player == null)
+        {
+            return;
+        }
         if(!player.onGround())
         {
             triggerWindBurst(player,0.5);

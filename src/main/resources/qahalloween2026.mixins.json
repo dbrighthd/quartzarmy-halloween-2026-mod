@@ -13,6 +13,7 @@
     "HurtMixin",
     "PlayerActionMixin",
     "PlayerUseItemOnMixin",
+    "ProjectileMixin",
     "RangedBowAttackGoalMixin",
     "SwellGoalMixin"
   ],
