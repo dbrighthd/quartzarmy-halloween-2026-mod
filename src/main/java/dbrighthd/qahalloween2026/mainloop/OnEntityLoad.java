@@ -2,6 +2,8 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
+import dbrighthd.qahalloween2026.mixin.PlayerUseItemOnMixin;
+import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,16 +44,27 @@ public class OnEntityLoad {
             }
             if (entity instanceof Arrow arrow) {
                 arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
-                arrow.setNoGravity(true);
+
                 Entity owner = arrow.getOwner();
                 if (owner instanceof Mob mob) {
+                    arrow.setNoGravity(true);
                     Entity target = mob.getTarget();
                     if (target != null) {
                         UUID targetUUID = target.getUUID();
-                        arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID));
+                        arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID, false));
                     }
-                    arrow.setBaseDamage(0);
                 }
+                else
+                {
+                    if(owner instanceof Player)
+                    {
+                        PlayerMethodUtils.addAndSendMovementIfPlayer(owner,arrow.getDeltaMovement().scale(-20),false);
+                        arrow.setDeltaMovement(0,0,0);
+                        arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0,1), true));
+
+                    }
+                }
+                arrow.setBaseDamage(0);
             }
             if (entity instanceof Skeleton skeleton) {
                 skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.CARVED_PUMPKIN));
