@@ -25,15 +25,14 @@ public abstract class HurtEntityMixin {
     private void onDamaged(
             ServerLevel level,
             DamageSource source,
-            float amount,
+            float damage,
             CallbackInfoReturnable<Boolean> cir
     ) {
         LivingEntity target = (LivingEntity) (Object) this;
-
         Entity attacker = source.getEntity();
         if(attacker instanceof Player player)
         {
-            EventsStorage.attackedThisTick.put(player.getUUID(), (int)amount);
+            EventsStorage.attackedThisTick.put(player.getUUID(), new EventsStorage.AttackInfo(target, (int)damage));
         }
     }
 }

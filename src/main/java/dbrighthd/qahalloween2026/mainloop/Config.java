@@ -26,6 +26,11 @@ public class Config {
     public static int arrowLifeTime = 160;
     public static int arrowBurst = 5;
 
+    public static int sheepCooldownMax = 360;
+    public static int sheepUntilSleep = 4;
+    public static int sleepTime = 240;
+    public static int stringPerSheep = 32;
+
     public static int stackAmounts = 3;
 
     public static int arrowInterval = 15;

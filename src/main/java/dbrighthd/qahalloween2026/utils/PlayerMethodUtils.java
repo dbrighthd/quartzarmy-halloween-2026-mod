@@ -30,7 +30,7 @@ public class PlayerMethodUtils {
                 player.connection.send(packet);
         }
     }
-    public static void playSoundAtEntity(LivingEntity entity, SoundEvent sound, float volume, float pitch)
+    public static void playSoundAtEntity(Entity entity, SoundEvent sound, float volume, float pitch)
     {
         entity.level().playSound(null, entity.blockPosition(), sound, SoundSource.MASTER, volume, pitch);
     }

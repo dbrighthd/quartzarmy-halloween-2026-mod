@@ -28,4 +28,9 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "target_data"),
                     () -> TargetData.defaultState
             );
+    public static final AttachmentType<SheepData> SHEEP_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "sheep_data"),
+                    () -> SheepData.defaultState
+            );
 }

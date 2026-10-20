@@ -3,6 +3,7 @@ package dbrighthd.qahalloween2026.mainloop;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.events.EventsStorage;
+import dbrighthd.qahalloween2026.systems.SheepSystem;
 import dbrighthd.qahalloween2026.systems.WetSystem;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
@@ -77,6 +79,10 @@ public class TickLoop {
             if(entity instanceof  Enderman enderman)
             {
                 endermanTick(enderman, serverLevel);
+            }
+            if(entity instanceof Sheep sheep)
+            {
+                sheep.setHealth(100);
             }
             if (entity instanceof Arrow arrow)
             {
@@ -134,6 +140,7 @@ public class TickLoop {
         }
         BindSystem.bindTick(player);
         WetSystem.wetTick(player);
+        SheepSystem.sheepTick(player);
         if(isLookingAtSun(player))
         {
             lookAtSun(player);
