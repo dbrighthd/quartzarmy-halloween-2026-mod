@@ -27,6 +27,7 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
@@ -79,6 +80,10 @@ public class TickLoop {
             if(entity instanceof  Enderman enderman)
             {
                 endermanTick(enderman, serverLevel);
+            }
+            if(entity instanceof Boat boat)
+            {
+                boat.setDeltaMovement(0,1,0);
             }
             if(entity instanceof Sheep sheep)
             {
