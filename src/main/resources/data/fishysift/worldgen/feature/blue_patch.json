@@ -11,7 +11,7 @@
           "min_inclusive": 3
         },
         "state_provider": {
-          "id": "minecraft:grass_block"
+          "id": "minecraft:warped_nylium"
         },
         "target": {
           "type": "minecraft:matching_blocks",
@@ -33,7 +33,7 @@
           "min_inclusive": 0
         },
         "state_provider": {
-          "id": "minecraft:grass_block"
+          "id": "minecraft:warped_nylium"
         },
         "target": {
           "type": "minecraft:matching_blocks",
@@ -70,7 +70,7 @@
           "min_inclusive": 0
         },
         "state_provider": {
-          "id": "minecraft:grass_block"
+          "id": "minecraft:warped_nylium"
         },
         "target": {
           "type": "minecraft:matching_blocks",
@@ -107,7 +107,7 @@
           "min_inclusive": 0
         },
         "state_provider": {
-          "id": "minecraft:grass_block"
+          "id": "minecraft:warped_nylium"
         },
         "target": {
           "type": "minecraft:matching_blocks",
@@ -148,7 +148,7 @@
           "minecraft:air"
         ],
         "ground_state": {
-          "id": "minecraft:grass_block"
+          "id": "minecraft:warped_nylium"
         },
         "vegetation_feature": {
           "feature": {
@@ -158,6 +158,50 @@
               "entries": [
                 {
                   "weight": 1,
+                  "data": {
+                    "id": "minecraft:fire_coral",
+                    "properties": {
+                      "waterlogged": "false"
+                    }
+                  }
+                },
+                {
+                  "weight": 1,
+                  "data": {
+                    "id": "minecraft:tube_coral",
+                    "properties": {
+                      "waterlogged": "false"
+                    }
+                  }
+                },
+                {
+                  "weight": 1,
+                  "data": {
+                    "id": "minecraft:brain_coral",
+                    "properties": {
+                      "waterlogged": "false"
+                    }
+                  }
+                },
+                {
+                  "weight": 1,
+                  "data": {
+                    "id": "minecraft:horn_coral",
+                    "properties": {
+                      "waterlogged": "false"
+                    }
+                  }
+                },
+                {
+                  "weight": 1,
+                  "data": "minecraft:cactus_flower"
+                },
+                {
+                  "weight": 1,
+                  "data": "minecraft:sulfur_spike"
+                },
+                {
+                  "weight": 1,
                   "data": "minecraft:pitcher_plant"
                 },
                 {
@@ -165,11 +209,11 @@
                   "data": "minecraft:torchflower"
                 },
                 {
-                  "weight": 10,
+                  "weight": 20,
                   "data": "minecraft:nether_sprouts"
                 },
                 {
-                  "weight": 20,
+                  "weight": 30,
                   "data": "minecraft:warped_roots"
                 }
               ]
