@@ -68,5 +68,5 @@
     ]
   },
   "stem_state": "minecraft:stripped_warped_stem",
-  "valid_base_block": "minecraft:grass_block"
+  "valid_base_block": "minecraft:warped_nylium"
 }
