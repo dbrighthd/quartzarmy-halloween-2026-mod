@@ -1,0 +1,29 @@
+{
+  "attributes": {
+  },
+  "has_precipitation": false,
+  "temperature": 2,
+  "temperature_modifier": "none",
+  "downfall": 0.4,
+  "effects": {
+    "water_color": 16777107,
+    "grass_color": 247697,
+    "foliage_color": 13434109,
+    "dry_foliage_color": 16777215
+  },
+  "carvers": [],
+  "features": [
+    [
+      "fishysift:red_pillar"
+    ],
+    [
+      "fishysift:blue_patch"
+    ],
+    [
+      "fishysift:white_fishysift_tree"
+    ],
+    [
+      "fishysift:ichor_pool"
+    ]
+  ]
+}

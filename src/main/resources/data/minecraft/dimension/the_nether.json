@@ -1,11 +1,37 @@
 {
-    "type":"fishysift:fishysift_dimtype",
-    "generator":{
-        "type":"noise",
-        "biome_source":{
-            "type":"fixed",
-            "biome": "fishysift:singers_meadow"
+  "type": "fishysift:fishysift_dimtype",
+  "generator": {
+    "type": "noise",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biome": "fishysift:singers_meadow",
+      "biomes": [
+        {
+          "biome": "fishysift:singers_meadow",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
         },
-        "settings":"fishysift:fishysift_noise_settings"
-    }
+        {
+          "biome": "fishysift:singers_meadow_1",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 1
+          }
+        }
+      ]
+    },
+    "settings": "fishysift:fishysift_noise_settings"
+  }
 }
