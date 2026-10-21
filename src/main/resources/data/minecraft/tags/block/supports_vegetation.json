@@ -3,6 +3,7 @@
     "#minecraft:substrate_overworld",
     "minecraft:water",
         "minecraft:dirt_path",
-    "minecraft:farmland"
+    "minecraft:farmland",
+    "#minecraft:nylium"
   ]
 }
