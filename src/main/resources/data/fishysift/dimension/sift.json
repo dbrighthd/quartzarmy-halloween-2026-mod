@@ -1,0 +1,11 @@
+{
+    "type":"fishysift:fishysift_dimtype",
+    "generator":{
+        "type":"noise",
+        "biome_source":{
+            "type":"fixed",
+            "biome": "fishysift:singers_meadow"
+        },
+        "settings":"fishysift:fishysift_noise_settings"
+    }
+}

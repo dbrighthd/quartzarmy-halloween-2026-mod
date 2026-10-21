@@ -1,0 +1,130 @@
+{
+  "type": "minecraft:overlay",
+  "features": [
+    {
+      "feature": {
+        "type": "minecraft:disk",
+        "state_provider": {
+          "id": "minecraft:red_terracotta"
+        },
+        "radius": 6,
+        "half_height": 4,
+        "target": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "#minecraft:air"
+        }
+      },
+      "placement": []
+    },
+    {
+      "feature": {
+        "type": "minecraft:disk",
+        "state_provider": {
+          "id": "minecraft:red_terracotta"
+        },
+        "radius": 7,
+        "half_height": 0,
+        "target": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "#minecraft:air"
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:offset",
+          "x": 0,
+          "y": 3,
+          "z": 0
+        }
+      ]
+    },
+    {
+      "feature": {
+        "type": "minecraft:disk",
+        "state_provider": {
+          "id": "minecraft:red_terracotta"
+        },
+        "radius": 6,
+        "half_height": 4,
+        "target": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "#minecraft:air"
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:offset",
+          "x": 0,
+          "y": 6,
+          "z": 0
+        }
+      ]
+    },
+    {
+      "feature": {
+        "type": "minecraft:disk",
+        "state_provider": {
+          "id": "minecraft:red_terracotta"
+        },
+        "radius": 8,
+        "half_height": 0,
+        "target": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "#minecraft:air"
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:offset",
+          "x": 0,
+          "y": 11,
+          "z": 0
+        }
+      ]
+    },
+    {
+      "feature": {
+        "type": "minecraft:disk",
+        "state_provider": {
+          "id": "minecraft:red_terracotta"
+        },
+        "radius": 7,
+        "half_height": 4,
+        "target": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "#minecraft:air"
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:offset",
+          "x": 0,
+          "y": 12,
+          "z": 0
+        }
+      ]
+    },
+    {
+      "feature": {
+        "type": "minecraft:disk",
+        "state_provider": {
+          "id": "minecraft:red_terracotta"
+        },
+        "radius": 8,
+        "half_height": 2,
+        "target": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "#minecraft:air"
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:offset",
+          "x": 0,
+          "y": 12,
+          "z": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "feature": "fishysift:ichor_pool",
+  "placement": [
+    {
+      "type": "rarity_filter",
+      "chance": 5
+    },
+    {
+        "type":"in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

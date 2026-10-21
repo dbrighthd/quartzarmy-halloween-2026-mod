@@ -1,0 +1,16 @@
+{
+  "feature": "fishysift:white_fishysift_tree",
+  "placement": [
+    {
+      "type": "count",
+      "count": 6
+    },
+    {
+      "type": "in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

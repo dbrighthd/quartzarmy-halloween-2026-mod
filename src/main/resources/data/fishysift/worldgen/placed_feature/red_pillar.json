@@ -1,0 +1,16 @@
+{
+  "feature": "fishysift:red_pillar",
+  "placement": [
+    {
+      "type": "rarity_filter",
+      "chance": 40
+    },
+    {
+        "type":"in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}
