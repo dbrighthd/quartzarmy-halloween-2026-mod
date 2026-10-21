@@ -9,11 +9,11 @@
         {
           "biome": "fishysift:singers_meadow",
           "parameters": {
-            "temperature": 0,
-            "humidity": 0,
+            "temperature": 1,
+            "humidity": 0.9,
             "continentalness": 0,
             "erosion": 0,
-            "weirdness": 0,
+            "weirdness": -1,
             "depth": 0,
             "offset": 0
           }
@@ -21,13 +21,25 @@
         {
           "biome": "fishysift:singers_meadow_1",
           "parameters": {
-            "temperature": 0,
+            "temperature": 0.1,
+            "humidity": -0.9,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 1,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "fishysift:singers_meadow_2",
+          "parameters": {
+            "temperature": -1,
             "humidity": 0,
             "continentalness": 0,
             "erosion": 0,
             "weirdness": 0,
             "depth": 0,
-            "offset": 1
+            "offset": 0
           }
         }
       ]
