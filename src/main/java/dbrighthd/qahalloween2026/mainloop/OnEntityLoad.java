@@ -56,12 +56,12 @@ public class OnEntityLoad {
                 }
                 else
                 {
-                    if(owner instanceof Player)
+                    if(owner instanceof Player && !arrow.hasAttached(DataAttachments.TARGET_DATA))
                     {
                         PlayerMethodUtils.addAndSendMovementIfPlayer(owner,arrow.getDeltaMovement().scale(-20),false);
                         arrow.setDeltaMovement(0,0,0);
                         arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0,1), true));
-
+                        arrow.setOwner(arrow);
                     }
                 }
                 arrow.setBaseDamage(0);
