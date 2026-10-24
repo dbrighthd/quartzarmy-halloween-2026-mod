@@ -12,6 +12,7 @@
     "EndSpawnMixin",
     "HurtEntityMixin",
     "HurtMixin",
+    "MultiNoiseBiomeSourceMixin",
     "PlayerActionMixin",
     "PlayerUseItemOnMixin",
     "ProjectileMixin",

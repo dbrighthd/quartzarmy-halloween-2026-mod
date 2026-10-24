@@ -27,12 +27,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -70,6 +72,10 @@ public class TickLoop {
         }
         for(Entity entity: serverLevel.getAllEntities())
         {
+            if(entity instanceof Villager villager)
+            {
+                villagerTick(villager);
+            }
             if(entity instanceof ExperienceOrb)
             {
                 entity.kill(serverLevel);
@@ -138,6 +144,7 @@ public class TickLoop {
                 (MOD_ID + ":string:" + player.getUUID()).getBytes(StandardCharsets.UTF_8)
         );
     }
+
     public static void actOnePlayerTick(ServerPlayer player, ServerLevel serverLevel)
     {
         player.getFoodData().setFoodLevel(20);
@@ -181,6 +188,14 @@ public class TickLoop {
 
         }
 
+    }
+
+    public static void villagerTick(Villager villager)
+    {
+        if(!villager.getItemInHand(InteractionHand.MAIN_HAND).is(Items.DIAMOND_SPEAR))
+        {
+            villager.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.DIAMOND_SPEAR));
+        }
     }
 
     public static void endermanTick(Enderman enderman, ServerLevel serverLevel)
