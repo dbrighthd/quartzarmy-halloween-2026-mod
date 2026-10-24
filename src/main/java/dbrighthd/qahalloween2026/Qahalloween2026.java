@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026;
 
+import dbrighthd.qahalloween2026.mainloop.GlobalVars;
 import dbrighthd.qahalloween2026.mainloop.OnEntityLoad;
 import dbrighthd.qahalloween2026.mainloop.Setup;
 import dbrighthd.qahalloween2026.mainloop.TickLoop;
@@ -15,5 +16,6 @@ public class Qahalloween2026 implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(Setup::actOneSetup);
         OnEntityLoad.init();
         TickLoop.init();
+        GlobalVars.init();
     }
 }

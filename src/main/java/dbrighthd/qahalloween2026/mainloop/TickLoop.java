@@ -207,10 +207,10 @@ public class TickLoop {
     public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
     {
         Vec3 belowBlock = zombie.position().subtract(0,1,0);
-        boolean clutch = (zombie.fallDistance > 4);
+        boolean clutch = (zombie.fallDistance >= 4);
         boolean inDanger = false;
 
-        if(serverLevel.getNearestPlayer(zombie,3) != null)
+        if(serverLevel.getNearestPlayer(zombie,5) != null)
         {
             inDanger = true;
             if(zombie.onGround())
@@ -220,7 +220,7 @@ public class TickLoop {
             zombie.lookAt(EntityAnchorArgument.Anchor.EYES, belowBlock);
         }
         zombie.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(clutch ? Items.WATER_BUCKET : inDanger ? Items.OAK_PLANKS : Items.AIR,1));
-        if(!zombie.onGround() && zombie.getDeltaMovement().y <= 0 && !serverLevel.getBlockState(BlockPos.containing(belowBlock.subtract(0,1,0))).isAir()) {
+        if(!zombie.onGround() && zombie.getDeltaMovement().y <= 0 && !serverLevel.getBlockState(BlockPos.containing(belowBlock.subtract(0,1,0))).canBeReplaced()  && serverLevel.getBlockState(BlockPos.containing(belowBlock)).canBeReplaced()) {
             if(clutch)
             {
                 serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.WATER.defaultBlockState());

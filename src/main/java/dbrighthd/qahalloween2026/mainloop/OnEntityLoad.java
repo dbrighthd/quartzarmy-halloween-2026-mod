@@ -8,12 +8,21 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
+import net.minecraft.world.entity.monster.skeleton.Parched;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.monster.skeleton.Stray;
+import net.minecraft.world.entity.monster.spider.Spider;
+import net.minecraft.world.entity.monster.zombie.Husk;
+import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.monster.zombie.ZombieVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +32,27 @@ import net.minecraft.world.item.component.CustomModelData;
 import java.util.List;
 import java.util.UUID;
 
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.replaceEntity;
+
 public class OnEntityLoad {
     public static void init() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+            if(entity instanceof  Spider spider)
+            {
+                replaceEntity(level,spider, EntityTypes.ZOMBIE);
+            }
+            if(entity instanceof Zombie && !(entity.getClass() == Zombie.class))
+            {
+                replaceEntity(level,entity, EntityTypes.ZOMBIE);
+            }
+            if(entity instanceof AbstractSkeleton && !(entity instanceof Skeleton))
+            {
+                replaceEntity(level,entity, EntityTypes.SKELETON);
+            }
+            if (entity instanceof Monster monster)
+            {
+                level.getServer().getScoreboard().addPlayerToTeam(monster.getScoreboardName(),GlobalVars.monsterTeam);
+            }
             if (entity instanceof Creeper creeper) {
                 creeper.explosionRadius = 0;
                 creeper.maxSwell = 50;
