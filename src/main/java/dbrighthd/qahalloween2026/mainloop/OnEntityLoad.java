@@ -11,10 +11,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.dolphin.Dolphin;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
+import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.animal.fish.Cod;
 import net.minecraft.world.entity.animal.fish.Salmon;
+import net.minecraft.world.entity.animal.nautilus.Nautilus;
+import net.minecraft.world.entity.animal.pig.Pig;
+import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -49,6 +58,17 @@ public class OnEntityLoad {
             {
                 phantom.setSilent(true);
                 phantom.setPersistenceRequired();
+                var damageAttribute = phantom.getAttribute(Attributes.ATTACK_DAMAGE);
+                if(damageAttribute != null)
+                {
+                    damageAttribute.setBaseValue(0.1);
+                }
+
+                var knockbackAttribute = phantom.getAttribute(Attributes.ATTACK_KNOCKBACK);
+                if(knockbackAttribute != null)
+                {
+                    knockbackAttribute.setBaseValue(1);
+                }
             }
             if(entity instanceof Vindicator vindicator)
             {
@@ -57,27 +77,55 @@ public class OnEntityLoad {
             }
             if(entity instanceof Villager villager)
             {
-                replaceEntity(level,villager, EntityTypes.VINDICATOR);
+                replaceEntity(level,villager, EntityTypes.VINDICATOR,1);
             }
             if(entity instanceof AbstractFish fih)
             {
-                replaceEntity(level,fih, EntityTypes.AXOLOTL);
+                replaceEntity(level,fih, EntityTypes.AXOLOTL,1);
             }
             if(entity instanceof Squid squid)
             {
-                replaceEntity(level,squid, EntityTypes.AXOLOTL);
+                replaceEntity(level,squid, EntityTypes.AXOLOTL,1);
+            }
+            if(entity instanceof Nautilus nautilus)
+            {
+                replaceEntity(level,nautilus, EntityTypes.AXOLOTL,1);
+            }
+            if(entity instanceof Dolphin dolphin)
+            {
+                replaceEntity(level,dolphin, EntityTypes.AXOLOTL,1);
+            }
+            if(entity instanceof Cow cow)
+            {
+                replaceEntity(level,cow, EntityTypes.CHICKEN,1);
+            }
+            if(entity instanceof Rabbit rabbit)
+            {
+                replaceEntity(level,rabbit, EntityTypes.PHANTOM,2);
+            }
+            if(entity instanceof Pig pig)
+            {
+                replaceEntity(level,pig, EntityTypes.SHEEP,1);
+            }
+            if(entity instanceof AbstractHorse horse)
+            {
+                replaceEntity(level,horse, EntityTypes.PHANTOM,3);
+            }
+            if(entity instanceof Armadillo armadillo)
+            {
+                replaceEntity(level,armadillo, EntityTypes.CHICKEN,1);
             }
             if(entity instanceof  Spider spider)
             {
-                replaceEntity(level,spider, EntityTypes.ZOMBIE);
+                replaceEntity(level,spider, EntityTypes.ZOMBIE,1);
             }
             if(entity instanceof Zombie && !(entity.getClass() == Zombie.class))
             {
-                replaceEntity(level,entity, EntityTypes.ZOMBIE);
+                replaceEntity(level,entity, EntityTypes.ZOMBIE,1);
             }
             if(entity instanceof AbstractSkeleton && !(entity instanceof Skeleton))
             {
-                replaceEntity(level,entity, EntityTypes.SKELETON);
+                replaceEntity(level,entity, EntityTypes.SKELETON,1);
             }
             if (entity instanceof Monster monster)
             {

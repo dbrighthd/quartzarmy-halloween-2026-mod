@@ -79,7 +79,7 @@ public class EventsStorage {
         }
         if(entity instanceof Chicken chicken)
         {
-            GeneralUtils.replaceEntity(player.level(),chicken, EntityTypes.PHANTOM);
+            GeneralUtils.replaceEntity(player.level(),chicken, EntityTypes.PHANTOM,1);
         }
     }
 

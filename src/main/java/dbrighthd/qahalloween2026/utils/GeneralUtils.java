@@ -12,19 +12,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class GeneralUtils {
-    public static void replaceEntity(ServerLevel level, Entity entity, EntityType newType)
+    public static void replaceEntity(ServerLevel level, Entity entity, EntityType newType, int count)
     {
-        Entity entityToSpawn = newType.create(
-                level,
-                EntitySpawnReason.NATURAL
-        );
-        if(entityToSpawn != null)
+        for(int i = 0; i < count; i++)
         {
-            entityToSpawn.setPos(entity.position());
-            entityToSpawn.moveOrInterpolateTo(entity.position(),entity.getYRot(),entity.getXRot());
-            entityToSpawn.setYHeadRot(entity.getYHeadRot());
-            level.addFreshEntity(entityToSpawn);
+            Entity entityToSpawn = newType.create(
+                    level,
+                    EntitySpawnReason.NATURAL
+            );
+            if(entityToSpawn != null)
+            {
+                entityToSpawn.setPos(entity.position());
+                entityToSpawn.moveOrInterpolateTo(entity.position(),entity.getYRot(),entity.getXRot());
+                entityToSpawn.setYHeadRot(entity.getYHeadRot());
+                level.addFreshEntity(entityToSpawn);
 
+            }
         }
         entity.discard();
     }

@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -222,9 +223,8 @@ public class TickLoop {
     public static void chickenTick(Chicken chicken, ServerLevel serverLevel) {
 
         if(serverLevel.getNearestPlayer(chicken,5) != null) {
-            GeneralUtils.replaceEntity(serverLevel,chicken, EntityTypes.PHANTOM);
+            GeneralUtils.replaceEntity(serverLevel,chicken, EntityTypes.PHANTOM,1);
         }
-
     }
 
     public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
@@ -235,6 +235,10 @@ public class TickLoop {
 
         if(serverLevel.getNearestPlayer(zombie,5) != null)
         {
+            if(serverLevel.getBlockState(zombie.blockPosition().above(2)).is(BlockTags.LEAVES))
+            {
+                serverLevel.setBlockAndUpdate(zombie.blockPosition().above(2), Blocks.AIR.defaultBlockState());
+            }
             inDanger = true;
             if(zombie.onGround())
             {
