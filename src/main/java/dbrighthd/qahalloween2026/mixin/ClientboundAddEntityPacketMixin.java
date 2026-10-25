@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Vex;
@@ -43,6 +44,9 @@ public abstract class ClientboundAddEntityPacketMixin {
         }
         if (entity instanceof Phantom) {
             this.type = EntityTypes.CHICKEN;
+        }
+        if (entity instanceof Axolotl) {
+            this.type = EntityTypes.SALMON;
         }
     }
 }

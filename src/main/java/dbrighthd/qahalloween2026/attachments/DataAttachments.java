@@ -33,4 +33,9 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "sheep_data"),
                     () -> SheepData.defaultState
             );
+    public static final AttachmentType<GlowflyData> GLOWFLY_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "glowfly_data"),
+                    () -> GlowflyData.defaultState
+            );
 }

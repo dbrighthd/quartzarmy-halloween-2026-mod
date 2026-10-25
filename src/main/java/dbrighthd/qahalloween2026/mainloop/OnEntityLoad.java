@@ -11,7 +11,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.fish.AbstractFish;
+import net.minecraft.world.entity.animal.fish.Cod;
+import net.minecraft.world.entity.animal.fish.Salmon;
 import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
@@ -53,6 +58,14 @@ public class OnEntityLoad {
             if(entity instanceof Villager villager)
             {
                 replaceEntity(level,villager, EntityTypes.VINDICATOR);
+            }
+            if(entity instanceof AbstractFish fih)
+            {
+                replaceEntity(level,fih, EntityTypes.AXOLOTL);
+            }
+            if(entity instanceof Squid squid)
+            {
+                replaceEntity(level,squid, EntityTypes.AXOLOTL);
             }
             if(entity instanceof  Spider spider)
             {

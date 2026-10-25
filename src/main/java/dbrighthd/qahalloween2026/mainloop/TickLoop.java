@@ -4,6 +4,7 @@ import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.events.EventsStorage;
+import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
 import dbrighthd.qahalloween2026.systems.WetSystem;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
@@ -22,6 +23,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
@@ -72,7 +76,10 @@ public class TickLoop {
         }
         for(Entity entity: serverLevel.getAllEntities())
         {
-
+            if (entity instanceof Axolotl axolotl)
+            {
+                axolotlTick(axolotl, serverLevel);
+            }
             if(entity instanceof Chicken chicken)
             {
                 chickenTick(chicken,serverLevel);
@@ -162,6 +169,7 @@ public class TickLoop {
         BindSystem.bindTick(player);
         WetSystem.wetTick(player);
         SheepSystem.sheepTick(player);
+        GlowflySystem.glowflyTick(player);
         if(isLookingAtSun(player))
         {
             lookAtSun(player);
@@ -193,6 +201,16 @@ public class TickLoop {
 
         }
 
+    }
+
+    public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
+    {
+        ServerPlayer player = (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(20).selector((p,l) -> GlowflySystem.isPlayerInfected(p)), axolotl);
+        if (player != null) {axolotl.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, player);}
+        if(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent() && !GlowflySystem.isPlayerInfected(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()))
+        {
+            axolotl.getBrain().clearMemories();
+        }
     }
 
     public static void endermanTick(Enderman enderman, ServerLevel serverLevel)
