@@ -16,6 +16,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.illager.Vindicator;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Parched;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.monster.zombie.ZombieVillager;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
@@ -41,6 +43,16 @@ public class OnEntityLoad {
             if(entity instanceof Phantom phantom)
             {
                 phantom.setSilent(true);
+                phantom.setPersistenceRequired();
+            }
+            if(entity instanceof Vindicator vindicator)
+            {
+                vindicator.setSilent(true);
+                vindicator.setPersistenceRequired();
+            }
+            if(entity instanceof Villager villager)
+            {
+                replaceEntity(level,villager, EntityTypes.VINDICATOR);
             }
             if(entity instanceof  Spider spider)
             {

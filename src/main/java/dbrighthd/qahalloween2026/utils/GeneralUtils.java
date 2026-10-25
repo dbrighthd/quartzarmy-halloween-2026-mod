@@ -21,9 +21,10 @@ public class GeneralUtils {
         if(entityToSpawn != null)
         {
             entityToSpawn.setPos(entity.position());
-            entityToSpawn.setXRot(entity.getXRot());
-            entityToSpawn.setYRot(entity.getYRot());
+            entityToSpawn.moveOrInterpolateTo(entity.position(),entity.getYRot(),entity.getXRot());
+            entityToSpawn.setYHeadRot(entity.getYHeadRot());
             level.addFreshEntity(entityToSpawn);
+
         }
         entity.discard();
     }
