@@ -15,6 +15,7 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Parched;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
@@ -37,6 +38,10 @@ import static dbrighthd.qahalloween2026.utils.GeneralUtils.replaceEntity;
 public class OnEntityLoad {
     public static void init() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+            if(entity instanceof Phantom phantom)
+            {
+                phantom.setSilent(true);
+            }
             if(entity instanceof  Spider spider)
             {
                 replaceEntity(level,spider, EntityTypes.ZOMBIE);

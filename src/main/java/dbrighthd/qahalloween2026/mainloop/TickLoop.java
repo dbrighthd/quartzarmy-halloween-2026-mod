@@ -6,6 +6,7 @@ import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.events.EventsStorage;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
 import dbrighthd.qahalloween2026.systems.WetSystem;
+import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -19,13 +20,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.PositionMoveRotation;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
@@ -72,9 +72,14 @@ public class TickLoop {
         }
         for(Entity entity: serverLevel.getAllEntities())
         {
-            if(entity instanceof Villager villager)
+
+            if(entity instanceof Chicken chicken)
             {
-                villagerTick(villager);
+                chickenTick(chicken,serverLevel);
+            }
+            if(entity instanceof Phantom phantom)
+            {
+                phantom.setRemainingFireTicks(-10);
             }
             if(entity instanceof ExperienceOrb)
             {
@@ -190,19 +195,19 @@ public class TickLoop {
 
     }
 
-    public static void villagerTick(Villager villager)
-    {
-        if(!villager.getItemInHand(InteractionHand.MAIN_HAND).is(Items.DIAMOND_SPEAR))
-        {
-            villager.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.DIAMOND_SPEAR));
-        }
-    }
-
     public static void endermanTick(Enderman enderman, ServerLevel serverLevel)
     {
         particleAtEntityOffset(enderman, new Vec3(0,1.5,0), ParticleTypes.SOUL,0.25f,1f,0.25f,5,0);
     }
 
+
+    public static void chickenTick(Chicken chicken, ServerLevel serverLevel) {
+
+        if(serverLevel.getNearestPlayer(chicken,5) != null) {
+            GeneralUtils.replaceEntity(serverLevel,chicken, EntityTypes.PHANTOM);
+        }
+
+    }
 
     public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
     {

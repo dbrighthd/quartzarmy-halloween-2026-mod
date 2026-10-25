@@ -3,11 +3,15 @@ package dbrighthd.qahalloween2026.events;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
+import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 
 import java.util.HashMap;
@@ -72,6 +76,10 @@ public class EventsStorage {
                 BindSystem.giveString(player, Config.stringPerSheep);
                 playSoundAtEntity(entity, SoundEvents.SHEEP_SHEAR,100,1);
             }
+        }
+        if(entity instanceof Chicken chicken)
+        {
+            GeneralUtils.replaceEntity(player.level(),chicken, EntityTypes.PHANTOM);
         }
     }
 
