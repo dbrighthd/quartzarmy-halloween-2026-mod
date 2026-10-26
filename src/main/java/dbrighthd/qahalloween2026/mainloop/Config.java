@@ -26,6 +26,8 @@ public class Config {
     public static int arrowLifeTime = 160;
     public static int arrowBurst = 5;
 
+    public static int maxAxolotlsNearby = 16;
+
     public static int sheepCooldownMax = 360;
     public static int sheepUntilSleep = 4;
     public static int sleepTime = 240;

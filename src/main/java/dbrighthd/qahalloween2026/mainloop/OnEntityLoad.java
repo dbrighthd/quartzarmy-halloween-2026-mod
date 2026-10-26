@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.replaceEntity;
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.replaceEntityIfLessThanAround;
 
 public class OnEntityLoad {
     public static void init() {
@@ -100,7 +101,7 @@ public class OnEntityLoad {
             {
                 if(!(level.dimension() == Level.NETHER))
                 {
-                    replaceEntity(level,fih, EntityTypes.AXOLOTL,1);
+                    replaceEntityIfLessThanAround(level,fih, EntityTypes.AXOLOTL,1, Config.maxAxolotlsNearby);
                 }
             }
             if(entity instanceof Enderman enderman)
@@ -112,15 +113,15 @@ public class OnEntityLoad {
             }
             if(entity instanceof Squid squid)
             {
-                replaceEntity(level,squid, EntityTypes.AXOLOTL,1);
+                replaceEntityIfLessThanAround(level,squid, EntityTypes.AXOLOTL,1, Config.maxAxolotlsNearby);
             }
             if(entity instanceof Nautilus nautilus)
             {
-                replaceEntity(level,nautilus, EntityTypes.AXOLOTL,1);
+                replaceEntityIfLessThanAround(level,nautilus, EntityTypes.AXOLOTL,1, Config.maxAxolotlsNearby);
             }
             if(entity instanceof Dolphin dolphin)
             {
-                replaceEntity(level,dolphin, EntityTypes.AXOLOTL,1);
+                replaceEntityIfLessThanAround(level,dolphin, EntityTypes.AXOLOTL,1, Config.maxAxolotlsNearby);
             }
             if(entity instanceof Cow cow)
             {

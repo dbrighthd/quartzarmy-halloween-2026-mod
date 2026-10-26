@@ -80,6 +80,10 @@ public class TickLoop {
 
     public static void entityTick(Entity entity)
     {
+        if(entity == null)
+        {
+            return;
+        }
         ServerLevel level = (ServerLevel)entity.level();
         if (entity instanceof Axolotl axolotl)
         {
@@ -263,6 +267,7 @@ public class TickLoop {
         {
             axolotl.getBrain().clearMemories();
         }
+
     }
 
     public static void endermanTick(Enderman enderman, ServerLevel serverLevel)

@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class GeneralUtils {
     public static void replaceEntity(ServerLevel level, Entity entity, EntityType newType, int count)
@@ -24,5 +25,15 @@ public class GeneralUtils {
             }
         }
         entity.discard();
+    }
+
+    public static void replaceEntityIfLessThanAround(ServerLevel serverLevel, Entity entity, EntityType newType, int countToSpawn, int maxCount)
+    {
+        int count = serverLevel.getEntities(
+                newType,
+                entity.getBoundingBox().inflate(16),
+                selectEntity -> selectEntity != entity).size();
+
+        replaceEntity(serverLevel, entity, newType, count < maxCount? countToSpawn : 0);
     }
 }
