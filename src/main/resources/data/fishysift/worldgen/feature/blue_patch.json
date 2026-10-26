@@ -159,6 +159,15 @@
                 {
                   "weight": 1,
                   "data": {
+                    "id": "minecraft:red_shrub",
+                    "properties": {
+                      "waterlogged": "false"
+                    }
+                  }
+                },
+                {
+                  "weight": 1,
+                  "data": {
                     "id": "minecraft:fire_coral",
                     "properties": {
                       "waterlogged": "false"

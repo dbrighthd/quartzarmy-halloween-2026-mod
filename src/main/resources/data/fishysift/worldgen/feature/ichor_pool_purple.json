@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:lake",
+  "barrier": {
+    "id": "minecraft:purple_terracotta"
+  },
+  "can_place_feature": {
+    "type": "minecraft:true"
+  },
+  "can_replace_with_air_or_fluid": {
+    "type": "minecraft:matching_blocks",
+    "blocks": [
+      "minecraft:red_terracotta",
+      "minecraft:air",
+      "minecraft:water"
+    ]
+  },
+  "can_replace_with_barrier": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:red_terracotta",
+        "minecraft:air",
+        "minecraft:water"
+      ]
+  },
+  "fluid": {
+    "id": "minecraft:water",
+    "properties": {
+      "level": "0"
+    }
+  }
+}

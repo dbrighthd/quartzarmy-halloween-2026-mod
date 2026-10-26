@@ -1,6 +1,22 @@
 {
   "attributes": {
-  },
+    "minecraft:gameplay/natural_mob_spawns": {
+      "spawns_by_category": {
+        "creature": [
+          {
+            "weight": 20,
+            "type": "minecraft:silverfish",
+            "count": 4
+          },
+          {
+            "weight": 20,
+            "type": "minecraft:sniffer",
+            "count": 4
+          }
+        ]
+      },
+      "spawn_costs": {}
+    }},
   "has_precipitation": false,
   "temperature": 2,
   "temperature_modifier": "none",
@@ -21,6 +37,9 @@
     ],
     [
       "fishysift:white_fishysift_tree"
+    ],
+    [
+      "fishysift:ichor_pool_purple"
     ],
     [
       "fishysift:ichor_pool"
