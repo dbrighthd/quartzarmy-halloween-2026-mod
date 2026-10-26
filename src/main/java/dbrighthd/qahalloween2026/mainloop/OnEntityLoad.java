@@ -20,6 +20,8 @@ import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.animal.squid.Squid;
+import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.illager.Vindicator;
@@ -35,6 +37,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.end.EnderDragonFight;
+import net.minecraft.world.level.levelgen.feature.EndSpikeFeature;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.List;
@@ -107,6 +111,11 @@ public class OnEntityLoad {
                     replaceEntity(level,enderman, EntityTypes.CREEPER,1);
                 }
             }
+            if(entity instanceof EndCrystal crystal)
+            {
+                crystal.discard();
+            }
+
             if(entity instanceof Squid squid)
             {
                 replaceEntityIfLessThanAround(level,squid, EntityTypes.AXOLOTL,1, Config.maxAxolotlsNearby);

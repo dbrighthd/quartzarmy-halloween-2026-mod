@@ -22,6 +22,8 @@
     "ProjectileMixin",
     "RangedBowAttackGoalMixin",
     "ServerEntityMixin",
+    "SpawnExitPortalMixin",
+    "SpikeCacheLoaderMixin",
     "SwellGoalMixin"
   ],
   "injectors": {

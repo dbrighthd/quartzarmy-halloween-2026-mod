@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
@@ -48,6 +49,7 @@ import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.Vec3;
 
 import javax.xml.crypto.Data;
@@ -111,6 +113,15 @@ public class TickLoop {
         if(entity instanceof Chicken chicken)
         {
             chickenTick(chicken,level);
+        }
+        if(entity instanceof EnderDragon dragon)
+        {
+            EnderDragonFight fight = level.getDragonFight();
+            if(fight != null && fight.dragonUUID() != null)
+            {
+                fight.setDragonKilled(dragon);
+                dragon.discard();
+            }
         }
         if(entity instanceof Phantom phantom)
         {

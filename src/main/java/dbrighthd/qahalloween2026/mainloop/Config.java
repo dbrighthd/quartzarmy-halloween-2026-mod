@@ -8,6 +8,9 @@ public class Config {
     public static double creeperCancelDistance = 16;
     public static double creeperSuckForce = 0.1;
 
+    public static int spikeCount = 30;
+    public static double spikeDistance = 100;
+
     public static final int stringPerDamage = 2;
 
     public final static int bindCooldownTicks = 0;
