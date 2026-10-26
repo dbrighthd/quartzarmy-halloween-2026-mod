@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:firefly_bush",
+      "count": 1
+    },
+    "title": "Glowflies.",
+    "description": "That explains why the Salmonids are restless. If you start glowing...well, good luck.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/water",
+  "criteria": {
+    "the": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

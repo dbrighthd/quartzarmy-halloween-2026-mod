@@ -1,0 +1,15 @@
+{
+  "pack": {
+    "description": "Remove vanilla advancements (I didn't know mods could have a pack.mcmeta but here we are",
+    "min_format": 121,
+    "max_format": 121
+  },
+  "filter": {
+    "block": [
+      {
+        "namespace": "minecraft",
+        "path": "advancement/.*"
+      }
+    ]
+  }
+}

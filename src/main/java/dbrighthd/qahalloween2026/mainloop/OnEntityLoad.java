@@ -5,9 +5,11 @@ import dbrighthd.qahalloween2026.attachments.TargetData;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
@@ -37,8 +39,9 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.List;
 import java.util.UUID;
 
-import static dbrighthd.qahalloween2026.utils.GeneralUtils.replaceEntity;
-import static dbrighthd.qahalloween2026.utils.GeneralUtils.replaceEntityIfLessThanAround;
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.*;
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 
 public class OnEntityLoad {
     public static void init() {
@@ -47,17 +50,9 @@ public class OnEntityLoad {
             {
                 phantom.setSilent(true);
                 phantom.setPersistenceRequired();
-                var damageAttribute = phantom.getAttribute(Attributes.ATTACK_DAMAGE);
-                if(damageAttribute != null)
-                {
-                    damageAttribute.setBaseValue(0.1);
-                }
-
-                var knockbackAttribute = phantom.getAttribute(Attributes.ATTACK_KNOCKBACK);
-                if(knockbackAttribute != null)
-                {
-                    knockbackAttribute.setBaseValue(1);
-                }
+                changeAttribute(phantom,Attributes.ATTACK_DAMAGE,0.1);
+                changeAttribute(phantom,Attributes.ATTACK_KNOCKBACK,4);
+                changeAttribute(phantom,Attributes.MAX_HEALTH,4);
             }
             if(entity instanceof Vindicator vindicator)
             {
@@ -68,16 +63,16 @@ public class OnEntityLoad {
             {
                 ravager.setSilent(true);
                 ravager.setPersistenceRequired();
-                var damageAttribute = ravager.getAttribute(Attributes.ATTACK_DAMAGE);
-                if(damageAttribute != null)
-                {
-                    damageAttribute.setBaseValue(1);
-                }
+                changeAttribute(ravager,Attributes.ATTACK_DAMAGE,1);
             }
             if(entity instanceof Silverfish silverfish)
             {
                 silverfish.setSilent(true);
                 silverfish.setPersistenceRequired();
+            }
+            if(entity instanceof Axolotl axolotl)
+            {
+                axolotl.setSilent(true);
             }
             if(entity instanceof Sniffer sniffer)
             {
@@ -189,12 +184,13 @@ public class OnEntityLoad {
                 }
                 else
                 {
-                    if(owner instanceof Player && !arrow.hasAttached(DataAttachments.TARGET_DATA))
+                    if(owner instanceof Player player && !arrow.hasAttached(DataAttachments.TARGET_DATA))
                     {
                         PlayerMethodUtils.addAndSendMovementIfPlayer(owner,arrow.getDeltaMovement().scale(-20),false);
                         arrow.setDeltaMovement(0,0,0);
                         arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0,1), true));
                         arrow.setOwner(arrow);
+                        grantAdvancement((ServerPlayer)player,"main/bow");
                     }
                 }
                 arrow.setBaseDamage(0);

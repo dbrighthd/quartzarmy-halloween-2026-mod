@@ -13,8 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.*;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.playSoundAtEntity;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class BindSystem {
 
@@ -58,7 +57,7 @@ public class BindSystem {
             {
                 player.setHealth(player.getHealth() + 6);
                 player.sendOverlayMessage(Component.literal("Binding Complete!"));
-
+                grantAdvancement(player,"main/string");
                 player.resetFallDistance();
                 playSoundAtEntity(player, SoundEvents.BAT_TAKEOFF,1.0f,1f);
                 updatedCooldown = bindCooldownTicks;

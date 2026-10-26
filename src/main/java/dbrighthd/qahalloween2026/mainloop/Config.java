@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 public class Config {
     public static double creeperStartDistance = 12;
     public static double creeperCancelDistance = 16;
-    public static double creeperSuckForce = 0.05;
+    public static double creeperSuckForce = 0.1;
 
     public static final int stringPerDamage = 2;
 
@@ -18,7 +18,7 @@ public class Config {
     public static double placeMissChance = 0.25;
 
     public static int maxWet = 200;
-    public static double maxSlipperyFriction = 0.5;
+    public static double maxSlipperyFriction = 0;
 
     public static double arrowSpeed = 0.1;
     public static double arrowBurstSpeed = 0.6;
@@ -33,9 +33,11 @@ public class Config {
     public static int sleepTime = 240;
     public static int stringPerSheep = 32;
 
+    public static int stringPerBlockBreak = 1;
+
     public static int stackAmounts = 3;
 
-    public static int glowFlyTicks = 400;
+    public static int glowFlyTicks = 600;
 
     public static int siftParticleAmount = 6;
     public static int siftParticleHorDistance = 24;

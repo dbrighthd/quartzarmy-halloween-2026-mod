@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:test_block",
+      "components": {
+        "minecraft:block_state": {
+          "mode": "fail"
+        }
+      },
+      "count": 1
+    },
+    "title": "you wasted string!!",
+    "description": "don't get hit while binding!",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/jumpattack",
+  "criteria": {
+    "the": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

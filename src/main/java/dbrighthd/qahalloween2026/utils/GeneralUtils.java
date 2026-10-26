@@ -1,10 +1,10 @@
 package dbrighthd.qahalloween2026.utils;
 
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class GeneralUtils {
     public static void replaceEntity(ServerLevel level, Entity entity, EntityType newType, int count)
@@ -35,5 +35,15 @@ public class GeneralUtils {
                 selectEntity -> selectEntity != entity).size();
 
         replaceEntity(serverLevel, entity, newType, count < maxCount? countToSpawn : 0);
+    }
+
+
+    public static void changeAttribute(LivingEntity entity, Holder<Attribute> attribute, double value)
+    {
+        var attributeToGet = entity.getAttribute(attribute);
+        if(attributeToGet != null)
+        {
+            attributeToGet.setBaseValue(value);
+        }
     }
 }

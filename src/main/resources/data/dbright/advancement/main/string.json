@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:string",
+      "count": 1
+    },
+    "title": "String is useful!!!",
+    "description": "how did you get the string tho",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/root",
+  "criteria": {
+    "the": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

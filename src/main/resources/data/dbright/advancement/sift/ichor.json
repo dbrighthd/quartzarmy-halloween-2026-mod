@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:bucket",
+      "count": 1
+    },
+    "title": "not slippery when not wet",
+    "description": "its ichor not water",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:sift/entersift",
+  "criteria": {
+    "fort": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:all_of",
+          "terms": {
+            "type": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "dimension": "minecraft:the_nether",
+                "fluid": {
+                  "fluids": "#minecraft:water"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

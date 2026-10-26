@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:skeleton_skull",
+      "count": 1
+    },
+    "title": "Here we go again!!!",
+    "description": "thats oh gore thats comfort of my oh thats comfort of my oht hats oh that oh",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/root",
+  "criteria": {
+    "death": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -8,6 +8,7 @@ import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
 import dbrighthd.qahalloween2026.systems.WetSystem;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -34,7 +35,10 @@ import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
 import net.minecraft.world.entity.vehicle.boat.Boat;
@@ -46,12 +50,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.phys.Vec3;
 
+import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class TickLoop {
@@ -59,7 +65,20 @@ public class TickLoop {
     {
         ServerTickEvents.END_SERVER_TICK.register(TickLoop::tick);
         ServerTickEvents.END_SERVER_TICK.register(EventsStorage::refreshAndDoStuff);
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+            if (entity instanceof Skeleton
+                    && source.getDirectEntity() instanceof Arrow arrow) {
+                TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
+                Entity target = arrow.level().getEntity(arrowData.target());
+                if(target instanceof Player player)
+                {
+                    grantAdvancement((ServerPlayer)player,"main/arrowskeleton");
+                }
 
+            }
+
+            return true;
+        });
     }
 
 
@@ -194,6 +213,10 @@ public class TickLoop {
 
     public static void playerTick(ServerPlayer player, ServerLevel serverLevel)
     {
+        if(player.isDeadOrDying())
+        {
+            grantAdvancement(player,"main/death");
+        }
         player.getFoodData().setFoodLevel(20);
         player.getFoodData().setSaturation(20.0f);
         BlockPos standingOn = player.blockPosition().below();
@@ -216,6 +239,7 @@ public class TickLoop {
             {
                 if(player.getY() < 0)
                 {
+                    grantAdvancement(player,"end/endfall");
                     attribute.setBaseValue(-0.5);
                 }
                 else
@@ -249,6 +273,7 @@ public class TickLoop {
 
     public static void lookAtSun(ServerPlayer player)
     {
+        grantAdvancement(player,"main/sunlook");
         if(!player.hasEffect(MobEffects.BLINDNESS))
         {
             player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("Don't Look at the Sun!")));
@@ -266,6 +291,19 @@ public class TickLoop {
         if(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent() && !GlowflySystem.isPlayerInfected(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()))
         {
             axolotl.getBrain().clearMemories();
+        }
+        if(!axolotl.isInWater())
+        {
+            if(axolotl.onGround() && axolotl.level().getRandom().nextBoolean())
+            {
+                axolotl.jumpFromGround();
+                playSoundAtEntity(axolotl,SoundEvents.SALMON_FLOP,1,1);
+            }
+            changeAttribute(axolotl,Attributes.MOVEMENT_SPEED,3);
+        }
+        else
+        {
+            changeAttribute(axolotl,Attributes.MOVEMENT_SPEED,1);
         }
 
     }

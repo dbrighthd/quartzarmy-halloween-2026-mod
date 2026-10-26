@@ -1,0 +1,19 @@
+{
+  "parent": "dbright:main/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:sheep_spawn_egg",
+      "count": 1
+    },
+    "title": "Honk Shuah!!!",
+    "description": "stop counting sheep!! you will get sleepy!!",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "the": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

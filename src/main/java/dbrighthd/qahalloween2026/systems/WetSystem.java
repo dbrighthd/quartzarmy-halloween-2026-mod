@@ -7,7 +7,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.injection.At;
 
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
 
 public class WetSystem {
@@ -19,16 +21,8 @@ public class WetSystem {
         boolean wet = dataThisTick.wetState() > 0;
         boolean sift = player.level().dimension() == Level.NETHER;
         double frictionValue =  sift ? 1 : wet ? Config.maxSlipperyFriction : 1;
-        var attribute = player.getAttribute(Attributes.FRICTION_MODIFIER);
-        if(attribute != null)
-        {
-            attribute.setBaseValue(frictionValue);
-        }
-        var air_attribute = player.getAttribute(Attributes.AIR_DRAG_MODIFIER);
-        if(air_attribute != null)
-        {
-            air_attribute.setBaseValue(frictionValue);
-        }
+        changeAttribute(player, Attributes.FRICTION_MODIFIER,frictionValue);
+        //changeAttribute(player, Attributes.AIR_DRAG_MODIFIER,frictionValue);
         if(wet)
         {
             if(sift && player.tickCount % (player.isInWaterOrRain() ? Config.ichorTickModInIchor : Config.ichorTickMod) == 0) // no rain in sift

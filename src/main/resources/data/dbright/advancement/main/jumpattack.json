@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:feather",
+      "count": 1
+    },
+    "title": "Jump Attack!!",
+    "description": "you get double string from this btw!",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/string",
+  "criteria": {
+    "the": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

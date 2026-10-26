@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.stringPerDamage;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.playSoundAtEntity;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.triggerWindBurst;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class EventsStorage {
 
@@ -89,6 +88,7 @@ public class EventsStorage {
         if(!player.onGround())
         {
             triggerWindBurst(player,0.5);
+            grantAdvancement(player,"main/jumpattack");
             amount *= 2;
         }
         BindSystem.giveString(player,amount* stringPerDamage);

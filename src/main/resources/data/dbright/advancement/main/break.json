@@ -1,0 +1,22 @@
+{
+  "parent": "dbright/missed",
+  "display": {
+    "icon": {
+      "id": "minecraft:stone_pickaxe",
+      "count": 1
+    },
+    "title": "breakdown",
+    "description": "gotta have tool redundancy!",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "t": {
+      "trigger": "minecraft:item_durability_changed",
+      "conditions": {
+        "durability": 0
+      }
+    }
+  }
+}

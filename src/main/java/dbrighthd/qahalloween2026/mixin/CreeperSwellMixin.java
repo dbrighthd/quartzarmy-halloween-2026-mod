@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,8 +20,7 @@ import java.util.Objects;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.creeperStartDistance;
 import static dbrighthd.qahalloween2026.mainloop.Config.creeperSuckForce;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.addAndSendMovementIfPlayer;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.playSoundAtEntity;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 @Mixin(Creeper.class)
 public abstract class CreeperSwellMixin {
@@ -59,6 +59,10 @@ public abstract class CreeperSwellMixin {
             List<Entity> nearby = creeper.level().getEntities(creeper, creeper.getBoundingBox().inflate(radius), entity -> entity.distanceToSqr(creeper) <= radius * radius);
             for(Entity entity : nearby)
             {
+                if(entity instanceof ServerPlayer player)
+                {
+                    grantAdvancement(player,"main/creeper");
+                }
                 Vec3 directionToCreeper = creeper.position().subtract(entity.position()).normalize();
                 addAndSendMovementIfPlayer(entity, directionToCreeper.scale(creeperSuckForce), false);
             }

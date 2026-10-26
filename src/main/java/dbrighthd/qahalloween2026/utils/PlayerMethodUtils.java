@@ -1,6 +1,9 @@
 package dbrighthd.qahalloween2026.utils;
 
 import dbrighthd.qahalloween2026.mainloop.Config;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -10,6 +13,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -49,7 +53,23 @@ public class PlayerMethodUtils {
                 new ClientboundSetSubtitleTextPacket(Component.literal("Miss!").withColor(TextColor.RED))
         );
         playSoundAtEntityForPlayer(player, Config.missSound, 100, 2, player);
+        grantAdvancement(player,"main/missed");
     }
+
+    public static void grantAdvancement(ServerPlayer player, String advancement)
+    {
+        String namespace = "dbright"; //listen idc if this is 'bad' it works
+        AdvancementHolder advancementHolder = player.level().getServer().getAdvancements().get(Identifier.fromNamespaceAndPath(namespace, advancement));
+        if (advancementHolder != null) {
+            AdvancementProgress progress = player.getAdvancements()
+                    .getOrStartProgress(advancementHolder);
+
+            for (String criterion : progress.getRemainingCriteria()) {
+                player.getAdvancements().award(advancementHolder, criterion);
+            }
+        }
+    }
+
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntity(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)
     {
         ((ServerLevel)(entity.level())).sendParticles(

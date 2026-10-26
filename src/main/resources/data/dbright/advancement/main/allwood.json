@@ -1,0 +1,160 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:oak_log",
+      "count": 1
+    },
+    "title": "Wood Expert",
+    "description": "Have picked up every overworld log type",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "dbright:main/bow",
+  "criteria": {
+    "oak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "oak_log"
+          }
+        ]
+      }
+    },
+    "birch": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "birch_log"
+          }
+        ]
+      }
+    },
+    "spruce": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "spruce_log"
+          }
+        ]
+      }
+    },
+    "jungle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "jungle_log"
+          }
+        ]
+      }
+    },
+    "acacia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "acacia_log"
+          }
+        ]
+      }
+    },
+    "dark_oak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "dark_oak_log"
+          }
+        ]
+      }
+    },
+    "pale_oak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "pale_oak_log"
+          }
+        ]
+      }
+    },
+    "poplar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "poplar_log"
+          }
+        ]
+      }
+    },
+    "mangrove": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "mangrove_log"
+          }
+        ]
+      }
+    },
+    "cherry": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {},
+        "items": [
+          {
+            "items": "cherry_log"
+          }
+        ]
+      }
+    }
+  },
+
+  "requirements": [
+    [
+      "oak"
+    ],
+    [
+      "birch"
+    ],
+    [
+      "spruce"
+    ],
+    [
+      "jungle"
+    ],
+    [
+      "acacia"
+    ],
+    [
+      "dark_oak"
+    ],
+    [
+      "pale_oak"
+    ],
+    [
+      "cherry"
+    ],
+    [
+      "poplar"
+    ],
+    [
+      "mangrove"
+    ]
+  ]
+}

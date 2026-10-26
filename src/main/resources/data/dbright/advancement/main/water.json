@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:water_bucket",
+      "count": 1
+    },
+    "title": "slippery when wet",
+    "description": "hahaha good luck with traction",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/root",
+  "criteria": {
+    "fort": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:all_of",
+          "terms": {
+            "type": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "dimension": "minecraft:overworld",
+                "fluid": {
+                  "fluids": "#minecraft:water"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

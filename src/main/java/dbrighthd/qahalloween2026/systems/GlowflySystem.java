@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.bindTimeTicks;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
 
 public class GlowflySystem {
@@ -26,9 +27,15 @@ public class GlowflySystem {
         }
         if(glowFlyTicks > 0)
         {
-            particleAtEntity(player, ParticleTypes.FIREFLY,0.1f,0.1f,0.1f,10,100);
-            particleAtEntity(player,new TrailParticleOption(player.position().add(0,1,0), 0xFFFFAA, 10), 1, 1, 1,1, 0);
+            grantAdvancement(player,"main/glowflies");
+            player.setGlowingTag(true);
+            particleAtEntity(player, ParticleTypes.FIREFLY,0.1f,0.1f,0.1f,5,100);
+            particleAtEntity(player,new TrailParticleOption(player.position().add(0,1,0), 0xFFFFAA, 10), 1, 1, 1,2, 0);
             glowFlyTicks--;
+        }
+        else
+        {
+            player.setGlowingTag(false);
         }
         player.setAttached(DataAttachments.GLOWFLY_DATA,new GlowflyData(glowFlyTicks));
     }
