@@ -1,12 +1,16 @@
 package dbrighthd.qahalloween2026.mixin;
 
 import dbrighthd.qahalloween2026.events.EventsStorage;
+import dbrighthd.qahalloween2026.utils.GeneralUtils;
+import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,6 +49,7 @@ public abstract class ProjectileMixin {
             {
                 if(snowball.level().getServer() != null && snowball.level().dimension().equals(Level.OVERWORLD))
                 {
+                    PlayerMethodUtils.playSoundAtEntity(snowball, SoundEvents.END_PORTAL_SPAWN,100,1);
                     BlockPos referencePos = snowball.blockPosition().subtract(new Vec3i(2,0,2));
                     StructureTemplate template = Objects.requireNonNull(snowball.level().getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright","end_portal")).orElse(null);
                     template.placeInWorld((ServerLevel)snowball.level(),referencePos,referencePos,new StructurePlaceSettings(), snowball.level().getRandom(), Block.UPDATE_ALL);
