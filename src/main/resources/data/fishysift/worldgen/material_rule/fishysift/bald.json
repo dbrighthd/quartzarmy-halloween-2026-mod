@@ -27,19 +27,52 @@
         }
       }
     },
+
     {
       "type": "minecraft:condition",
       "if_true": {
         "type": "minecraft:noise_threshold",
         "noise": "fishysift:baldpaths",
-        "min_threshold": -0.05,
-        "max_threshold": 0.05,
+        "min_threshold": -0.04,
+        "max_threshold": 0.04,
         "is_3d": false
       },
       "then_run": {
         "type": "minecraft:block",
         "result_state": {
           "id": "stripped_jungle_wood"
+        }
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:noise_threshold",
+        "noise": "fishysift:baldpaths",
+        "min_threshold": -0.07,
+        "max_threshold": 0.07,
+        "is_3d": false
+      },
+      "then_run": {
+        "type": "minecraft:block",
+        "result_state": {
+          "id": "granite"
+        }
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:noise_threshold",
+        "noise": "fishysift:baldpaths",
+        "min_threshold": -0.09,
+        "max_threshold": 0.09,
+        "is_3d": false
+      },
+      "then_run": {
+        "type": "minecraft:block",
+        "result_state": {
+          "id": "cinnabar"
         }
       }
     },
