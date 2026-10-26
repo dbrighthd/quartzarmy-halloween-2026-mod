@@ -6,6 +6,7 @@ import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
@@ -149,6 +150,13 @@ public class OnEntityLoad {
             if(entity instanceof AbstractSkeleton && !(entity instanceof Skeleton))
             {
                 replaceEntity(level,entity, EntityTypes.SKELETON,1);
+            }
+            if(entity instanceof Skeleton skeleton)
+            {
+                if(skeleton.getMainHandItem().getItem() != Items.BOW)
+                {
+                    skeleton.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.BOW,1));
+                }
             }
             if (entity instanceof Monster monster)
             {
