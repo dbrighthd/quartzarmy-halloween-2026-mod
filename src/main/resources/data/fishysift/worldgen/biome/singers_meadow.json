@@ -5,7 +5,12 @@
         "creature": [
           {
             "weight": 20,
-            "type": "minecraft:silverfish",
+            "type": "minecraft:snow_golem",
+            "count": 4
+          },
+          {
+            "weight": 20,
+            "type": "minecraft:copper_golem",
             "count": 4
           },
           {
