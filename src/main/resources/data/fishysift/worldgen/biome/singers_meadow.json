@@ -5,16 +5,6 @@
         "creature": [
           {
             "weight": 20,
-            "type": "minecraft:snow_golem",
-            "count": 4
-          },
-          {
-            "weight": 20,
-            "type": "minecraft:copper_golem",
-            "count": 4
-          },
-          {
-            "weight": 20,
             "type": "minecraft:sniffer",
             "count": 4
           }
