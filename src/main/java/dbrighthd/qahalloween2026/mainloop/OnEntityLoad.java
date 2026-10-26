@@ -2,50 +2,36 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
-import dbrighthd.qahalloween2026.mixin.PlayerUseItemOnMixin;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
-import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
-import net.minecraft.world.entity.animal.fish.Cod;
-import net.minecraft.world.entity.animal.fish.Salmon;
 import net.minecraft.world.entity.animal.nautilus.Nautilus;
 import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
-import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.illager.Vindicator;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
-import net.minecraft.world.entity.monster.skeleton.Parched;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
-import net.minecraft.world.entity.monster.skeleton.Stray;
 import net.minecraft.world.entity.monster.spider.Spider;
-import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.entity.monster.zombie.Zombie;
-import net.minecraft.world.entity.monster.zombie.ZombieVillager;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
-import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.List;
@@ -100,15 +86,9 @@ public class OnEntityLoad {
                 }
                 else {
                     switch ((level.getRandom().nextInt()) % 3) {
-                        case 1 -> {
-                            replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
-                        }
-                        case 0 -> {
-                            replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
-                        }
-                        default -> {
-                            replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
-                        }
+                        case 1 -> replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
+                        case 0 -> replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
+                        default -> replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
                     }
                 }
             }

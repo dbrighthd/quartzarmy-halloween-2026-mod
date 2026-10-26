@@ -4,16 +4,11 @@ import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.SheepData;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.level.block.PotentSulfurBlock;
-
-import static java.lang.Math.max;
 
 public class SheepSystem {
     public static void sheepTick(ServerPlayer player)

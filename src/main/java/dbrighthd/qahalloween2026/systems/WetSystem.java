@@ -1,14 +1,10 @@
 package dbrighthd.qahalloween2026.systems;
 
-import dbrighthd.qahalloween2026.attachments.BindData;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.WetData;
 import dbrighthd.qahalloween2026.mainloop.Config;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 

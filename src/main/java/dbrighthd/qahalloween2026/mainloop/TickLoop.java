@@ -15,6 +15,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -30,14 +31,12 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
-import net.minecraft.world.entity.animal.fish.Pufferfish;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
-import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -47,141 +46,136 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.phys.Vec3;
 
-import javax.swing.plaf.SpinnerUI;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
-import static dbrighthd.qahalloween2026.mainloop.Config.siftParticleHorDistance;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class TickLoop {
     public static void init()
     {
-        ServerTickEvents.END_LEVEL_TICK.register(TickLoop::tick);
-        ServerTickEvents.END_LEVEL_TICK.register(EventsStorage::refreshAndDoStuff);
+        ServerTickEvents.END_SERVER_TICK.register(TickLoop::tick);
+        ServerTickEvents.END_SERVER_TICK.register(EventsStorage::refreshAndDoStuff);
 
     }
 
 
-    public static void tick(ServerLevel serverLevel)
+    public static void tick(MinecraftServer server)
     {
-        actOneTick(serverLevel);
-    }
-
-    public static void actOneTick(ServerLevel serverLevel)
-    {
-        for(ServerPlayer player : serverLevel.players())
+        for(ServerPlayer player : server.getPlayerList().getPlayers())
         {
-            playerTick(player, serverLevel);
-            stringBar(player);
+            playerTick(player, player.level());
         }
-        for(Entity entity: serverLevel.getAllEntities())
+        for (ServerLevel level : server.getAllLevels()) {
+            for(Entity entity : level.getAllEntities())
+            {
+                entityTick(entity);
+            }
+        }
+
+    }
+
+    public static void entityTick(Entity entity)
+    {
+        ServerLevel level = (ServerLevel)entity.level();
+        if (entity instanceof Axolotl axolotl)
         {
-            if (entity instanceof Axolotl axolotl)
+            axolotlTick(axolotl, level);
+        }
+        if(entity instanceof Chicken chicken)
+        {
+            chickenTick(chicken,level);
+        }
+        if(entity instanceof Phantom phantom)
+        {
+            phantom.setRemainingFireTicks(-10);
+        }
+        if(entity instanceof ExperienceOrb)
+        {
+            entity.kill(level);
+        }
+        if(entity instanceof Zombie zombie)
+        {
+            zombieTick(zombie, level);
+        }
+        if(entity instanceof Enderman enderman)
+        {
+            endermanTick(enderman, level);
+        }
+        if(entity instanceof Boat boat)
+        {
+            boat.setDeltaMovement(0,1,0);
+        }
+        if(entity instanceof Sheep sheep)
+        {
+            sheep.setHealth(100);
+        }
+        if (entity instanceof Arrow arrow)
+        {
+            TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
+            Entity target = level.getEntity(arrowData.target());
+            if(!arrowData.playerOwned())
             {
-                axolotlTick(axolotl, serverLevel);
-            }
-            if(entity instanceof Chicken chicken)
-            {
-                chickenTick(chicken,serverLevel);
-            }
-            if(entity instanceof Phantom phantom)
-            {
-                phantom.setRemainingFireTicks(-10);
-            }
-            if(entity instanceof ExperienceOrb)
-            {
-                entity.kill(serverLevel);
-            }
-            if(entity instanceof  Zombie zombie)
-            {
-                if(!(zombie.level().dimension() == Level.NETHER))
+                if(arrow.tickCount > Config.arrowBurst)
                 {
-                    zombieTick(zombie, serverLevel);
+                    arrow.setBaseDamage(20);
                 }
-            }
-            if(entity instanceof  Enderman enderman)
-            {
-                endermanTick(enderman, serverLevel);
-            }
-            if(entity instanceof Boat boat)
-            {
-                boat.setDeltaMovement(0,1,0);
-            }
-            if(entity instanceof Sheep sheep)
-            {
-                sheep.setHealth(100);
-            }
-            if (entity instanceof Arrow arrow)
-            {
-                TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
-                Entity target = serverLevel.getEntity(arrowData.target());
-                if(!arrowData.playerOwned())
+                if (target != null && arrow.tickCount <= Config.arrowTrackTime)
                 {
-                    if(arrow.tickCount > Config.arrowBurst)
-                    {
-                        arrow.setBaseDamage(20);
-                    }
-                    if (target != null && arrow.tickCount <= Config.arrowTrackTime)
-                    {
 
-                        Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
+                    Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
 
-                        Vec3 direction = targetPos.subtract(arrow.position()).normalize();
+                    Vec3 direction = targetPos.subtract(arrow.position()).normalize();
 
-                        arrow.setDeltaMovement(direction.scale(arrow.tickCount >= Config.arrowBurst ? Config.arrowSpeed : Config.arrowBurstSpeed));
-                        particleAtEntity(arrow,new TrailParticleOption(target.position().add(0,1,0), 0xFF0000, 10), 0f, 0f, 0f,10, 0);
+                    arrow.setDeltaMovement(direction.scale(arrow.tickCount >= Config.arrowBurst ? Config.arrowSpeed : Config.arrowBurstSpeed));
+                    particleAtEntity(arrow,new TrailParticleOption(target.position().add(0,1,0), 0xFF0000, 10), 0f, 0f, 0f,10, 0);
 
 
-                    }
-                    if(arrow.tickCount > Config.arrowLifeTime)
-                    {
-                        arrow.kill(serverLevel);
-                    }
-                    sendPacketToAllPlayers(serverLevel, new ClientboundSetEntityMotionPacket(arrow));
-                    PositionMoveRotation change = new PositionMoveRotation(arrow.position(), arrow.getDeltaMovement(), arrow.getYRot(), arrow.getXRot());
-                    ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(arrow.getId(), change, Set.of(), arrow.onGround());
-                    sendPacketToAllPlayers(serverLevel, teleportPacket);
                 }
-
-
-            }
-            if (entity instanceof BreezeWindCharge breezeWindCharge)
-            {
-                TargetData arrowData = breezeWindCharge.getAttachedOrCreate(DataAttachments.TARGET_DATA);
-                Entity target = serverLevel.getEntity(arrowData.target());
-                if(!arrowData.playerOwned())
+                if(arrow.tickCount > Config.arrowLifeTime)
                 {
-                    if (target != null && breezeWindCharge.tickCount <= Config.arrowTrackTime)
-                    {
-
-                        Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
-
-                        Vec3 direction = targetPos.subtract(breezeWindCharge.position()).normalize();
-
-                        breezeWindCharge.setDeltaMovement(direction.scale(breezeWindCharge.tickCount >= Config.arrowBurst ? Config.arrowSpeed * 2 : Config.arrowBurstSpeed));
-                        particleAtEntity(breezeWindCharge,new TrailParticleOption(target.position().add(0,1,0), 0x0000FF, 10), 0f, 0f, 0f,10, 0);
-
-
-                    }
-                    if(breezeWindCharge.tickCount > Config.arrowLifeTime)
-                    {
-                        breezeWindCharge.kill(serverLevel);
-                    }
-                    sendPacketToAllPlayers(serverLevel, new ClientboundSetEntityMotionPacket(breezeWindCharge));
-                    PositionMoveRotation change = new PositionMoveRotation(breezeWindCharge.position(), breezeWindCharge.getDeltaMovement(), breezeWindCharge.getYRot(), breezeWindCharge.getXRot());
-                    ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(breezeWindCharge.getId(), change, Set.of(), breezeWindCharge.onGround());
-                    sendPacketToAllPlayers(serverLevel, teleportPacket);
+                    arrow.kill(level);
                 }
+                sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(arrow));
+                PositionMoveRotation change = new PositionMoveRotation(arrow.position(), arrow.getDeltaMovement(), arrow.getYRot(), arrow.getXRot());
+                ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(arrow.getId(), change, Set.of(), arrow.onGround());
+                sendPacketToAllPlayers(level, teleportPacket);
+            }
 
 
+        }
+        if (entity instanceof BreezeWindCharge breezeWindCharge)
+        {
+            TargetData arrowData = breezeWindCharge.getAttachedOrCreate(DataAttachments.TARGET_DATA);
+            Entity target = level.getEntity(arrowData.target());
+            if(!arrowData.playerOwned())
+            {
+                if (target != null && breezeWindCharge.tickCount <= Config.arrowTrackTime)
+                {
+
+                    Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
+
+                    Vec3 direction = targetPos.subtract(breezeWindCharge.position()).normalize();
+
+                    breezeWindCharge.setDeltaMovement(direction.scale(breezeWindCharge.tickCount >= Config.arrowBurst ? Config.arrowSpeed * 2 : Config.arrowBurstSpeed));
+                    particleAtEntity(breezeWindCharge,new TrailParticleOption(target.position().add(0,1,0), 0x0000FF, 10), 0f, 0f, 0f,10, 0);
+
+
+                }
+                if(breezeWindCharge.tickCount > Config.arrowLifeTime)
+                {
+                    breezeWindCharge.kill(level);
+                }
+                sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(breezeWindCharge));
+                PositionMoveRotation change = new PositionMoveRotation(breezeWindCharge.position(), breezeWindCharge.getDeltaMovement(), breezeWindCharge.getYRot(), breezeWindCharge.getXRot());
+                ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(breezeWindCharge.getId(), change, Set.of(), breezeWindCharge.onGround());
+                sendPacketToAllPlayers(level, teleportPacket);
             }
         }
     }
-
     public static void stringBar(ServerPlayer player)
     {
         float progress = (player.getInventory().countItem(Items.STRING)% stringRequiredForBind)/(float) stringRequiredForBind;
@@ -227,35 +221,26 @@ public class TickLoop {
             }
         }
 
-        if (player.level().dimension().equals(Level.NETHER)
-                && player.level() instanceof ServerLevel level
-                && level.getGameTime() % Config.siftParticleTickMod == 0) {
-
+        if (player.level().dimension().equals(Level.NETHER) && player.level() instanceof ServerLevel level && level.getGameTime() % Config.siftParticleTickMod == 0)
+        {
             RandomSource random = level.getRandom();
             BlockPos playerPos = player.blockPosition();
 
             for (int i = 0; i < Config.siftParticleAmount; i++) {
                 int x = playerPos.getX() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
                 int z = playerPos.getZ() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
-                for (int y = playerPos.getY() + Config.siftParticleVertDistance; y >= playerPos.getY() - Config.siftParticleVertDistance; y--) {
+                for (int y = playerPos.getY() + Config.siftParticleVertDistance; y >= playerPos.getY() - Config.siftParticleVertDistance; y--)
+                {
                     BlockPos pos = new BlockPos(x, y, z);
-                    if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir()) {
-                        level.sendParticles(
-                                player,
-                                ParticleTypes.SCULK_SOUL,
-                                false,
-                                true,
-                                x, y + 1.02, z,
-                                3,
-                                0.5, 0, 0.5,
-                                0
-                        );
+                    if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir())
+                    {
+                        level.sendParticles(player, ParticleTypes.SCULK_SOUL, false, true, x, y + 1.02, z, 3, 0.5, 0, 0.5, 0);
                         break;
                     }
                 }
             }
         }
-
+        stringBar(player);
     }
 
     public static void lookAtSun(ServerPlayer player)
@@ -272,7 +257,7 @@ public class TickLoop {
 
     public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
     {
-        ServerPlayer player = (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(20).selector((p,l) -> GlowflySystem.isPlayerInfected(p)), axolotl);
+        ServerPlayer player = (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(20).selector((p,_) -> GlowflySystem.isPlayerInfected(p)), axolotl);
         if (player != null) {axolotl.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, player);}
         if(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent() && !GlowflySystem.isPlayerInfected(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()))
         {

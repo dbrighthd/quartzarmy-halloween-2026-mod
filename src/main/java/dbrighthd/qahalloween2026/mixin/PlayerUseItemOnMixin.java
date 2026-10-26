@@ -101,8 +101,6 @@ public class PlayerUseItemOnMixin {
         {
             return intended;
         }
-        BlockPos out =  candidates.get(player.level().getRandom().nextInt(candidates.size()));
-        System.out.println(out);
-        return out;
+        return candidates.get(player.level().getRandom().nextInt(candidates.size()));
     }
 }

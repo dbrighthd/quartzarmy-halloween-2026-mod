@@ -4,12 +4,10 @@ import dbrighthd.qahalloween2026.mainloop.Config;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.sheep.Sheep;
@@ -18,27 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static dbrighthd.qahalloween2026.mainloop.Config.placeMissChance;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringPerDamage;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.playSoundAtEntity;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.triggerWindBurst;
 
 public class EventsStorage {
 
-    public record AttackInfo(Entity entity, int hurtAmount){};
+    public record AttackInfo(Entity entity, int hurtAmount){}
     public static Map<UUID,Integer> hurtThisTick = new HashMap<>();
     public static Map<UUID,AttackInfo> attackedThisTick = new HashMap<>();
-    public static void refreshAndDoStuff(ServerLevel serverLevel)
+    public static void refreshAndDoStuff(MinecraftServer server)
     {
-        refreshHurtPlayers(serverLevel);
-        refreshAttackedPlayers(serverLevel);
+        refreshHurtPlayers(server);
+        refreshAttackedPlayers(server);
     }
 
-    public static void refreshHurtPlayers(ServerLevel serverLevel)
+    public static void refreshHurtPlayers(MinecraftServer server)
     {
         for(UUID uuid : hurtThisTick.keySet())
         {
-            ServerPlayer player = (ServerPlayer)serverLevel.getPlayerByUUID(uuid);
+            ServerPlayer player = server.getPlayerList().getPlayer(uuid);
             if(player == null)
             {
                 continue;
@@ -48,11 +45,11 @@ public class EventsStorage {
         hurtThisTick.clear();
     }
 
-    public static void refreshAttackedPlayers(ServerLevel serverLevel)
+    public static void refreshAttackedPlayers(MinecraftServer server)
     {
         for(var pair : attackedThisTick.entrySet())
         {
-            ServerPlayer player = (ServerPlayer)serverLevel.getPlayerByUUID(pair.getKey());
+            ServerPlayer player = server.getPlayerList().getPlayer(pair.getKey());
             AttackInfo attackInfo = pair.getValue();
            handleAttack(player,attackInfo.hurtAmount());
            handleHurt(player,attackInfo);

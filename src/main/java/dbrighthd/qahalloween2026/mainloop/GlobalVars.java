@@ -1,11 +1,8 @@
 package dbrighthd.qahalloween2026.mainloop;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerScoreboard;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.scores.PlayerTeam;
-import net.minecraft.world.scores.Team;
 
 public class GlobalVars {
 

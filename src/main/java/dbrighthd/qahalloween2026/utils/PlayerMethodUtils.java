@@ -19,7 +19,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.core.jmx.Server;
 
 public class PlayerMethodUtils {
 

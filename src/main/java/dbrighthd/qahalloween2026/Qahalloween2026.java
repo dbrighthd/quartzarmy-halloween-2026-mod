@@ -6,7 +6,6 @@ import dbrighthd.qahalloween2026.mainloop.Setup;
 import dbrighthd.qahalloween2026.mainloop.TickLoop;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.world.level.gamerules.GameRules;
 
 public class Qahalloween2026 implements ModInitializer {
 
