@@ -1,0 +1,14 @@
+{
+    "structures":[
+        {
+            "weight":1,
+            "structure":"fishysift:comedy_prop"
+        }
+    ],
+    "placement":{
+        "type":"minecraft:random_spread",
+        "separation": 7,
+        "spacing": 25,
+        "salt": 23928745
+    }
+}
