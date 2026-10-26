@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:ore",
+  "discard_chance_on_air_exposure": 1,
+  "size": 14,
+  "targets": [
+    {
+      "state": "minecraft:nether_quartz_ore",
+      "target": {
+        "block": "minecraft:red_terracotta",
+        "predicate_type": "minecraft:block_match"
+      }
+    }
+  ]
+}

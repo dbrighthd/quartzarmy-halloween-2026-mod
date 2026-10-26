@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 3,
+              "min": 1
+            }
+          },
+          "name": "minecraft:echo_shard"
+        }
+      ],
+      "rolls": 1,
+      "modifier": {
+        "type": "minecraft:set_components",
+        "components": {
+          "minecraft:item_name": "Ender",
+          "minecraft:enchantment_glint_override": true
+        }
+      }
+    }
+  ],
+  "random_sequence": "minecraft:entities/ravager"
+}

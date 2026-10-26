@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:quartz",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "ender_pearl",
+    "components": {}
+  }
+}
