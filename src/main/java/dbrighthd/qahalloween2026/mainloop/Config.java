@@ -40,6 +40,10 @@ public class Config {
     public static int siftParticleVertDistance = 6;
     public static int siftParticleTickMod = 4;
 
+    public static int ichorDamageAmount = 2;
+    public  static  int ichorTickMod = 30;
+    public  static  int ichorTickModInIchor = 10;
+
     public static int arrowInterval = 15;
 
     public static SoundEvent missSound = SoundEvents.PLAYER_BREATH;

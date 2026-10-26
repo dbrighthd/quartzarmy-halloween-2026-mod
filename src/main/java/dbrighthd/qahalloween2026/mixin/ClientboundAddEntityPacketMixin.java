@@ -6,9 +6,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Vex;
+import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.illager.Evoker;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
@@ -47,6 +50,12 @@ public abstract class ClientboundAddEntityPacketMixin {
         }
         if (entity instanceof Axolotl) {
             this.type = EntityTypes.SALMON;
+        }
+        if (entity instanceof Ravager) {
+            this.type = EntityTypes.SNIFFER;
+        }
+        if (entity instanceof Breeze) {
+            this.type = EntityTypes.STRIDER;
         }
     }
 }

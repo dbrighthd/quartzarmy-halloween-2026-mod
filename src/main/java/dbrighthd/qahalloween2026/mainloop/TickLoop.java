@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -29,19 +30,24 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.fish.Pufferfish;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.phys.Vec3;
 
+import javax.swing.plaf.SpinnerUI;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
@@ -143,6 +149,36 @@ public class TickLoop {
 
 
             }
+            if (entity instanceof BreezeWindCharge breezeWindCharge)
+            {
+                TargetData arrowData = breezeWindCharge.getAttachedOrCreate(DataAttachments.TARGET_DATA);
+                Entity target = serverLevel.getEntity(arrowData.target());
+                if(!arrowData.playerOwned())
+                {
+                    if (target != null && breezeWindCharge.tickCount <= Config.arrowTrackTime)
+                    {
+
+                        Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
+
+                        Vec3 direction = targetPos.subtract(breezeWindCharge.position()).normalize();
+
+                        breezeWindCharge.setDeltaMovement(direction.scale(breezeWindCharge.tickCount >= Config.arrowBurst ? Config.arrowSpeed * 2 : Config.arrowBurstSpeed));
+                        particleAtEntity(breezeWindCharge,new TrailParticleOption(target.position().add(0,1,0), 0x0000FF, 10), 0f, 0f, 0f,10, 0);
+
+
+                    }
+                    if(breezeWindCharge.tickCount > Config.arrowLifeTime)
+                    {
+                        breezeWindCharge.kill(serverLevel);
+                    }
+                    sendPacketToAllPlayers(serverLevel, new ClientboundSetEntityMotionPacket(breezeWindCharge));
+                    PositionMoveRotation change = new PositionMoveRotation(breezeWindCharge.position(), breezeWindCharge.getDeltaMovement(), breezeWindCharge.getYRot(), breezeWindCharge.getXRot());
+                    ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(breezeWindCharge.getId(), change, Set.of(), breezeWindCharge.onGround());
+                    sendPacketToAllPlayers(serverLevel, teleportPacket);
+                }
+
+
+            }
         }
     }
 
@@ -206,7 +242,7 @@ public class TickLoop {
                     if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir()) {
                         level.sendParticles(
                                 player,
-                                ParticleTypes.SOUL,
+                                ParticleTypes.SCULK_SOUL,
                                 false,
                                 true,
                                 x, y + 1.02, z,
@@ -257,10 +293,12 @@ public class TickLoop {
         }
     }
 
+
+
     public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
     {
         Vec3 belowBlock = zombie.position().subtract(0,1,0);
-        boolean clutch = (zombie.fallDistance >= 4);
+        boolean clutch = (zombie.fallDistance >= 2);
         boolean inDanger = false;
 
         if(serverLevel.getNearestPlayer(zombie,5) != null)
@@ -280,15 +318,18 @@ public class TickLoop {
         if(!zombie.onGround() && zombie.getDeltaMovement().y <= 0 && !serverLevel.getBlockState(BlockPos.containing(belowBlock.subtract(0,1,0))).canBeReplaced()  && serverLevel.getBlockState(BlockPos.containing(belowBlock)).canBeReplaced()) {
             if(clutch)
             {
-                serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.WATER.defaultBlockState());
+                playSoundAtEntity(zombie, SoundEvents.BUCKET_EMPTY,1,1);
+                serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, 15));
             }
             else
             {
+                playSoundAtEntity(zombie, SoundEvents.WOOD_PLACE,1,1);
                 serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.OAK_PLANKS.defaultBlockState());
 
             }
             zombie.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT);
         }
+
     }
 
     public static void hideEntityFromPlayer(ServerPlayer player, Entity targetEntity) {

@@ -7,10 +7,7 @@ import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
@@ -25,11 +22,11 @@ import net.minecraft.world.entity.animal.nautilus.Nautilus;
 import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.illager.Vindicator;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Parched;
@@ -42,9 +39,14 @@ import net.minecraft.world.entity.monster.zombie.ZombieVillager;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomModelData;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.List;
 import java.util.UUID;
@@ -75,13 +77,58 @@ public class OnEntityLoad {
                 vindicator.setSilent(true);
                 vindicator.setPersistenceRequired();
             }
+            if(entity instanceof Ravager ravager)
+            {
+                ravager.setSilent(true);
+                ravager.setPersistenceRequired();
+                var damageAttribute = ravager.getAttribute(Attributes.ATTACK_DAMAGE);
+                if(damageAttribute != null)
+                {
+                    damageAttribute.setBaseValue(1);
+                }
+            }
+            if(entity instanceof Silverfish silverfish)
+            {
+                silverfish.setSilent(true);
+                silverfish.setPersistenceRequired();
+            }
+            if(entity instanceof Sniffer sniffer)
+            {
+                if(level.getFluidState(sniffer.blockPosition().below()).is(Fluids.WATER))
+                {
+                    sniffer.discard();
+                }
+                else {
+                    switch ((level.getRandom().nextInt()) % 3) {
+                        case 1 -> {
+                            replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
+                        }
+                        case 0 -> {
+                            replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
+                        }
+                        default -> {
+                            replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
+                        }
+                    }
+                }
+            }
             if(entity instanceof Villager villager)
             {
                 replaceEntity(level,villager, EntityTypes.VINDICATOR,1);
             }
             if(entity instanceof AbstractFish fih)
             {
-                replaceEntity(level,fih, EntityTypes.AXOLOTL,1);
+                if(!(level.dimension() == Level.NETHER))
+                {
+                    replaceEntity(level,fih, EntityTypes.AXOLOTL,1);
+                }
+            }
+            if(entity instanceof Enderman enderman)
+            {
+                if(!(level.dimension() == Level.END))
+                {
+                    replaceEntity(level,enderman, EntityTypes.CREEPER,1);
+                }
             }
             if(entity instanceof Squid squid)
             {
@@ -170,6 +217,29 @@ public class OnEntityLoad {
                     }
                 }
                 arrow.setBaseDamage(0);
+            }
+            if (entity instanceof BreezeWindCharge windCharge) {
+                windCharge.setDeltaMovement(windCharge.getDeltaMovement().normalize().scale(Config.arrowSpeed));
+
+                Entity owner = windCharge.getOwner();
+                if (owner instanceof Mob mob) {
+                    windCharge.setNoGravity(true);
+                    Entity target = mob.getTarget();
+                    if (target != null) {
+                        UUID targetUUID = target.getUUID();
+                        windCharge.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID, false));
+                    }
+                }
+                else
+                {
+                    if(owner instanceof Player && !windCharge.hasAttached(DataAttachments.TARGET_DATA))
+                    {
+                        PlayerMethodUtils.addAndSendMovementIfPlayer(owner,windCharge.getDeltaMovement().scale(-20),false);
+                        windCharge.setDeltaMovement(0,0,0);
+                        windCharge.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0,1), true));
+                        windCharge.setOwner(windCharge);
+                    }
+                }
             }
             if (entity instanceof Skeleton skeleton) {
                 skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.CARVED_PUMPKIN));
