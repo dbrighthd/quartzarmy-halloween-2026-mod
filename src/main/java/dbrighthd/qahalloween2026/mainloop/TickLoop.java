@@ -13,12 +13,13 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
-import net.minecraft.data.worldgen.DimensionTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -32,17 +33,13 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.zombie.Zombie;
-import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
 import java.nio.charset.StandardCharsets;
@@ -50,7 +47,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
-import static dbrighthd.qahalloween2026.mainloop.Config.bindTimeTicks;
+import static dbrighthd.qahalloween2026.mainloop.Config.siftParticleHorDistance;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
@@ -72,7 +69,7 @@ public class TickLoop {
     {
         for(ServerPlayer player : serverLevel.players())
         {
-            actOnePlayerTick(player, serverLevel);
+            playerTick(player, serverLevel);
             stringBar(player);
         }
         for(Entity entity: serverLevel.getAllEntities())
@@ -95,7 +92,10 @@ public class TickLoop {
             }
             if(entity instanceof  Zombie zombie)
             {
-                zombieTick(zombie, serverLevel);
+                if(!(zombie.level().dimension() == Level.NETHER))
+                {
+                    zombieTick(zombie, serverLevel);
+                }
             }
             if(entity instanceof  Enderman enderman)
             {
@@ -158,7 +158,7 @@ public class TickLoop {
         );
     }
 
-    public static void actOnePlayerTick(ServerPlayer player, ServerLevel serverLevel)
+    public static void playerTick(ServerPlayer player, ServerLevel serverLevel)
     {
         player.getFoodData().setFoodLevel(20);
         player.getFoodData().setSaturation(20.0f);
@@ -190,6 +190,36 @@ public class TickLoop {
                 }
             }
         }
+
+        if (player.level().dimension().equals(Level.NETHER)
+                && player.level() instanceof ServerLevel level
+                && level.getGameTime() % Config.siftParticleTickMod == 0) {
+
+            RandomSource random = level.getRandom();
+            BlockPos playerPos = player.blockPosition();
+
+            for (int i = 0; i < Config.siftParticleAmount; i++) {
+                int x = playerPos.getX() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
+                int z = playerPos.getZ() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
+                for (int y = playerPos.getY() + Config.siftParticleVertDistance; y >= playerPos.getY() - Config.siftParticleVertDistance; y--) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir()) {
+                        level.sendParticles(
+                                player,
+                                ParticleTypes.SOUL,
+                                false,
+                                true,
+                                x, y + 1.02, z,
+                                3,
+                                0.5, 0, 0.5,
+                                0
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     public static void lookAtSun(ServerPlayer player)

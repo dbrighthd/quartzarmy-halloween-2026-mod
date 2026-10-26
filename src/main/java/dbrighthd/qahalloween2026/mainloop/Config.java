@@ -35,6 +35,11 @@ public class Config {
 
     public static int glowFlyTicks = 400;
 
+    public static int siftParticleAmount = 6;
+    public static int siftParticleHorDistance = 12;
+    public static int siftParticleVertDistance = 6;
+    public static int siftParticleTickMod = 4;
+
     public static int arrowInterval = 15;
 
     public static SoundEvent missSound = SoundEvents.PLAYER_BREATH;
