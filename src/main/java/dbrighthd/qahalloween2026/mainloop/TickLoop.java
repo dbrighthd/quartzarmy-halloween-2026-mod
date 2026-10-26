@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
@@ -262,22 +263,8 @@ public class TickLoop {
 
         if (player.level().dimension().equals(Level.NETHER) && player.level() instanceof ServerLevel level && level.getGameTime() % Config.siftParticleTickMod == 0)
         {
-            RandomSource random = level.getRandom();
-            BlockPos playerPos = player.blockPosition();
-
-            for (int i = 0; i < Config.siftParticleAmount; i++) {
-                int x = playerPos.getX() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
-                int z = playerPos.getZ() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
-                for (int y = playerPos.getY() + Config.siftParticleVertDistance; y >= playerPos.getY() - Config.siftParticleVertDistance; y--)
-                {
-                    BlockPos pos = new BlockPos(x, y, z);
-                    if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir())
-                    {
-                        level.sendParticles(player, ParticleTypes.SCULK_SOUL, false, true, x, y + 1.02, z, 3, 0.5, 0, 0.5, 0);
-                        break;
-                    }
-                }
-            }
+            SiftParticles(level,player,ParticleTypes.SCULK_SOUL,1.02,0);
+            SiftParticles(level,player,ParticleTypes.END_ROD,0.5,0.25);
         }
         stringBar(player);
     }
@@ -293,6 +280,26 @@ public class TickLoop {
 
         }
 
+    }
+
+    public static <T extends net.minecraft.core.particles.ParticleOptions> void SiftParticles(ServerLevel level, ServerPlayer player, T particleType, double aboveBelow, double dy)
+    {
+        RandomSource random = level.getRandom();
+        BlockPos playerPos = player.blockPosition();
+
+        for (int i = 0; i < Config.siftParticleAmount; i++) {
+            int x = playerPos.getX() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
+            int z = playerPos.getZ() + random.nextInt(Config.siftParticleHorDistance*2) - Config.siftParticleHorDistance;
+            for (int y = playerPos.getY() + Config.siftParticleVertDistance; y >= playerPos.getY() - Config.siftParticleVertDistance; y--)
+            {
+                BlockPos pos = new BlockPos(x, y, z);
+                if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir())
+                {
+                    level.sendParticles(player, particleType, false, true, x+0.5, y + aboveBelow, z+0.5, 3, 0.25, dy, 0.25, 0);
+                    break;
+                }
+            }
+        }
     }
 
     public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
