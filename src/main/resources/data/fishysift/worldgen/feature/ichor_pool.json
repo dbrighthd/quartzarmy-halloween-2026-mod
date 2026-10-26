@@ -9,6 +9,9 @@
   "can_replace_with_air_or_fluid": {
     "type": "minecraft:matching_blocks",
     "blocks": [
+      "minecraft:cinnabar",
+      "minecraft:granite",
+      "minecraft:stripped_jungle_wood",
       "minecraft:red_terracotta",
       "minecraft:air",
       "minecraft:water"
@@ -17,6 +20,9 @@
   "can_replace_with_barrier": {
       "type": "minecraft:matching_blocks",
       "blocks": [
+      "minecraft:cinnabar",
+      "minecraft:granite",
+        "minecraft:stripped_jungle_wood",
         "minecraft:red_terracotta",
         "minecraft:air",
         "minecraft:water"
