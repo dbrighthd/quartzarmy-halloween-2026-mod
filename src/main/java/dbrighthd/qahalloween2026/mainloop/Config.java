@@ -45,7 +45,7 @@ public class Config {
     public static int siftParticleAmount = 6;
     public static int siftParticleHorDistance = 24;
     public static int siftParticleVertDistance = 12;
-    public static int siftParticleTickMod = 4;
+    public static int siftParticleTickMod = 1;
 
     public static int ichorDamageAmount = 2;
     public  static  int ichorTickMod = 30;

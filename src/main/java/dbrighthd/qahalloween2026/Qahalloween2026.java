@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026;
 
+import dbrighthd.qahalloween2026.commands.EndFightCommand;
 import dbrighthd.qahalloween2026.mainloop.GlobalVars;
 import dbrighthd.qahalloween2026.mainloop.OnEntityLoad;
 import dbrighthd.qahalloween2026.mainloop.Setup;
@@ -16,5 +17,6 @@ public class Qahalloween2026 implements ModInitializer {
         OnEntityLoad.init();
         TickLoop.init();
         GlobalVars.init();
+        EndFightCommand.register();
     }
 }
