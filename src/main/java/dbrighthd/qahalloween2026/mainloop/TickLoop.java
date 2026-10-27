@@ -60,6 +60,8 @@ import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
+import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
+import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
@@ -121,6 +123,7 @@ public class TickLoop {
             if(fight != null && fight.dragonUUID() != null)
             {
                 fight.setDragonKilled(dragon);
+                spawnBoss(level);
                 dragon.discard();
             }
         }
@@ -138,7 +141,11 @@ public class TickLoop {
         }
         if(entity instanceof Enderman enderman)
         {
-            endermanTick(enderman, level);
+            if(level.dimension() == Level.END)
+            {
+
+                endermanTick(enderman, level);
+            }
         }
         if(entity instanceof Boat boat)
         {
@@ -328,7 +335,7 @@ public class TickLoop {
 
     public static void endermanTick(Enderman enderman, ServerLevel serverLevel)
     {
-        particleAtEntityOffset(enderman, new Vec3(0,1.5,0), ParticleTypes.SOUL,0.25f,1f,0.25f,5,0);
+        endFightTick(enderman);
     }
 
 
