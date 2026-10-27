@@ -1,7 +1,7 @@
 {
   "type": "minecraft:sequence",
   "sequence": [
-    "minecraft:bedrock_floor",
+    "fishysift:fishysift/fall_ig_idk",
     {
       "type": "minecraft:condition",
       "if_true": {
@@ -9,6 +9,6 @@
       },
       "then_run": "fishysift:fishysift/bald"
     },
-    "minecraft:overworld/underground"
+    "fishysift:fishysift/bald_crotch"
   ]
 }

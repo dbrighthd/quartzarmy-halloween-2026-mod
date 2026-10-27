@@ -1,0 +1,14 @@
+{
+    "structures":[
+        {
+            "weight":1,
+            "structure":"fishysift:big_sift_tree"
+        }
+    ],
+    "placement":{
+        "type":"minecraft:random_spread",
+        "separation": 0,
+        "spacing": 5,
+        "salt": 8280645
+    }
+}

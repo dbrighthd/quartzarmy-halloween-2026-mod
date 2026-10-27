@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": [
+    "fishysift:singers_meadow",
+    "fishysift:singers_meadow_1",
+    "fishysift:singers_meadow_2"
+  ],
+  "terrain_adaptation": "beard_thin",
+  "max_distance_from_center": 80,
+  "size": 1,
+  "step": "top_layer_modification",
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "start_height": {
+    "absolute": -2
+  },
+  "spawn_overrides": {},
+  "use_expansion_hack": false,
+  "start_pool": "fishysift:big_sift_tree"
+}
