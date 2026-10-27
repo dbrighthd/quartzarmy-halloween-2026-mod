@@ -1,14 +1,18 @@
 {
-    "structures":[
-        {
-            "weight":1,
-            "structure":"fishysift:big_sift_tree"
-        }
-    ],
-    "placement":{
-        "type":"minecraft:random_spread",
-        "separation": 0,
-        "spacing": 5,
-        "salt": 8280645
+  "structures": [
+    {
+      "weight": 1,
+      "structure": "fishysift:big_sift_tree"
     }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "exclusion_zone": {
+      "other_set": "fishysift:big_arch",
+      "chunk_count": 1
+    },
+    "separation": 0,
+    "spacing": 5,
+    "salt": 8280645
+  }
 }
