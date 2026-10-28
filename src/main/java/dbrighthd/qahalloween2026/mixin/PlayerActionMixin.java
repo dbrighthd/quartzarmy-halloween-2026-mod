@@ -10,6 +10,8 @@ import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.informMiss;
 @Mixin(ServerGamePacketListenerImpl.class)
 public class PlayerActionMixin {
@@ -51,8 +54,12 @@ public class PlayerActionMixin {
 
         ServerPlayerGameMode gameMode = player.gameMode;
         BlockState state = player.level().getBlockState(original);
-
+        if(player.level().getBlockState(target).is(Blocks.BEDROCK))
+        {
+            grantAdvancement(player,"challenges/bedrock");
+        }
         gameMode.destroyBlock(target);
+
         informMiss(player);
         player.connection.send(new ClientboundBlockUpdatePacket(original, state));
         player.connection.send(new ClientboundBlockDestructionPacket(player.getId(), original, -1));

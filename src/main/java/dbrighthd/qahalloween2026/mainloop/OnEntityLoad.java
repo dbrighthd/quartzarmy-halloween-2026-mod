@@ -1,10 +1,12 @@
 package dbrighthd.qahalloween2026.mainloop;
 
+import com.mojang.datafixers.optics.Wander;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
@@ -32,12 +34,16 @@ import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomModelData;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.level.levelgen.feature.EndSpikeFeature;
@@ -81,6 +87,19 @@ public class OnEntityLoad {
                 case Silverfish silverfish -> {
                     silverfish.setSilent(true);
                     silverfish.setPersistenceRequired();
+                }
+                case WanderingTrader trader -> {
+                    trader.setCustomName(Component.literal("This is a vintage comedy prop..."));
+                    MerchantOffers offers = trader.getOffers();
+                    offers.clear();
+                    offers.add(new MerchantOffer(
+                            new ItemCost(Items.LEAF_LITTER, 64),
+                            new ItemStack(Items.GOLD_INGOT),
+                            1000000,
+                            0,
+                            0
+                    ));
+                    trader.setPermanentlyInvulnerable(true);
                 }
                 case Axolotl axolotl -> axolotl.setSilent(true);
                 case Sniffer sniffer -> {

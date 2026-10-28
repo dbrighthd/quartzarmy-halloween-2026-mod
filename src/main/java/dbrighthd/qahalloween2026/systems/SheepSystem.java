@@ -10,6 +10,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
+import javax.print.attribute.standard.Severity;
+
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 
 public class SheepSystem {
@@ -22,6 +24,7 @@ public class SheepSystem {
         SheepData data = player.getAttachedOrCreate(DataAttachments.SHEEP_DATA);
         int sheepCooldown = data.sheepCooldown();
         int sheepCount = data.sheepCount();
+        int asleepTime = data.asleepTime();
         if(sheepCooldown > 0)
         {
             sheepCooldown--;
@@ -35,18 +38,23 @@ public class SheepSystem {
         {
             player.addEffect( new MobEffectInstance(MobEffects.SLOWNESS, Config.sleepTime, 100));
             player.addEffect( new MobEffectInstance(MobEffects.WEAKNESS, Config.sleepTime, 100));
+            asleepTime = Config.sleepTime;
             sheepCount = 0;
             grantAdvancement(player,"main/sheepsleep");
 
         }
-        player.setAttached(DataAttachments.SHEEP_DATA,new SheepData(sheepCount, sheepCooldown));
+        if(asleepTime > 0)
+        {
+            asleepTime--;
+        }
+        player.setAttached(DataAttachments.SHEEP_DATA,new SheepData(sheepCount, sheepCooldown,asleepTime));
     }
 
     public static void addSheepToPlayer(ServerPlayer player)
     {
         SheepData data = player.getAttachedOrCreate(DataAttachments.SHEEP_DATA);
         int sheepCount = data.sheepCount()+1;
-        player.setAttached(DataAttachments.SHEEP_DATA,new SheepData(sheepCount, Config.sheepCooldownMax));
+        player.setAttached(DataAttachments.SHEEP_DATA,new SheepData(sheepCount, Config.sheepCooldownMax,data.asleepTime()));
 
         player.connection.send(
                 new ClientboundSetSubtitleTextPacket(Component.empty())
@@ -55,5 +63,10 @@ public class SheepSystem {
                 new ClientboundSetTitleTextPacket(Component.literal(sheepCount+""))
         );
 
+    }
+
+    public static boolean isPlayerSleepy(ServerPlayer player)
+    {
+        return player.getAttachedOrCreate(DataAttachments.SHEEP_DATA).asleepTime() > 0;
     }
 }

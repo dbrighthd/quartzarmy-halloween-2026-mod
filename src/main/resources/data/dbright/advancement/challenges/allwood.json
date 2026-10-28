@@ -11,7 +11,7 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "dbright:main/bow",
+  "parent": "dbright:challenges/bow",
   "criteria": {
     "oak": {
       "trigger": "minecraft:inventory_changed",

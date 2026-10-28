@@ -7,12 +7,16 @@ import net.minecraft.resources.Identifier;
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 
 public class DataAttachments {
-    public static final AttachmentType<DashData> DASH_DATA =
+    public static final AttachmentType<IchorData> ICHOR_DATA =
             AttachmentRegistry.createDefaulted(
-                    Identifier.fromNamespaceAndPath(MOD_ID, "dash_data"),
-                    () -> DashData.defaultState
+                    Identifier.fromNamespaceAndPath(MOD_ID, "ichor_data"),
+                    () -> IchorData.defaultState
             );
-
+    public static final AttachmentType<JumpAttackData> JUMP_ATTACK_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "jumpattack_data"),
+                    () -> JumpAttackData.defaultState
+            );
     public static final AttachmentType<BindData> BIND_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "bind_data"),

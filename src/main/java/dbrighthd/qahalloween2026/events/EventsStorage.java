@@ -2,6 +2,7 @@ package dbrighthd.qahalloween2026.events;
 
 import dbrighthd.qahalloween2026.mainloop.Config;
 import dbrighthd.qahalloween2026.systems.BindSystem;
+import dbrighthd.qahalloween2026.systems.JumpAttackCountSystem;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.minecraft.server.MinecraftServer;
@@ -89,7 +90,13 @@ public class EventsStorage {
         {
             triggerWindBurst(player,0.5);
             grantAdvancement(player,"main/jumpattack");
+            int chain = JumpAttackCountSystem.addJumpAttack(player,1);
             amount *= 2;
+            if(chain >=5)
+            {
+                amount = (int)(amount * 1.5);
+                grantAdvancement(player,"challenges/jumpchain");
+            }
         }
         BindSystem.giveString(player,amount* stringPerDamage);
     }

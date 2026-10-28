@@ -2,17 +2,13 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
-import dbrighthd.qahalloween2026.systems.BindSystem;
+import dbrighthd.qahalloween2026.systems.*;
 import dbrighthd.qahalloween2026.events.EventsStorage;
-import dbrighthd.qahalloween2026.systems.GlowflySystem;
-import dbrighthd.qahalloween2026.systems.SheepSystem;
-import dbrighthd.qahalloween2026.systems.WetSystem;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
@@ -41,7 +37,6 @@ import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
 import net.minecraft.world.entity.vehicle.boat.Boat;
@@ -53,9 +48,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.core.jmx.Server;
 
-import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -228,9 +221,10 @@ public class TickLoop {
             serverLevel.setBlockAndUpdate(standingOn,Blocks.DIRT_PATH.defaultBlockState());
         }
         BindSystem.bindTick(player);
-        WetSystem.wetTick(player);
+        WetIchorSystem.wetIchorTick(player);
         SheepSystem.sheepTick(player);
         GlowflySystem.glowflyTick(player);
+        JumpAttackCountSystem.countJumpTick(player);
         if(isLookingAtSun(player))
         {
             lookAtSun(player);
@@ -258,6 +252,16 @@ public class TickLoop {
             SiftParticles(level,player,ParticleTypes.END_ROD,0.5,0.25);
         }
         stringBar(player);
+        player.resetRecipes(player.level().getServer().getRecipeManager().getRecipes());
+        miscAdvancementChecks(player);
+    }
+
+    public static void miscAdvancementChecks(ServerPlayer player)
+    {
+        if(WetIchorSystem.isPlayerIchorized(player) && WetIchorSystem.isPlayerWet(player) && GlowflySystem.isPlayerInfected(player) && SheepSystem.isPlayerSleepy(player))
+        {
+            grantAdvancement(player,"challenges/alleffects");
+        }
     }
 
     public static void lookAtSun(ServerPlayer player)

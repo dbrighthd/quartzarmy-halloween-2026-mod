@@ -9,6 +9,10 @@
       {
         "namespace": "minecraft",
         "path": "advancement/.*"
+      },
+      {
+        "namespace": "minecraft",
+        "path": "advancement/recipes/.*"
       }
     ]
   }

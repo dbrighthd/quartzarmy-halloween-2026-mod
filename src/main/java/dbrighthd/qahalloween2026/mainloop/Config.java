@@ -2,6 +2,7 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.BucketItem;
 
 public class Config {
     public static double creeperStartDistance = 12;
@@ -21,6 +22,7 @@ public class Config {
     public static double placeMissChance = 0.25;
 
     public static int maxWet = 200;
+    public static int maxIchor = 100;
     public static double maxSlipperyFriction = 0;
 
     public static double arrowSpeed = 0.1;
