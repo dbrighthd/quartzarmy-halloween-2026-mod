@@ -2,10 +2,28 @@
     "fallback":"minecraft:empty",
     "elements":[
         {
+            "weight":2,
+            "element":{
+                "element_type":"single_pool_element",
+                "location":"fishysift:big_pillar",
+                "projection":"rigid",
+                "processors":[]
+            }
+        },
+        {
             "weight":1,
             "element":{
                 "element_type":"single_pool_element",
                 "location":"fishysift:big_arch_1",
+                "projection":"rigid",
+                "processors":[]
+            }
+        },
+        {
+            "weight":1,
+            "element":{
+                "element_type":"single_pool_element",
+                "location":"fishysift:big_arch_2",
                 "projection":"rigid",
                 "processors":[]
             }

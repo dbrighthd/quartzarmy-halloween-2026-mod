@@ -9,6 +9,15 @@
                 "projection":"rigid",
                 "processors":[]
             }
+        },
+        {
+            "weight":1,
+            "element":{
+                "element_type":"single_pool_element",
+                "location":"fishysift:big_single_sift_tree",
+                "projection":"rigid",
+                "processors":[]
+            }
         }
 
     ]
