@@ -29,10 +29,7 @@ public class GeneralUtils {
 
     public static void replaceEntityIfLessThanAround(ServerLevel serverLevel, Entity entity, EntityType newType, int countToSpawn, int maxCount)
     {
-        int count = serverLevel.getEntities(
-                newType,
-                entity.getBoundingBox().inflate(16),
-                selectEntity -> selectEntity != entity).size();
+        int count = serverLevel.getEntities(newType, entity.getBoundingBox().inflate(16), selectEntity -> selectEntity != entity).size();
 
         replaceEntity(serverLevel, entity, newType, count < maxCount? countToSpawn : 0);
     }

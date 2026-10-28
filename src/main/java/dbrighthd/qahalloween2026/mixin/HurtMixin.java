@@ -26,7 +26,6 @@ public abstract class HurtMixin {
             CallbackInfoReturnable<Boolean> cir
     ) {
         ServerPlayer player = (ServerPlayer)(Object) this;
-        System.out.println(player.getUUID());
         EventsStorage.hurtThisTick.put(player.getUUID(), (int)amount);
     }
 }

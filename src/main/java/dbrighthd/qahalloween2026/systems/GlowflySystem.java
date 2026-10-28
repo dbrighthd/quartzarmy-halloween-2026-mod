@@ -9,6 +9,7 @@ import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -43,5 +44,10 @@ public class GlowflySystem {
     public static boolean isPlayerInfected(LivingEntity player)
     {
         return (player.getAttachedOrCreate(DataAttachments.GLOWFLY_DATA).ticksLeft() > 0);
+    }
+
+    public static void setInfected(Player player, int infectedTicks)
+    {
+        player.setAttached(DataAttachments.GLOWFLY_DATA,new GlowflyData(infectedTicks));
     }
 }

@@ -1,5 +1,7 @@
 package dbrighthd.qahalloween2026.mainloop;
 
+import dbrighthd.qahalloween2026.systems.GlowflySystem;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
@@ -8,14 +10,22 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.PositionPath;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.warden.SonicBoom;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enderman;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -24,23 +34,41 @@ import java.util.List;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntityOffset;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 import static net.minecraft.world.level.dimension.end.EnderDragonFight.getPodiumLocation;
 
 public class EndFight {
     public static EndFightPhase endFightPhase = EndFightPhase.BROODING;
+
+    public static int phaseNum;
+    public static boolean begun;
+    public static Vec3 startPos = new Vec3(0,80,0);
+    public static Vec3 broodPos = new Vec3(0,80,0);
+    public static int TeleportingPhaseLength = 100;
+    public static int AttackPhaseLength = 200;
+    public static int endermanMaxHealth = 200;
+    public static int endermanTargetSwitchTime = 60;
+    public static boolean phaseSetUp = false;
     public static int phaseDuration = 0;
+    public static boolean soulified = false;
 
     public static void spawnBoss(ServerLevel endLevel) {
+        soulified = false;
         Enderman soulEnderman = EntityTypes.ENDERMAN.create(endLevel, EntitySpawnReason.EVENT);
-
-        soulEnderman.moveOrInterpolateTo(PositionPath.of(Vec3.atCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)))));
+        endFightPhase = EndFightPhase.DORMANT;
+        soulEnderman.moveOrInterpolateTo(PositionPath.of(Vec3.atBottomCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)))));
+        startPos = Vec3.atBottomCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)));
+        broodPos = Vec3.atCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)).above(15));
         soulEnderman.setPersistenceRequired();
         soulEnderman.setCustomName(Component.literal("Soul Corrupted Enderman"));
         soulEnderman.setCustomNameVisible(false);
+        soulEnderman.setGlowingTag(true);
+        soulEnderman.setNoAi(true);
         soulEnderman.addTag("soulEnderman");
         changeAttribute(soulEnderman, Attributes.FALL_DAMAGE_MULTIPLIER,0);
+        changeAttribute(soulEnderman, Attributes.MAX_HEALTH,endermanMaxHealth);
+        soulEnderman.setHealth(1);
+        soulEnderman.setPermanentlyInvulnerable(true);
         endLevel.addFreshEntity(soulEnderman);
     }
 
@@ -52,13 +80,21 @@ public class EndFight {
             return;
         }
         bossBarTick(soulEnderman);
-        particleAtEntityOffset(soulEnderman, new Vec3(0,1.5,0), ParticleTypes.SCULK_SOUL,0.25f,1f,0.25f,1,0);
+        if(soulified)
+        {
+            particleAtEntityOffsetToAllPlayers(soulEnderman, new Vec3(0,1.5,0), ParticleTypes.SCULK_SOUL,0.25f,1f,0.25f,1,0);
+        }
 
         switch(endFightPhase)
         {
+            case DORMANT -> {dormantPhase(soulEnderman);}
+            case START -> { startPhase(soulEnderman);}
             case TELEPORTING -> {teleportingPhase(soulEnderman);}
             case BROODING -> {broodingPhase(soulEnderman);}
             case SALMON -> {salmonPhase(soulEnderman);}
+            case ZOMBIE -> {zombiePhase(soulEnderman);}
+            case ATTACKING -> {attackingPhase(soulEnderman);}
+            case CREEPER -> {creeperPhase(soulEnderman);}
 
         }
         phaseDuration++;
@@ -70,12 +106,17 @@ public class EndFight {
         if (bossBar == null) {
             bossBar = new ServerBossEvent(
                     UUID.randomUUID(),
-                    Component.literal("Soul Corrupted Enderman"),
-                    BossEvent.BossBarColor.BLUE,
+                    Component.literal("Enderman"),
+                    BossEvent.BossBarColor.PURPLE,
                     BossEvent.BossBarOverlay.PROGRESS
             );
         }
 
+        if(soulified)
+        {
+            bossBar.setColor(BossEvent.BossBarColor.BLUE);
+            bossBar.setName(Component.literal("Soul Corrupted Enderman"));
+        }
         if (!soulEnderman.isAlive()) {
             bossBar.removeAllPlayers();
             bossBar = null;
@@ -97,32 +138,328 @@ public class EndFight {
 
     public static void teleportingPhase(Enderman soulEnderman)
     {
+        soulEnderman.setNoAi(false);
+        soulEnderman.setPermanentlyInvulnerable(false);
         soulEnderman.setNoGravity(false);
+        if(phaseDuration <= 1)
+        {
+            for(Player player : soulEnderman.level().players())
+            {
+                player.addEffect( new MobEffectInstance(MobEffects.BLINDNESS, 50, 100));
+            }
+        }
         if(soulEnderman.tickCount % 10 == 0)
         {
+            playSoundAtEntity(soulEnderman,SoundEvents.ENDERMAN_TELEPORT,100,1);
             randomTeleport(soulEnderman,20);
         }
+
+        if(phaseDuration > TeleportingPhaseLength)
+        {
+            setPhase(EndFightPhase.ATTACKING);
+        }
+    }
+
+    public static void attackingPhase(Enderman soulEnderman)
+    {
+        soulEnderman.setNoAi(false);
+        soulEnderman.setPermanentlyInvulnerable(false);
+        if(phaseDuration % endermanTargetSwitchTime == 0 || !phaseSetUp)
+        {
+            teleportToVictim(soulEnderman);
+        }
+        phaseSetUp = true;
+        if(phaseDuration > AttackPhaseLength)
+        {
+            soulEnderman.setTarget(null);
+            setPhase(getBroodPhase());
+        }
+    }
+
+    public static void dormantPhase(Enderman soulEnderman)
+    {
+        ServerLevel level = (ServerLevel) soulEnderman.level();
+        if(!level.players().isEmpty() && level.players().stream().allMatch(player -> player.distanceToSqr(soulEnderman) <= 100) && !begun)
+        {
+            soulEnderman.setGlowingTag(false);
+            playSoundAtEntity(soulEnderman, SoundEvents.ENDERMAN_STARE, 100, 1);
+            setPhase(EndFightPhase.BROODING);
+        }
+    }
+
+    public static void teleportToVictim(Enderman soulEnderman)
+    {
+        playSoundAtEntity(soulEnderman,SoundEvents.ENDERMAN_TELEPORT,100,1);
+        soulEnderman.setNoGravity(false);
+        Player player = getRandomVictim((ServerLevel)soulEnderman.level());
+        if(player != null)
+        {
+            soulEnderman.teleport(player.getX()+2,100,player.getZ()+2);
+            soulEnderman.setTarget(player);
+        }
+        else
+        {
+            soulEnderman.teleport(0,100,0);
+        }
+    }
+
+    public static Player getRandomVictim(ServerLevel level)
+    {
+        List<ServerPlayer> players = level.players().stream().filter(p -> p.position().length() < 100).toList();
+        return players.isEmpty() ? null : players.get(level.getRandom().nextInt(players.size()));
+
     }
 
     public static void broodingPhase(Enderman soulEnderman)
     {
-        soulEnderman.setPos(0,80,0);
+        int broodTime = 300;
+        double t = Math.clamp(((double)phaseDuration/(double)broodTime),0,1);
+        double yLerp = Mth.lerp(t,startPos.y(),broodPos.y());
+        soulEnderman.setPos(0.5,yLerp,0.5);
         soulEnderman.setNoGravity(true);
+        if(phaseDuration > broodTime)
+        {
+            setPhase(EndFightPhase.START);
+        }
+    }
+
+    public static void startPhase(Enderman soulEnderman)
+    {
+        int particleTime = 120;
+        int startTime = 240;
+        soulEnderman.setNoGravity(true);
+        soulEnderman.setPos(broodPos);
+        soulEnderman.setHealth((int)Math.clamp(endermanMaxHealth*((double)phaseDuration/(double)particleTime),1,endermanMaxHealth));
+        if(phaseDuration < particleTime) {
+            soulified = false;
+            particleAtEntityToAllPlayers(soulEnderman, new TrailParticleOption(soulEnderman.position().add(0, 1, 0), 0x00FFFF, 10), 15, 15, 15, 10, 0);
+            if(phaseDuration % 5 == 0)
+            {
+                playSoundAtEntity(soulEnderman, SoundEvents.SOUL_ESCAPE.value(), 100, 1);
+            }
+        }
+        if(phaseDuration == particleTime)
+        {
+            particleAtEntityToAllPlayers(soulEnderman, ParticleTypes.SONIC_BOOM, 8, 8, 8, 20, 0);
+        }
+        if(phaseDuration == particleTime+10)
+        {
+            soulEnderman.setGlowingTag(false);
+            playSoundAtEntity(soulEnderman, SoundEvents.WARDEN_SONIC_BOOM, 100, 1);
+            playSoundAtEntity(soulEnderman, SoundEvents.ENDERMAN_STARE, 100, 1);
+            soulified = true;
+        }
+        if(phaseDuration > startTime)
+        {
+            for(Player player : soulEnderman.level().players())
+            {
+                player.addEffect( new MobEffectInstance(MobEffects.BLINDNESS, 100, 100));
+            }
+            setPhase(EndFightPhase.TELEPORTING);
+        }
+
     }
     public static void salmonPhase(Enderman soulEnderman)
     {
-        soulEnderman.setPos(0,80,0);
-        soulEnderman.setNoGravity(true);
-
-        if(phaseDuration < 60)
+        soulEnderman.setNoAi(true);
+        soulEnderman.setPermanentlyInvulnerable(true);
+        int axolotlSummonTime = 200;
+        int fireflyTime = 120;
+        int axolotlAirTime = 400;
+        if(!phaseSetUp)
         {
-            particleAtEntity(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0xFFFFAA, 10), 10, 10, 10,10, 0);
+            playSoundAtEntity(soulEnderman,SoundEvents.ENDERMAN_TELEPORT,100,1);
+            phaseNum++;
+            phaseSetUp = true;
+        }
+        soulEnderman.setPos(broodPos);
+        soulEnderman.setNoGravity(true);
+        RandomSource random = soulEnderman.getRandom();
+        if(phaseDuration < fireflyTime)
+        {
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0xFFFFAA, 10), 10, 10, 10,10, 0);
+            playSoundAtEntity(soulEnderman, SoundEvents.FIREFLY_BUSH_IDLE,100,1);
+            if(phaseDuration > 40)
+            {
+                particleAtEntityOffsetToAllPlayers(soulEnderman, new Vec3(0,-15,0),ParticleTypes.FIREFLY, 50,10,50,100,0);
+            }
+            if(phaseDuration > 100)
+            {
+                for (Player player : soulEnderman.level().players())
+                {
+                    GlowflySystem.setInfected(player,(axolotlSummonTime - fireflyTime) + (axolotlAirTime + 140));
+                }
+            }
+        }
+        else if(phaseDuration < axolotlSummonTime-10)
+        {
+            if(phaseDuration % 5 == 0)
+            {
+                playSoundAtEntity(soulEnderman, SoundEvents.SOUL_ESCAPE.value(), 100, 1);
+            }
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0xFF0000, 10), 10, 10, 10,5, 0);
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FF00, 10), 10, 10, 10,5, 0);
+
+        }
+        if(phaseDuration == axolotlSummonTime)
+        {
+            int salmonAmount = 40;
+            double salmonSpeed = 1;
+            for(int i = 0; i < salmonAmount; i++)
+            {
+                Axolotl axolotl = EntityTypes.AXOLOTL.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
+                axolotl.setPos(soulEnderman.position());
+                double angle = i*(Math.PI*2)/(salmonAmount);
+                axolotl.setDeltaMovement(salmonSpeed * Math.cos(angle), 0, salmonSpeed * Math.sin(angle));
+                changeAttribute(axolotl, Attributes.FALL_DAMAGE_MULTIPLIER,0);
+                axolotl.setAirSupply(axolotlAirTime);
+                soulEnderman.level().addFreshEntity(axolotl);
+            }
+        }
+        if(phaseDuration > axolotlSummonTime + axolotlAirTime + 140)
+        {
+            for(Axolotl axolotl : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.AXOLOTL,(axolotl)->{return true;}))
+            {
+                axolotl.kill((ServerLevel)axolotl.level());
+            }
+            setPhase(EndFightPhase.TELEPORTING);
+        }
+    }
+
+    public static void zombiePhase(Enderman soulEnderman)
+    {
+        soulEnderman.setNoAi(true);
+        soulEnderman.setPermanentlyInvulnerable(true);
+        int zombieSummonTime = 40;
+        int zombieKillTime = 300;
+        if(!phaseSetUp)
+        {
+            playSoundAtEntity(soulEnderman,SoundEvents.ENDERMAN_TELEPORT,100,1);
+            phaseNum++;
+            phaseSetUp = true;
+        }
+        soulEnderman.setPos(broodPos);
+        soulEnderman.setNoGravity(true);
+        RandomSource random = soulEnderman.getRandom();
+        if(phaseDuration < zombieSummonTime-10)
+        {
+            if(phaseDuration % 5 == 0)
+            {
+                playSoundAtEntity(soulEnderman, SoundEvents.SOUL_ESCAPE.value(), 100, 1);
+            }
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00AA00, 10), 15, 15, 15,10, 0);
+        }
+        if(phaseDuration == zombieSummonTime)
+        {
+            int zombieAmount = 5;
+            double salmonSpeed = 1;
+            for(int i = 0; i < zombieAmount; i++)
+            {
+                Zombie zombie = EntityTypes.ZOMBIE.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
+                zombie.setPos(soulEnderman.position());
+                double angle = i*(Math.PI*2)/(zombieAmount);
+                zombie.setDeltaMovement(salmonSpeed * Math.cos(angle), 0, salmonSpeed * Math.sin(angle));
+                changeAttribute(zombie, Attributes.FALL_DAMAGE_MULTIPLIER,0);
+                soulEnderman.level().addFreshEntity(zombie);
+            }
+        }
+        for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)->{return true;}))
+        {
+            particleAtEntityOffsetToAllPlayers(zombie,new Vec3(0,1,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.5f, 0.1f,10, 0);
+        }
+        if(phaseDuration > zombieKillTime)
+        {
+            for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)->{return true;}))
+            {
+                zombie.kill((ServerLevel)zombie.level());
+            }
+            setPhase(EndFightPhase.TELEPORTING);
+        }
+    }
+    public static void creeperPhase(Enderman soulEnderman)
+    {
+        soulEnderman.setNoAi(true);
+        int creeperSummonTime = 40;
+        if(!phaseSetUp)
+        {
+            playSoundAtEntity(soulEnderman,SoundEvents.ENDERMAN_TELEPORT,100,1);
+            phaseNum++;
+            phaseSetUp = true;
+        }
+        soulEnderman.setPos(broodPos);
+        soulEnderman.setNoGravity(true);
+        RandomSource random = soulEnderman.getRandom();
+        if(phaseDuration < creeperSummonTime-10)
+        {
+            if(phaseDuration % 5 == 0)
+            {
+                playSoundAtEntity(soulEnderman, SoundEvents.SOUL_ESCAPE.value(), 100, 1);
+            }
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FF00, 10), 15, 15, 15,5, 0);
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0xFFFFFF, 10), 15, 15, 15,5, 0);
+
+        }
+        if(phaseDuration == creeperSummonTime)
+        {
+            int zombieAmount = 10;
+            double salmonSpeed = 1;
+            for(int i = 0; i < zombieAmount; i++)
+            {
+                LivingEntity entity;
+                if(i % 2 == 0)
+                {
+                    entity = EntityTypes.CREEPER.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
+
+                }
+                else
+                {
+                    entity = EntityTypes.SKELETON.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
+
+                }
+                entity.setPos(soulEnderman.position());
+                double angle = i*(Math.PI*2)/(zombieAmount);
+                entity.setDeltaMovement(salmonSpeed * Math.cos(angle), 0, salmonSpeed * Math.sin(angle));
+                changeAttribute(entity, Attributes.SAFE_FALL_DISTANCE,100);
+                soulEnderman.level().addFreshEntity(entity);
+            }
+        }
+
+        boolean hasCreeper = false;
+        for(Creeper creeper : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.CREEPER,(creeper)->{return true;}))
+        {
+            hasCreeper = true;
+            particleAtEntityOffsetToAllPlayers(creeper,new Vec3(0,1,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.5f, 0.1f,10, 0);
+        }
+
+        if(phaseDuration > creeperSummonTime + 10)
+        {
+            for(Skeleton skeleton : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SKELETON,(skeleton)->{return true;}))
+            {
+                skeleton.kill((ServerLevel)skeleton.level());
+            }
+            if(!hasCreeper)
+            {
+                setPhase(EndFightPhase.TELEPORTING);
+            }
         }
     }
     public static void setPhase(EndFightPhase phase)
     {
         phaseDuration = 0;
         endFightPhase = phase;
+        phaseSetUp = false;
+    }
+
+    public static EndFightPhase getBroodPhase()
+    {
+        EndFightPhase phase;
+        switch (phaseNum % 3)
+        {
+            case 0 -> {phase = EndFightPhase.ZOMBIE;}
+            case 1 -> {phase = EndFightPhase.CREEPER;}
+            default -> {phase = EndFightPhase.SALMON;}
+        }
+        return phase;
     }
 
     public static void randomTeleport(Enderman soulEnderman, int radius)
@@ -130,14 +467,15 @@ public class EndFight {
         soulEnderman.randomTeleport(soulEnderman.getRandom().nextIntBetweenInclusive(-radius,radius),90, soulEnderman.getRandom().nextIntBetweenInclusive(-radius,radius), true, BlockTags.ENDERMAN_DOES_NOT_TELEPORT_TO);
     }
 
-
-
     public enum EndFightPhase {
+        DORMANT,
         START,
         TELEPORTING,
         SALMON,
+        ZOMBIE,
         ATTACKING,
         END,
+        CREEPER,
         BROODING,
     }
 

@@ -9,10 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
-import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -83,6 +81,31 @@ public class PlayerMethodUtils {
                 dz,
                 speed
         );    }
+
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityToAllPlayers(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)
+    {
+        ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(
+                particleType,
+                true,
+                true,
+                entity.getX(),
+                entity.getY(),
+                entity.getZ(),
+                dx,
+                dy,
+                dz,
+                speed,
+                count
+        );
+
+        for (Player player : entity.level().players()) {
+            if(player instanceof  ServerPlayer serverPlayer)
+            {
+                serverPlayer.connection.send(packet);
+            }
+        }
+    }
+
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffset(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, int speed)
     {
         ((ServerLevel)(entity.level())).sendParticles(
@@ -95,7 +118,32 @@ public class PlayerMethodUtils {
                 dy,
                 dz,
                 speed
-        );    }
+        );
+    }
+
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffsetToAllPlayers(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, int speed)
+    {
+        ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(
+                particleType,
+                true,
+                true,
+                entity.getX() + offset.x,
+                entity.getY() + offset.y,
+                entity.getZ() + offset.z,
+                dx,
+                dy,
+                dz,
+                speed,
+                count
+        );
+
+        for (Player player : entity.level().players()) {
+            if(player instanceof  ServerPlayer serverPlayer)
+            {
+                serverPlayer.connection.send(packet);
+            }
+        }
+    }
     public static boolean isLookingAtSun(ServerPlayer player)
     {
         if(player.level().dimension() == Level.OVERWORLD)
