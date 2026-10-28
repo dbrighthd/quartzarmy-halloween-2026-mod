@@ -2,10 +2,12 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
+import dbrighthd.qahalloween2026.dialogs.DeathDialog;
 import dbrighthd.qahalloween2026.systems.*;
 import dbrighthd.qahalloween2026.events.EventsStorage;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -43,6 +45,7 @@ import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -80,6 +83,10 @@ public class TickLoop {
             }
 
             return true;
+        });
+        ServerPlayerEvents.AFTER_RESPAWN.register((serverPlayer, newPlayer, what) -> {
+            DeathDialog.show(newPlayer);
+            newPlayer.setGameMode(GameType.SPECTATOR);
         });
     }
 

@@ -12,6 +12,6 @@ public class Setup {
         level.getGameRules().set(GameRules.NATURAL_HEALTH_REGENERATION, false, level.getServer());
         level.getGameRules().set(GameRules.KEEP_INVENTORY, true, level.getServer());
         level.getGameRules().set(GameRules.ADVANCE_WEATHER, false  , level.getServer());
-
+        level.getGameRules().set(GameRules.IMMEDIATE_RESPAWN, true, level.getServer());
     }
 }

@@ -11,6 +11,7 @@
     "ClientboundAddEntityPacketMixin",
     "CoralMixin",
     "CreeperSwellMixin",
+    "DialogClickMixin",
     "EndBiomeMixin",
     "EndIslandStupidMixin",
     "EndSpawnMixin",

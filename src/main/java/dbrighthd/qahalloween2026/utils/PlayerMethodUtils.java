@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.game.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +22,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.apache.logging.log4j.core.jmx.Server;
+import org.jspecify.annotations.Nullable;
+
+import java.util.List;
 
 public class PlayerMethodUtils {
 
@@ -199,5 +204,16 @@ public class PlayerMethodUtils {
         particleAtEntity(player, ParticleTypes.GUST_EMITTER_SMALL,0,0,0,1,1);
         playSoundAtEntity(player, SoundEvents.WIND_CHARGE_BURST.value(), 1, 1);
         addAndSendMovementIfPlayer(player, new Vec3(0, vertAmount,0), true);
+    }
+
+    public static @Nullable ServerPlayer getRandomPlayer(ServerPlayer original)
+    {
+        PlayerList list = original.level().getServer().getPlayerList();
+        List<ServerPlayer> players = list.getPlayers().stream().filter(player -> !player.getUUID().equals(original.getUUID())).toList();
+        if(players.isEmpty())
+        {
+            return null;
+        }
+        return players.get(original.getRandom().nextInt(players.size()));
     }
 }
