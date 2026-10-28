@@ -99,6 +99,13 @@ public class OnEntityLoad {
                             0,
                             0
                     ));
+                    offers.add(new MerchantOffer(
+                            new ItemCost(Items.LEAF_LITTER, 64),
+                            createNitWitBook(),
+                            1000000,
+                            0,
+                            0
+                    ));
                     trader.setPermanentlyInvulnerable(true);
                 }
                 case Axolotl axolotl -> axolotl.setSilent(true);
