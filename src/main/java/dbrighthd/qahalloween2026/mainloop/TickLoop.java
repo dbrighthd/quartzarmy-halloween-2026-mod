@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.panda.Panda;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enderman;
@@ -52,6 +53,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.Vec3;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
@@ -120,15 +122,9 @@ public class TickLoop {
         switch (entity) {
             case Axolotl axolotl -> axolotlTick(axolotl, level);
             case Chicken chicken -> chickenTick(chicken, level);
-            case EnderDragon dragon -> {
-                EnderDragonFight fight = level.getDragonFight();
-                if (fight != null && fight.dragonUUID() != null) {
-                    fight.setDragonKilled(dragon);
-                    spawnBoss(level);
-                    dragon.discard();
-                }
-            }
+            case EnderDragon dragon -> killDragonAndBeginEnderFight(dragon,level);
             case Phantom phantom -> phantom.setRemainingFireTicks(-10);
+            case Panda panda -> pandaTick(panda);
             case ExperienceOrb _ -> entity.kill(level);
             case Zombie zombie -> zombieTick(zombie, level);
             case Enderman enderman -> {
@@ -206,6 +202,16 @@ public class TickLoop {
         return UUID.nameUUIDFromBytes(
                 (MOD_ID + ":string:" + player.getUUID()).getBytes(StandardCharsets.UTF_8)
         );
+    }
+
+    public static void killDragonAndBeginEnderFight(EnderDragon dragon, ServerLevel level)
+    {
+        EnderDragonFight fight = level.getDragonFight();
+        if (fight != null && fight.dragonUUID() != null) {
+            fight.setDragonKilled(dragon);
+            spawnBoss(level);
+            dragon.discard();
+        }
     }
 
     public static void playerTick(ServerPlayer player, ServerLevel serverLevel)
@@ -287,6 +293,11 @@ public class TickLoop {
         }
     }
 
+    public static void pandaTick(Panda panda)
+    {
+        panda.setTarget((ServerPlayer)panda.level().getNearestPlayer(panda,10));
+    }
+
     public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
     {
         ServerPlayer player = (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(20).selector((p,_) -> GlowflySystem.isPlayerInfected(p)), axolotl);
@@ -302,7 +313,7 @@ public class TickLoop {
                 axolotl.jumpFromGround();
                 playSoundAtEntity(axolotl,SoundEvents.SALMON_FLOP,1,1);
             }
-            changeAttribute(axolotl,Attributes.MOVEMENT_SPEED,10);
+            changeAttribute(axolotl,Attributes.MOVEMENT_SPEED,3);
             changeAttribute(axolotl,Attributes.AIR_DRAG_MODIFIER,0.5);
 
         }

@@ -16,10 +16,12 @@ import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.animal.nautilus.Nautilus;
+import net.minecraft.world.entity.animal.panda.Panda;
 import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.animal.squid.Squid;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -62,6 +64,14 @@ public class OnEntityLoad {
                 case Vindicator vindicator -> {
                     vindicator.setSilent(true);
                     vindicator.setPersistenceRequired();
+                }
+                case Wolf wolf -> {
+                    replaceEntity(level,wolf, EntityTypes.PANDA,1);
+                }
+                case Panda panda -> {
+                    panda.setMainGene(Panda.Gene.AGGRESSIVE);
+                    panda.setHiddenGene(Panda.Gene.AGGRESSIVE);
+                    changeAttribute(panda,Attributes.MOVEMENT_SPEED,0.2);
                 }
                 case Ravager ravager -> {
                     ravager.setSilent(true);

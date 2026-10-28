@@ -13,7 +13,7 @@
   "result": {
     "id": "minecraft:stone_hoe",
     "components": {
-      "minecraft:max_damage": 7
+      "minecraft:max_damage": 20
     }
   }
 }

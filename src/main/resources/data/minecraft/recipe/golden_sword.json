@@ -13,7 +13,7 @@
   "result": {
     "id": "minecraft:golden_sword",
     "components": {
-      "minecraft:max_damage": 50
+      "minecraft:max_damage": 2000
     }
   }
 }

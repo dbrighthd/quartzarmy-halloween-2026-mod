@@ -39,15 +39,5 @@ public abstract class MultiNoiseBiomeSourceMixin {
                     .orElseThrow();
             cir.setReturnValue(replacement);
         }
-
-        if (biome.is(BiomeTags.IS_DEEP_OCEAN)) {
-            Holder<Biome> replacement = this.collectPossibleBiomes()
-                    .toList()
-                    .stream()
-                    .filter(holder -> holder.is(Biomes.SWAMP))
-                    .findFirst()
-                    .orElseThrow();
-            cir.setReturnValue(replacement);
-        }
     }
 }
