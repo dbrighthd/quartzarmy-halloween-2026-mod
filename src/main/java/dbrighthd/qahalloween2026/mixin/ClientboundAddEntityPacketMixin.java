@@ -17,6 +17,7 @@ import net.minecraft.world.entity.monster.illager.Evoker;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
 import net.minecraft.world.entity.projectile.EvokerFangs;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -58,7 +59,7 @@ public abstract class ClientboundAddEntityPacketMixin {
         else if (entity instanceof Breeze) {
             this.type = EntityTypes.STRIDER;
         }
-        else if (entity instanceof Rabbit) {
+        else if (entity instanceof Rabbit && entity.level().dimension() == Level.NETHER) {
             this.type = EntityTypes.ALLAY;
         }
     }

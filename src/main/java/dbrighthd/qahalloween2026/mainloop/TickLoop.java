@@ -55,6 +55,8 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -94,8 +96,14 @@ public class TickLoop {
             playerTick(player, player.level());
         }
         for (ServerLevel level : server.getAllLevels()) {
-            for(Entity entity : level.getAllEntities())
+            List<Entity> snapshot = new ArrayList<>();
+            level.getAllEntities().forEach(snapshot::add); // NO CONCURRENCY ISSUES PLEASE I WILL CRY
+            for(Entity entity : snapshot)
             {
+                if(entity == null)
+                {
+                    break;
+                }
                 entityTick(entity);
             }
         }

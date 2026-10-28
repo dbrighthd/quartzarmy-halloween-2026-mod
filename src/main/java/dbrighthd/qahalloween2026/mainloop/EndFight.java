@@ -1,12 +1,10 @@
 package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.systems.GlowflySystem;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,14 +17,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.warden.SonicBoom;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,7 +31,6 @@ import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
-import static net.minecraft.world.level.dimension.end.EnderDragonFight.getPodiumLocation;
 
 public class EndFight {
     public static EndFightPhase endFightPhase = EndFightPhase.BROODING;
@@ -56,6 +51,10 @@ public class EndFight {
         soulified = false;
         Enderman soulEnderman = EntityTypes.ENDERMAN.create(endLevel, EntitySpawnReason.EVENT);
         endFightPhase = EndFightPhase.DORMANT;
+        if(soulEnderman == null)
+        {
+            return;
+        }
         soulEnderman.moveOrInterpolateTo(PositionPath.of(Vec3.atBottomCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)))));
         startPos = Vec3.atBottomCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)));
         broodPos = Vec3.atCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)).above(15));
@@ -303,18 +302,8 @@ public class EndFight {
         }
         if(phaseDuration == axolotlSummonTime)
         {
-            int salmonAmount = 40;
-            double salmonSpeed = 1;
-            for(int i = 0; i < salmonAmount; i++)
-            {
-                Axolotl axolotl = EntityTypes.AXOLOTL.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
-                axolotl.setPos(soulEnderman.position());
-                double angle = i*(Math.PI*2)/(salmonAmount);
-                axolotl.setDeltaMovement(salmonSpeed * Math.cos(angle), 0, salmonSpeed * Math.sin(angle));
-                changeAttribute(axolotl, Attributes.FALL_DAMAGE_MULTIPLIER,0);
-                axolotl.setAirSupply(axolotlAirTime);
-                soulEnderman.level().addFreshEntity(axolotl);
-            }
+            spawnCircle(soulEnderman, List.of(EntityTypes.AXOLOTL),40,1);
+
         }
         if(phaseDuration > axolotlSummonTime + axolotlAirTime + 140)
         {
@@ -351,25 +340,16 @@ public class EndFight {
         }
         if(phaseDuration == zombieSummonTime)
         {
-            int zombieAmount = 5;
-            double salmonSpeed = 1;
-            for(int i = 0; i < zombieAmount; i++)
-            {
-                Zombie zombie = EntityTypes.ZOMBIE.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
-                zombie.setPos(soulEnderman.position());
-                double angle = i*(Math.PI*2)/(zombieAmount);
-                zombie.setDeltaMovement(salmonSpeed * Math.cos(angle), 0, salmonSpeed * Math.sin(angle));
-                changeAttribute(zombie, Attributes.FALL_DAMAGE_MULTIPLIER,0);
-                soulEnderman.level().addFreshEntity(zombie);
-            }
+            spawnCircle(soulEnderman, List.of(EntityTypes.ZOMBIE),5,1);
+
         }
-        for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)->{return true;}))
+        for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)-> true))
         {
             particleAtEntityOffsetToAllPlayers(zombie,new Vec3(0,1,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.5f, 0.1f,10, 0);
         }
         if(phaseDuration > zombieKillTime)
         {
-            for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)->{return true;}))
+            for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)-> true))
             {
                 zombie.kill((ServerLevel)zombie.level());
             }
@@ -401,27 +381,7 @@ public class EndFight {
         }
         if(phaseDuration == creeperSummonTime)
         {
-            int zombieAmount = 10;
-            double salmonSpeed = 1;
-            for(int i = 0; i < zombieAmount; i++)
-            {
-                LivingEntity entity;
-                if(i % 2 == 0)
-                {
-                    entity = EntityTypes.CREEPER.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
-
-                }
-                else
-                {
-                    entity = EntityTypes.SKELETON.create(soulEnderman.level(),EntitySpawnReason.COMMAND);
-
-                }
-                entity.setPos(soulEnderman.position());
-                double angle = i*(Math.PI*2)/(zombieAmount);
-                entity.setDeltaMovement(salmonSpeed * Math.cos(angle), 0, salmonSpeed * Math.sin(angle));
-                changeAttribute(entity, Attributes.SAFE_FALL_DISTANCE,100);
-                soulEnderman.level().addFreshEntity(entity);
-            }
+            spawnCircle(soulEnderman, List.of(EntityTypes.CREEPER,EntityTypes.SKELETON),10,1);
         }
 
         boolean hasCreeper = false;
@@ -433,16 +393,35 @@ public class EndFight {
 
         if(phaseDuration > creeperSummonTime + 10)
         {
-            for(Skeleton skeleton : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SKELETON,(skeleton)->{return true;}))
-            {
-                skeleton.kill((ServerLevel)skeleton.level());
-            }
             if(!hasCreeper)
             {
+                for(Skeleton skeleton : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SKELETON,(skeleton)->{return true;}))
+                {
+                    skeleton.kill((ServerLevel)skeleton.level());
+                }
                 setPhase(EndFightPhase.TELEPORTING);
             }
         }
     }
+
+    public static <T extends EntityType<?>> void spawnCircle(Entity sourceEntity, List<T> entityTypes, int amount, double speed)
+    {
+        for(int i = 0; i < amount; i++)
+        {
+            LivingEntity entity;
+            entity = (LivingEntity)entityTypes.get(i%(entityTypes.size())).create(sourceEntity.level(),EntitySpawnReason.COMMAND);
+            if(entity == null)
+            {
+                break;
+            }
+            entity.setPos(sourceEntity.position());
+            double angle = i*(Math.PI*2)/(amount);
+            entity.setDeltaMovement(speed * Math.cos(angle), 0, speed * Math.sin(angle));
+            changeAttribute(entity, Attributes.SAFE_FALL_DISTANCE,100);
+            sourceEntity.level().addFreshEntity(entity);
+        }
+    }
+
     public static void setPhase(EndFightPhase phase)
     {
         phaseDuration = 0;
