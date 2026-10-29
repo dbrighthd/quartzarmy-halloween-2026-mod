@@ -1,0 +1,14 @@
+{
+    "structures":[
+        {
+            "weight":1,
+            "structure":"fishysift:pillager_camp"
+        }
+    ],
+    "placement":{
+        "type":"minecraft:random_spread",
+        "separation": 2,
+        "spacing": 6,
+        "salt": 7894651
+    }
+}
