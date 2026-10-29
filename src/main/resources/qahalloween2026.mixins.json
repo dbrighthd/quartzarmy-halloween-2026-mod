@@ -24,10 +24,13 @@
     "MultiNoiseBiomeSourceMixin",
     "PlayerActionMixin",
     "PlayerUseItemOnMixin",
+    "PortalForcerMixin",
+    "PortalShapeMixin",
     "ProjectileMixin",
     "RangedBowAttackGoalMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
+    "SiftPortalMaterialMixin",
     "SpawnExitPortalMixin",
     "SpikeCacheLoaderMixin",
     "SwellGoalMixin"
