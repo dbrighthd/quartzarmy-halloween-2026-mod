@@ -47,7 +47,7 @@ public abstract class ProjectileMixin {
         {
             if(snowball.getItem().get(DataComponents.ITEM_NAME).getString().contains("Ender"))
             {
-                if(snowball.level().getServer() != null)
+                if(snowball.level().getServer() != null && snowball.level().dimension() != Level.END)
                 {
                     PlayerMethodUtils.playSoundAtEntity(snowball, SoundEvents.END_PORTAL_SPAWN,100,1);
                     BlockPos referencePos = snowball.blockPosition().subtract(new Vec3i(2,0,2));
