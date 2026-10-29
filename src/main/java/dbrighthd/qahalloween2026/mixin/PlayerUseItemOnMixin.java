@@ -40,6 +40,9 @@ public class PlayerUseItemOnMixin {
             at = @At("STORE"),
             name = "blockHit")
     private BlockHitResult changePlacementTarget(BlockHitResult originalHit, ServerboundUseItemOnPacket packet) {
+        if (!player.level().getServer().isSameThread()) {
+            return originalHit;
+        }
         BlockPos clicked = originalHit.getBlockPos();
         Direction intendedDirection = originalHit.getDirection();
 

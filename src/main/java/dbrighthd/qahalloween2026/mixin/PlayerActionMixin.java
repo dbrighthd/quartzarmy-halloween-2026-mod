@@ -2,6 +2,7 @@ package dbrighthd.qahalloween2026.mixin;
 
 import dbrighthd.qahalloween2026.mainloop.Config;
 import dbrighthd.qahalloween2026.systems.BindSystem;
+import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
@@ -38,16 +39,28 @@ public class PlayerActionMixin {
     )
     private void interceptBreak(ServerboundPlayerActionPacket packet, CallbackInfo ci)
         {
+            if (!player.level().getServer().isSameThread()) {
+                return;
+            }
+            BlockPos original = packet.getPos();
+            BlockState state = player.level().getBlockState(original);
+            if(packet.getAction() == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK && state.getDestroyProgress(player, player.level(), original) >= 1.0F)
+            {
+                if(state.is(Blocks.FIREFLY_BUSH))
+                {
+                    GlowflySystem.setInfected(player,Config.glowFlyTicks);
+                }
+            }
         if (packet.getAction() != ServerboundPlayerActionPacket.Action.STOP_DESTROY_BLOCK)
         {
             return;
         }
 
 
-        BlockPos original = packet.getPos();
+
         BlockPos target = getRandomTarget(original);
         BindSystem.giveString(player,Config.stringPerBlockBreak);
-        BlockState state = player.level().getBlockState(original);
+
         ServerPlayerGameMode gameMode = player.gameMode;
         if(state.is(Blocks.NETHERRACK))
         {
