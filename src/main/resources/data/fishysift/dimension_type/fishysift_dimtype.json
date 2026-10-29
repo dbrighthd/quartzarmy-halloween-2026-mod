@@ -1,6 +1,7 @@
 {
   "ambient_light": 0,
   "attributes": {
+     "minecraft:gameplay/piglins_zombify": false,
     "minecraft:audio/ambient_sounds": {
       "mood": {
         "block_search_extent": 8,
