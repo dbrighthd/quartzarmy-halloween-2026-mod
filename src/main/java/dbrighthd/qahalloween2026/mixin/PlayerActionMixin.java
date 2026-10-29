@@ -42,18 +42,41 @@ public class PlayerActionMixin {
         {
             return;
         }
+
+
         BlockPos original = packet.getPos();
         BlockPos target = getRandomTarget(original);
         BindSystem.giveString(player,Config.stringPerBlockBreak);
-
+        BlockState state = player.level().getBlockState(original);
+        ServerPlayerGameMode gameMode = player.gameMode;
+        if(state.is(Blocks.NETHERRACK))
+        {
+            gameMode.destroyBlock(original);
+            for(int x = -1; x <= 1; x++)
+            {
+                for(int y = -1; y <= 1; y++)
+                {
+                    for(int z = -1; z <= 1; z++)
+                    {
+                        if(z == 0 && x == 0 && y == 0)
+                        {
+                            continue;
+                        }
+                        BlockPos testBlock = new BlockPos(original.getX()+x,original.getY()+y,original.getZ()+z);
+                        if(player.level().getBlockState(testBlock).is(Blocks.NETHERRACK))
+                        {
+                            gameMode.destroyBlock(testBlock);
+                        }
+                    }
+                }
+            }
+            return;
+        }
         if (target.equals(original))
         {
             return;
         }
         ci.cancel();
-
-        ServerPlayerGameMode gameMode = player.gameMode;
-        BlockState state = player.level().getBlockState(original);
         if(player.level().getBlockState(target).is(Blocks.BEDROCK))
         {
             grantAdvancement(player,"challenges/bedrock");

@@ -27,6 +27,7 @@
     "ProjectileMixin",
     "RangedBowAttackGoalMixin",
     "ServerEntityMixin",
+    "ServerLevelMixin",
     "SpawnExitPortalMixin",
     "SpikeCacheLoaderMixin",
     "SwellGoalMixin"
