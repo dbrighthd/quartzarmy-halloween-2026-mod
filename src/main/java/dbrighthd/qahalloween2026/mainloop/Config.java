@@ -21,8 +21,9 @@ public class Config {
     public final static int bindCooldownTicks = 0;
     public final static int bindTimeTicks = 27;
     public final static int stringRequiredForBind = 64;
+    public final static int healthPerBind = 8;
 
-    public static double breakMissChance = 0.25;
+    public static double breakMissChance = 0.2;
     public static double placeMissChance = 0.25;
 
     public static int maxWet = 200;

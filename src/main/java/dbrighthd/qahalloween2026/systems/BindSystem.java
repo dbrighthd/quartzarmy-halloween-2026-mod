@@ -2,6 +2,7 @@ package dbrighthd.qahalloween2026.systems;
 
 import dbrighthd.qahalloween2026.attachments.BindData;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
+import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -55,7 +56,7 @@ public class BindSystem {
             player.connection.send(new ClientboundSetEntityMotionPacket(player.getId(), Vec3.ZERO));
             if(updatedState == 1)
             {
-                player.setHealth(player.getHealth() + 6);
+                player.setHealth(player.getHealth() + Config.healthPerBind);
                 player.sendOverlayMessage(Component.literal("Binding Complete!"));
                 grantAdvancement(player,"main/string");
                 player.resetFallDistance();
