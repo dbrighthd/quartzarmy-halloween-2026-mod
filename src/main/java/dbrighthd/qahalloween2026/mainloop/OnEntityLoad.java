@@ -94,7 +94,7 @@ public class OnEntityLoad {
                     offers.clear();
                     offers.add(new MerchantOffer(
                             new ItemCost(Items.LEAF_LITTER, 64),
-                            new ItemStack(Items.GOLD_INGOT),
+                            new ItemStack(Items.GOLD_INGOT,10),
                             1000000,
                             0,
                             0
@@ -102,6 +102,13 @@ public class OnEntityLoad {
                     offers.add(new MerchantOffer(
                             new ItemCost(Items.LEAF_LITTER, 64),
                             createNitWitBook(),
+                            1000000,
+                            0,
+                            0
+                    ));
+                    offers.add(new MerchantOffer(
+                            new ItemCost(Items.LEAF_LITTER, 1),
+                            createMisInfoBook(),
                             1000000,
                             0,
                             0

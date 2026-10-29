@@ -42,10 +42,10 @@ public abstract class ClientboundAddEntityPacketMixin {
     private void onSpawnPacket(
             Entity entity, ServerEntity serverEntity, int data, CallbackInfo ci
     ) {
-        if (entity instanceof Vindicator) {
+        if (entity instanceof Vindicator && entity.level().dimension() != Level.NETHER) {
             this.type = EntityTypes.VILLAGER;
         }
-        else if (entity instanceof Pillager) {
+        else if (entity instanceof Pillager && entity.level().dimension() != Level.NETHER) {
             this.type = EntityTypes.VILLAGER;
         }
         else if (entity instanceof Phantom) {
