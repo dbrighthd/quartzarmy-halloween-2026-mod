@@ -1,6 +1,7 @@
 package dbrighthd.qahalloween2026.mixin;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,7 +38,7 @@ public abstract class CreeperSwellMixin {
                 serverLevel.sendParticles(
                         ParticleTypes.PORTAL,
                         creeper.getX(),
-                        creeper.getY(),
+                        creeper.getY()+1,
                         creeper.getZ(),
                         1000,
                         0.0,
@@ -51,11 +52,25 @@ public abstract class CreeperSwellMixin {
                 playSoundAtEntity(creeper, SoundEvents.WARDEN_SONIC_CHARGE,1,1);
                 creeper.setSilent(true);
             }
+
+            double radius = creeperStartDistance;
+            if(creeper.swell > 48)
+            {
+                creeper.discard();
+            }
             if(creeper.swell > 40)
             {
                 Objects.requireNonNull(creeper.getAttribute(Attributes.SCALE)).setBaseValue(1d-(creeper.swell - 40d)/20d);
             }
-            double radius = creeperStartDistance;
+            else
+            {
+                particleAtEntity(creeper, new TrailParticleOption(creeper.position().add(0, 1, 0), 0xAAAAAA, 10), (float)radius, (float)radius, (float)radius, 10, 0);
+
+            }
+            if(creeper.swell == 40)
+            {
+                particleAtEntityOffset(creeper, new Vec3(0,1,0), ParticleTypes.SONIC_BOOM,0, 0, 0, 1, 0);
+            }
             List<Entity> nearby = creeper.level().getEntities(creeper, creeper.getBoundingBox().inflate(radius), entity -> entity.distanceToSqr(creeper) <= radius * radius);
             for(Entity entity : nearby)
             {
@@ -63,7 +78,7 @@ public abstract class CreeperSwellMixin {
                 {
                     grantAdvancement(player,"main/creeper");
                 }
-                Vec3 directionToCreeper = creeper.position().subtract(entity.position()).normalize();
+                Vec3 directionToCreeper = creeper.position().subtract(entity.position().add(0,1,0)).normalize();
                 addAndSendMovementIfPlayer(entity, directionToCreeper.scale(creeperSuckForce), false);
             }
         }

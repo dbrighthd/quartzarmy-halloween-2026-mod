@@ -75,17 +75,21 @@ public class PlayerMethodUtils {
 
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntity(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)
     {
-        ((ServerLevel)(entity.level())).sendParticles(
-                particleType,
-                entity.getX(),
-                entity.getY(),
-                entity.getZ(),
-                count,
-                dx,
-                dy,
-                dz,
-                speed
-        );    }
+        if(entity.level() instanceof ServerLevel level)
+        {
+            level.sendParticles(
+                    particleType,
+                    entity.getX(),
+                    entity.getY(),
+                    entity.getZ(),
+                    count,
+                    dx,
+                    dy,
+                    dz,
+                    speed
+            );    }
+        }
+
 
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityToAllPlayers(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)
     {
@@ -113,17 +117,21 @@ public class PlayerMethodUtils {
 
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffset(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, int speed)
     {
-        ((ServerLevel)(entity.level())).sendParticles(
-                particleType,
-                entity.getX() + offset.x,
-                entity.getY() + offset.y,
-                entity.getZ() + offset.z,
-                count,
-                dx,
-                dy,
-                dz,
-                speed
-        );
+        if(entity.level() instanceof ServerLevel level)
+        {
+            level.sendParticles(
+                    particleType,
+                    entity.getX() + offset.x,
+                    entity.getY() + offset.y,
+                    entity.getZ() + offset.z,
+                    count,
+                    dx,
+                    dy,
+                    dz,
+                    speed
+            );
+        }
+
     }
 
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffsetToAllPlayers(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, int speed)
