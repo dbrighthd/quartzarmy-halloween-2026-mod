@@ -28,6 +28,7 @@ import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
@@ -70,6 +71,10 @@ public class OnEntityLoad {
                 case Vindicator vindicator -> {
                     vindicator.setSilent(true);
                     vindicator.setPersistenceRequired();
+                }
+                case Pillager pillager -> {
+                    pillager.setSilent(true);
+                    pillager.setPersistenceRequired();
                 }
                 case Wolf wolf -> {
                     replaceEntity(level,wolf, EntityTypes.PANDA,1);
@@ -122,7 +127,7 @@ public class OnEntityLoad {
                     } else {
                         switch ((level.getRandom().nextInt()) % 3) {
                             case 1 -> replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
-                            case 0 -> replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
+                            case 0 -> replaceEntity(level, sniffer, EntityTypes.RABBIT, 1);
                             default -> replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
                         }
                     }
@@ -149,6 +154,10 @@ public class OnEntityLoad {
                 case Rabbit rabbit -> {
                     if (level.dimension() == Level.OVERWORLD) {
                         replaceEntity(level, rabbit, EntityTypes.PHANTOM, 2);
+                    }
+                    else {
+                        rabbit.setPermanentlyInvulnerable(true);
+                        rabbit.setCustomName(Component.literal("Blub"));
                     }
                 }
                 case Pig pig -> replaceEntity(level, pig, EntityTypes.SHEEP, 1);
@@ -186,26 +195,29 @@ public class OnEntityLoad {
                     }
                 }
                 case Arrow arrow -> {
-                    arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
 
                     Entity owner = arrow.getOwner();
-                    if (owner instanceof Mob mob) {
+                    if (owner instanceof Skeleton mob) {
+                        arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
                         arrow.setNoGravity(true);
                         Entity target = mob.getTarget();
                         if (target != null) {
                             UUID targetUUID = target.getUUID();
-                            arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID, false));
+                            arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID, TargetData.SourceType.SKELETON));
                         }
+                        arrow.setBaseDamage(0);
                     } else {
                         if (owner instanceof Player player && !arrow.hasAttached(DataAttachments.TARGET_DATA)) {
+                            arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
                             PlayerMethodUtils.addAndSendMovementIfPlayer(owner, arrow.getDeltaMovement().scale(-20), false);
                             arrow.setDeltaMovement(0, 0, 0);
-                            arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), true));
+                            arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), TargetData.SourceType.PLAYER));
                             arrow.setOwner(arrow);
                             grantAdvancement((ServerPlayer) player, "main/bow");
+                            arrow.setBaseDamage(0);
                         }
                     }
-                    arrow.setBaseDamage(0);
+
                 }
                 case BreezeWindCharge windCharge -> {
                     windCharge.setDeltaMovement(windCharge.getDeltaMovement().normalize().scale(Config.arrowSpeed));
@@ -216,13 +228,13 @@ public class OnEntityLoad {
                         Entity target = mob.getTarget();
                         if (target != null) {
                             UUID targetUUID = target.getUUID();
-                            windCharge.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID, false));
+                            windCharge.setAttached(DataAttachments.TARGET_DATA, new TargetData(targetUUID, TargetData.SourceType.NORMALMOB));
                         }
                     } else {
                         if (owner instanceof Player && !windCharge.hasAttached(DataAttachments.TARGET_DATA)) {
                             PlayerMethodUtils.addAndSendMovementIfPlayer(owner, windCharge.getDeltaMovement().scale(-20), false);
                             windCharge.setDeltaMovement(0, 0, 0);
-                            windCharge.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), true));
+                            windCharge.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), TargetData.SourceType.NORMALMOB));
                             windCharge.setOwner(windCharge);
                         }
                     }

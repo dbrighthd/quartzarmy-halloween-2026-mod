@@ -53,6 +53,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.Vec3;
 
+import javax.xml.transform.Source;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +166,7 @@ public class TickLoop {
             case Arrow arrow -> {
                 TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
                 Entity target = level.getEntity(arrowData.target());
-                if (!arrowData.playerOwned()) {
+                if (arrowData.sourceType() == TargetData.SourceType.SKELETON) {
                     if (arrow.tickCount > Config.arrowBurst) {
                         arrow.setBaseDamage(20);
                     }
@@ -194,26 +195,24 @@ public class TickLoop {
             case BreezeWindCharge breezeWindCharge -> {
                 TargetData arrowData = breezeWindCharge.getAttachedOrCreate(DataAttachments.TARGET_DATA);
                 Entity target = level.getEntity(arrowData.target());
-                if (!arrowData.playerOwned()) {
-                    if (target != null && breezeWindCharge.tickCount <= Config.arrowTrackTime) {
+                if (target != null && breezeWindCharge.tickCount <= Config.arrowTrackTime) {
 
-                        Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
+                    Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
 
-                        Vec3 direction = targetPos.subtract(breezeWindCharge.position()).normalize();
+                    Vec3 direction = targetPos.subtract(breezeWindCharge.position()).normalize();
 
-                        breezeWindCharge.setDeltaMovement(direction.scale(breezeWindCharge.tickCount >= Config.arrowBurst ? Config.arrowSpeed * 2 : Config.arrowBurstSpeed));
-                        particleAtEntity(breezeWindCharge, new TrailParticleOption(target.position().add(0, 1, 0), 0x0000FF, 10), 0f, 0f, 0f, 10, 0);
+                    breezeWindCharge.setDeltaMovement(direction.scale(breezeWindCharge.tickCount >= Config.arrowBurst ? Config.arrowSpeed * 2 : Config.arrowBurstSpeed));
+                    particleAtEntity(breezeWindCharge, new TrailParticleOption(target.position().add(0, 1, 0), 0x0000FF, 10), 0f, 0f, 0f, 10, 0);
 
 
-                    }
-                    if (breezeWindCharge.tickCount > Config.arrowLifeTime) {
-                        breezeWindCharge.kill(level);
-                    }
-                    sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(breezeWindCharge));
-                    PositionMoveRotation change = new PositionMoveRotation(breezeWindCharge.position(), breezeWindCharge.getDeltaMovement(), breezeWindCharge.getYRot(), breezeWindCharge.getXRot());
-                    ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(breezeWindCharge.getId(), change, Set.of(), breezeWindCharge.onGround());
-                    sendPacketToAllPlayers(level, teleportPacket);
                 }
+                if (breezeWindCharge.tickCount > Config.arrowLifeTime) {
+                    breezeWindCharge.kill(level);
+                }
+                sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(breezeWindCharge));
+                PositionMoveRotation change = new PositionMoveRotation(breezeWindCharge.position(), breezeWindCharge.getDeltaMovement(), breezeWindCharge.getYRot(), breezeWindCharge.getXRot());
+                ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(breezeWindCharge.getId(), change, Set.of(), breezeWindCharge.onGround());
+                sendPacketToAllPlayers(level, teleportPacket);
             }
             default -> {
             }
@@ -333,7 +332,7 @@ public class TickLoop {
 
     public static void pandaTick(Panda panda)
     {
-        panda.setTarget((ServerPlayer)panda.level().getNearestPlayer(panda,10));
+        panda.setTarget(panda.level().getNearestPlayer(panda,10));
     }
 
     public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
