@@ -29,7 +29,7 @@ public class DeathDialog {
 
     public static void show(ServerPlayer player) {
         CommonDialogData common = new CommonDialogData(
-                Component.literal("Choose a reward"),
+                Component.literal("Dead"),
                 Optional.empty(),
                 false,
                 false,
