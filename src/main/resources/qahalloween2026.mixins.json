@@ -8,6 +8,7 @@
     "BeingStaredAtMixin",
     "BoatItemMixin",
     "BucketItemMixin",
+    "ButtonMixin",
     "ClientboundAddEntityPacketMixin",
     "CoralMixin",
     "CreeperSwellMixin",

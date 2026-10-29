@@ -47,6 +47,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
@@ -62,6 +63,7 @@ import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
+import static dbrighthd.qahalloween2026.mainloop.Setup.spawnDataCheck;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
@@ -93,23 +95,48 @@ public class TickLoop {
 
     public static void tick(MinecraftServer server)
     {
-        for(ServerPlayer player : server.getPlayerList().getPlayers())
+        if(spawnDataCheck(server) == Setup.StartPhase.IN_GAME)
         {
-            playerTick(player, player.level());
-        }
-        for (ServerLevel level : server.getAllLevels()) {
-            List<Entity> snapshot = new ArrayList<>();
-            level.getAllEntities().forEach(snapshot::add); // NO CONCURRENCY ISSUES PLEASE I WILL CRY
-            for(Entity entity : snapshot)
+            for(ServerPlayer player : server.getPlayerList().getPlayers())
             {
-                if(entity == null)
+                playerTick(player, player.level());
+            }
+            for (ServerLevel level : server.getAllLevels()) {
+                List<Entity> snapshot = new ArrayList<>();
+                level.getAllEntities().forEach(snapshot::add); // NO CONCURRENCY ISSUES PLEASE I WILL CRY
+                for(Entity entity : snapshot)
                 {
-                    break;
+                    if(entity == null)
+                    {
+                        break;
+                    }
+                    entityTick(entity);
                 }
-                entityTick(entity);
+            }
+        }
+        else
+        {
+            for(ServerPlayer player : server.getPlayerList().getPlayers())
+            {
+                beforeTick(player);
             }
         }
 
+    }
+
+    public static void beforeTick(ServerPlayer player)
+    {
+        if(player.position().y < 300)
+        {
+            BlockPos tpTo = player.level().getRespawnData().pos().atY(301);
+            player.teleportTo(tpTo.getX(), tpTo.getY(), tpTo.getZ());
+        }
+        if(player.gameMode.isSurvival())
+        {
+            player.setGameMode(GameType.ADVENTURE);
+        }
+        player.setHealth(20);
+        player.addEffect( new MobEffectInstance(MobEffects.WEAKNESS, 2, 255,true,true));
     }
 
     public static void entityTick(Entity entity)
@@ -277,7 +304,7 @@ public class TickLoop {
         if(!player.hasEffect(MobEffects.BLINDNESS))
         {
             player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("Don't Look at the Sun!")));
-            player.addEffect( new MobEffectInstance(MobEffects.BLINDNESS, 60, 1));
+            player.addEffect( new MobEffectInstance(MobEffects.BLINDNESS, 60, 1, true, false));
             player.setRemainingFireTicks(60);
 
         }
