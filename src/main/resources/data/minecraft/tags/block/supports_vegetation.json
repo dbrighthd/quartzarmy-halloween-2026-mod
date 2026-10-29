@@ -4,6 +4,7 @@
     "minecraft:water",
         "minecraft:dirt_path",
     "minecraft:farmland",
-    "#minecraft:nylium"
+    "#minecraft:nylium",
+    "minecraft:stone"
   ]
 }

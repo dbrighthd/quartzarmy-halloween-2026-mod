@@ -4,6 +4,7 @@
     "#minecraft:terracotta",
     "#minecraft:supports_vegetation",
     "minecraft:dirt_path",
-    "#minecraft:grass_blocks"
+    "#minecraft:grass_blocks",
+    "minecraft:stone"
   ]
 }
