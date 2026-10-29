@@ -69,6 +69,7 @@ public class OnEntityLoad {
                     changeAttribute(phantom, Attributes.MAX_HEALTH, 4);
                 }
                 case Vindicator vindicator -> {
+                    level.getServer().getScoreboard().addPlayerToTeam(vindicator.getScoreboardName(),GlobalVars.monsterTeam);
                     vindicator.setSilent(true);
                     vindicator.setPersistenceRequired();
                 }
