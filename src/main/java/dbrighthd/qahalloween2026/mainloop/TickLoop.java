@@ -258,6 +258,7 @@ public class TickLoop {
         SheepSystem.sheepTick(player);
         GlowflySystem.glowflyTick(player);
         JumpAttackCountSystem.countJumpTick(player);
+        EndRespawnSystem.endRespawnTick(player);
         if(isLookingAtSun(player))
         {
             lookAtSun(player);

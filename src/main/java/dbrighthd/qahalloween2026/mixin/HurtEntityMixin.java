@@ -30,7 +30,7 @@ public abstract class HurtEntityMixin {
     ) {
         LivingEntity target = (LivingEntity) (Object) this;
         Entity attacker = source.getEntity();
-        if(attacker instanceof Player player)
+        if(attacker instanceof Player player && !target.isInvulnerable())
         {
             EventsStorage.attackedThisTick.put(player.getUUID(), new EventsStorage.AttackInfo(target, (int)damage));
         }

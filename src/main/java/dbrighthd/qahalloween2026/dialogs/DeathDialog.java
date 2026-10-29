@@ -1,6 +1,7 @@
 package dbrighthd.qahalloween2026.dialogs;
 
 
+import dbrighthd.qahalloween2026.mainloop.EndFight;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -9,6 +10,7 @@ import net.minecraft.server.dialog.*;
 import net.minecraft.server.dialog.action.StaticAction;
 import net.minecraft.server.dialog.body.PlainMessage;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,22 +36,38 @@ public class DeathDialog {
                 false,
                 false,
                 DialogAction.NONE,
-                List.of(new PlainMessage(
-                        Component.literal("You died!!! what do you want to do"),
-                        200
-                )),
+                List.of(new PlainMessage(Component.literal("You died!!! what do you want to do"),
+                        200)),
                 List.of()
         );
 
-        Dialog dialog = new MultiActionDialog(
-                common,
-                List.of(
-                        button("Random Player", "random_player"),
-                        button("Spawnpoint", "spawnpoint")
-                ),
-                Optional.empty(),
-                1
-        );
+        Dialog dialog;
+        if(EndFight.soulified)
+        {
+            dialog = new MultiActionDialog(
+                    common,
+                    List.of(
+                            button("Random Player", "random_player"),
+                            button("Spawnpoint", "spawnpoint"),
+                            button("Continue Boss Fight", "continue_fight")
+                    ),
+                    Optional.empty(),
+                    1
+            );
+        }
+        else
+        {
+           dialog = new MultiActionDialog(
+                    common,
+                    List.of(
+                            button("Random Player", "random_player"),
+                            button("Spawnpoint", "spawnpoint")
+                    ),
+                    Optional.empty(),
+                    1
+            );
+        }
+
 
         player.openDialog(Holder.direct(dialog));
     }

@@ -3,16 +3,21 @@ package dbrighthd.qahalloween2026.utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.Filterable;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
+import net.minecraft.world.phys.Vec3;
 
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
@@ -56,6 +61,12 @@ public class GeneralUtils {
         {
             attributeToGet.setBaseValue(value);
         }
+    }
+
+    public static void respawnEffects(ServerPlayer player)
+    {
+        PlayerMethodUtils.playSoundAtEntity(player, SoundEvents.WARDEN_ATTACK_IMPACT,100,1);
+        PlayerMethodUtils.particleAtEntityOffset(player,new Vec3(0,1,0), ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS,0.25f,0.25f,0.25f,20,0);
     }
 
     public static ItemStack createNitWitBook() {

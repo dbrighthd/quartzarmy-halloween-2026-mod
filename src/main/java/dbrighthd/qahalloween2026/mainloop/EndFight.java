@@ -23,6 +23,7 @@ import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
@@ -59,8 +60,6 @@ public class EndFight {
         startPos = Vec3.atBottomCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)));
         broodPos = Vec3.atCenterOf(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)).above(15));
         soulEnderman.setPersistenceRequired();
-        soulEnderman.setCustomName(Component.literal("Soul Corrupted Enderman"));
-        soulEnderman.setCustomNameVisible(false);
         soulEnderman.setGlowingTag(true);
         soulEnderman.setNoAi(true);
         soulEnderman.addTag("soulEnderman");
@@ -69,6 +68,7 @@ public class EndFight {
         soulEnderman.setHealth(1);
         soulEnderman.setPermanentlyInvulnerable(true);
         endLevel.addFreshEntity(soulEnderman);
+        endLevel.setBlockAndUpdate(endLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(0,0,0)).below(), Blocks.AIR.defaultBlockState());
     }
 
     private static ServerBossEvent bossBar;
@@ -144,7 +144,7 @@ public class EndFight {
         {
             for(Player player : soulEnderman.level().players())
             {
-                player.addEffect( new MobEffectInstance(MobEffects.BLINDNESS, 50, 100));
+                player.addEffect( new MobEffectInstance(MobEffects.BLINDNESS, 50, 100,false,false));
             }
         }
         if(soulEnderman.tickCount % 10 == 0)
@@ -231,7 +231,7 @@ public class EndFight {
         soulEnderman.setHealth((int)Math.clamp(endermanMaxHealth*((double)phaseDuration/(double)particleTime),1,endermanMaxHealth));
         if(phaseDuration < particleTime) {
             soulified = false;
-            particleAtEntityToAllPlayers(soulEnderman, new TrailParticleOption(soulEnderman.position().add(0, 1, 0), 0x00FFFF, 10), 15, 15, 15, 10, 0);
+            particleAtEntityToAllPlayers(soulEnderman, new TrailParticleOption(soulEnderman.position().add(0, 1, 0), 0x00FFFF, 10), 20, 20, 20, 30, 0);
             if(phaseDuration % 5 == 0)
             {
                 playSoundAtEntity(soulEnderman, SoundEvents.SOUL_ESCAPE.value(), 100, 1);
@@ -239,7 +239,7 @@ public class EndFight {
         }
         if(phaseDuration == particleTime)
         {
-            particleAtEntityToAllPlayers(soulEnderman, ParticleTypes.SONIC_BOOM, 8, 8, 8, 20, 0);
+            particleAtEntityToAllPlayers(soulEnderman, ParticleTypes.SONIC_BOOM, 8, 8, 8, 30, 0);
         }
         if(phaseDuration == particleTime+10)
         {
@@ -247,6 +247,10 @@ public class EndFight {
             playSoundAtEntity(soulEnderman, SoundEvents.WARDEN_SONIC_BOOM, 100, 1);
             playSoundAtEntity(soulEnderman, SoundEvents.ENDERMAN_STARE, 100, 1);
             soulified = true;
+        }
+        if(phaseDuration > particleTime && !soulified)
+        {
+            particleAtEntityOffsetToAllPlayers(soulEnderman, new Vec3(0,1.5,0), ParticleTypes.SCULK_SOUL,0.25f,1f,0.25f,1,0);
         }
         if(phaseDuration > startTime)
         {
@@ -351,7 +355,7 @@ public class EndFight {
         {
             for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)-> true))
             {
-                zombie.kill((ServerLevel)zombie.level());
+                zombie.discard();
             }
             setPhase(EndFightPhase.TELEPORTING);
         }
@@ -359,6 +363,7 @@ public class EndFight {
     public static void creeperPhase(Enderman soulEnderman)
     {
         soulEnderman.setNoAi(true);
+        soulEnderman.setPermanentlyInvulnerable(true);
         int creeperSummonTime = 40;
         if(!phaseSetUp)
         {
@@ -397,7 +402,7 @@ public class EndFight {
             {
                 for(Skeleton skeleton : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SKELETON,(skeleton)->{return true;}))
                 {
-                    skeleton.kill((ServerLevel)skeleton.level());
+                    skeleton.discard();
                 }
                 setPhase(EndFightPhase.TELEPORTING);
             }

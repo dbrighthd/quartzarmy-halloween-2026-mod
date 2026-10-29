@@ -42,4 +42,9 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "glowfly_data"),
                     () -> GlowflyData.defaultState
             );
+    public static final AttachmentType<EndRespawnData> ENDRESPAWN_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "endrespawn_data"),
+                    () -> EndRespawnData.defaultState
+            );
 }

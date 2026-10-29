@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:piglin_brute_spawn_egg"
+    },
+    "title": "Jumpscare Warning",
+    "description": "hahahahahahhaahhahaahahahahah",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/creeper",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:entity_hurt_player",
+      "conditions": {
+        "damage": {
+          "source_entity": {
+            "minecraft:entity_type": "minecraft:piglin_brute"
+          }
+        }
+      }
+    }
+  }
+}

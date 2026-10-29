@@ -23,6 +23,6 @@ public class EndSpawnMixin {
     )
     private static void qahalloween$changeEndSpawnPoint(CallbackInfo ci)
     {
-        END_SPAWN_POINT = new BlockPos(256, 50, 0);
+        END_SPAWN_POINT = new BlockPos(200, 50, 0);
     }
 }

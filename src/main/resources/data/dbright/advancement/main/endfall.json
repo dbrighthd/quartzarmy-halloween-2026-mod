@@ -5,13 +5,13 @@
       "count": 1
     },
     "title": "I Wish That I Could Fall",
-    "description": "but like the other way?",
+    "description": "like it would even matter",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "dbright:main/root",
+  "parent": "dbright:main/end_entered",
   "criteria": {
     "the": {
       "trigger": "minecraft:impossible"

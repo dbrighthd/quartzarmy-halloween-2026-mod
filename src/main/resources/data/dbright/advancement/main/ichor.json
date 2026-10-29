@@ -11,7 +11,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "dbright:sift/entersift",
+  "parent": "dbright:main/entersift",
   "criteria": {
     "fort": {
       "trigger": "minecraft:location",

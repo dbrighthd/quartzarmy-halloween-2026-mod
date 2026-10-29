@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026.mixin;
 
+import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.world.level.levelgen.densityfunction.generator.EndIslandFunction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -13,6 +14,6 @@ public class EndIslandStupidMixin {
         )
         private static long qahalloween$changeEndGap(long original)
         {
-            return 512L;
+            return Config.endIslandRadius;
         }
 }

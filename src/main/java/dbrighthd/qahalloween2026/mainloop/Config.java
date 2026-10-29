@@ -9,6 +9,10 @@ public class Config {
     public static double creeperCancelDistance = 16;
     public static double creeperSuckForce = 0.1;
 
+    public static long endIslandRadius = 8192L;
+
+    public static int endRespawnSeconds = 7;
+
     public static int spikeCount = 30;
     public static double spikeDistance = 100;
 
