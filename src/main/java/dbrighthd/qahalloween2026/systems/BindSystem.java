@@ -73,6 +73,10 @@ public class BindSystem {
         return (player.getInventory().countItem(Items.STRING) >= stringRequiredForBind);
     }
 
+    public static boolean isInBind(ServerPlayer player)
+    {
+        return player.getAttachedOrCreate(DataAttachments.BIND_DATA).bindState() > 0;
+    }
     public static void cancelBind(ServerPlayer player)
     {
         BindData data = player.getAttachedOrCreate(DataAttachments.BIND_DATA);

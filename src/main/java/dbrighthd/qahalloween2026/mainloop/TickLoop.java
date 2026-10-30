@@ -64,6 +64,7 @@ import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
+import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.tickPlayerSpecifics;
 import static dbrighthd.qahalloween2026.mainloop.Setup.spawnDataCheck;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
@@ -267,6 +268,7 @@ public class TickLoop {
             player.gameMode.destroyBlock(player.blockPosition());
         }
         BindSystem.bindTick(player);
+        tickPlayerSpecifics(player);
         WetIchorSystem.wetIchorTick(player);
         SheepSystem.sheepTick(player);
         GlowflySystem.glowflyTick(player);
