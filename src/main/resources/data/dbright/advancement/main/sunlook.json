@@ -11,7 +11,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "dbright:main/glowflies",
+  "parent": "dbright:main/creeper",
   "criteria": {
     "the": {
       "trigger": "minecraft:impossible"

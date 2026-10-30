@@ -78,6 +78,13 @@ public class EndFight {
         {
             return;
         }
+        if(soulEnderman.isDeadOrDying())
+        {
+            for(ServerPlayer player : soulEnderman.level().getServer().getPlayerList().getPlayers())
+            {
+                grantAdvancement(player,"main/finished");
+            }
+        }
         bossBarTick(soulEnderman);
         if(soulified)
         {

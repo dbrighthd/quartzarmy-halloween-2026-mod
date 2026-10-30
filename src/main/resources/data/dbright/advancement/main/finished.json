@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:enderman_spawn_egg",
+      "count": 1
+    },
+    "title": "your did it",
+    "description": "congrations",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/endfall",
+  "criteria": {
+    "death": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

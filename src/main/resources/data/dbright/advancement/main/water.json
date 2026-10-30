@@ -11,7 +11,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "dbright:main/root",
+  "parent": "dbright:main/missed",
   "criteria": {
     "fort": {
       "trigger": "minecraft:location",

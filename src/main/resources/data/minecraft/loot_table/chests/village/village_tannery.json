@@ -17,12 +17,12 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:obsidian",
+          "name": "minecraft:string",
           "weight": 10
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:obsidian"
+          "name": "minecraft:string"
         },
         {
           "type": "minecraft:item",

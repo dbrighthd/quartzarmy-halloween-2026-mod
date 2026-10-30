@@ -18,6 +18,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
+
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
+
 @Mixin(Item.class)
 public abstract class ItemMixin {
 
@@ -32,15 +36,19 @@ public abstract class ItemMixin {
         {
             if(Identifier.parse("minecraft:lava_bucket").equals(itemStack.get(DataComponents.ITEM_MODEL))) {
                 player.setRemainingFireTicks(100);
+                grantAdvancement(player,"main/drinklava");
             }
-            if(Identifier.parse("minecraft:water_bucket").equals(itemStack.get(DataComponents.ITEM_MODEL))) {
-                if(Component.literal("Ichor Bucket").equals(itemStack.get(DataComponents.ITEM_NAME)))
+            if(Identifier.parse("minecraft:water_bucket").equals(itemStack.get(DataComponents.ITEM_MODEL)) || Identifier.parse("minecraft:potion").equals(itemStack.get(DataComponents.ITEM_MODEL)))
+            {
+                if(Objects.requireNonNull(itemStack.get(DataComponents.ITEM_NAME)).toString().contains("Ichor"))
                 {
                     WetIchorSystem.setIchorData(player, Config.maxIchor);
+                    grantAdvancement(player,"main/drinkichor");
                 }
                 else
                 {
                     WetIchorSystem.setWet(player,Config.maxWet);
+                    grantAdvancement(player,"main/drinkwater");
                 }
             }
         }

@@ -1,5 +1,5 @@
 {
-  "parent": "dbright:main/panda",
+  "parent": "dbright:main/sheepsleep",
   "display": {
     "icon": {
       "id": "minecraft:oak_boat"

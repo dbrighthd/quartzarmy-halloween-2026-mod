@@ -7,6 +7,7 @@
     "AbstractSkeletonMixin",
     "BeingStaredAtMixin",
     "BoatItemMixin",
+    "BottleItemMixin",
     "BucketItemMixin",
     "ButtonMixin",
     "ClientboundAddEntityPacketMixin",

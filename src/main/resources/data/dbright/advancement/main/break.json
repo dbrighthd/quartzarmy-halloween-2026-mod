@@ -1,5 +1,5 @@
 {
-  "parent": "dbright:main/missed",
+  "parent": "dbright:main/water",
   "display": {
     "icon": {
       "id": "minecraft:stone_pickaxe",

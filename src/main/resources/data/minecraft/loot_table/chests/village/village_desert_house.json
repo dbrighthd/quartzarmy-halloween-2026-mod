@@ -17,7 +17,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:obsidian",
+          "name": "minecraft:string",
           "weight": 10
         },
         {

@@ -13,9 +13,13 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
+import net.minecraft.world.entity.animal.chicken.ChickenVariants;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
+import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.animal.nautilus.Nautilus;
@@ -73,6 +77,12 @@ public class OnEntityLoad {
                     level.getServer().getScoreboard().addPlayerToTeam(vindicator.getScoreboardName(),GlobalVars.monsterTeam);
                     vindicator.setSilent(true);
                     vindicator.setPersistenceRequired();
+
+                    if(vindicator.level().dimension() == Level.OVERWORLD)
+                    {
+                        vindicator.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(vindicator.getId() % 3 != 0 ? Items.OBSIDIAN : Items.CINNABAR));
+                        vindicator.setDropChance(EquipmentSlot.MAINHAND,100);
+                    }
                 }
                 case Pillager pillager -> {
                     pillager.setSilent(true);
@@ -83,6 +93,9 @@ public class OnEntityLoad {
                 }
                 case Wolf wolf -> {
                     replaceEntity(level,wolf, EntityTypes.PANDA,1);
+                }
+                case Cat cat -> {
+                    replaceEntity(level,cat, EntityTypes.CHICKEN,1);
                 }
                 case Panda panda -> {
                     panda.setMainGene(Panda.Gene.AGGRESSIVE);
@@ -156,6 +169,8 @@ public class OnEntityLoad {
                 case Dolphin dolphin ->
                         replaceEntityIfLessThanAround(level, dolphin, EntityTypes.AXOLOTL, 1, Config.maxAxolotlsNearby);
                 case Cow cow -> replaceEntity(level, cow, EntityTypes.CHICKEN, 1);
+                case Chicken chicken -> chicken.setVariant(level.registryAccess().get(ChickenVariants.TEMPERATE).get());
+
                 case Rabbit rabbit -> {
                     if (level.dimension() == Level.OVERWORLD) {
                         replaceEntity(level, rabbit, EntityTypes.PHANTOM, 2);

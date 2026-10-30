@@ -10,7 +10,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "dbright:main/sheepsleep",
+  "parent": "dbright:main/sunlook",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:entity_hurt_player",

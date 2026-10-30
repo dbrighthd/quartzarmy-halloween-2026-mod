@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:obsidian"
+          "name": "minecraft:string"
         },
         {
           "type": "minecraft:item",
@@ -37,7 +37,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:obsidian",
+          "name": "minecraft:string",
           "weight": 3
         }
       ],

@@ -245,7 +245,12 @@ public class TickLoop {
         if(player.isDeadOrDying())
         {
             grantAdvancement(player,"main/death");
+            if(player.getY() < (player.level().dimension() == Level.END ? 0 : -64))
+            {
+                grantAdvancement(player,"challenges/voiddeath");
+            }
         }
+
         player.getFoodData().setFoodLevel(20);
         player.getFoodData().setSaturation(20.0f);
         BlockPos standingOn = player.blockPosition().below();
@@ -274,7 +279,7 @@ public class TickLoop {
             {
                 if(player.getY() < 0)
                 {
-                    grantAdvancement(player,"end/endfall");
+                    grantAdvancement(player,"main/endfall");
                     attribute.setBaseValue(-0.5);
                 }
                 else
@@ -378,7 +383,6 @@ public class TickLoop {
             GeneralUtils.replaceEntity(serverLevel,chicken, EntityTypes.PHANTOM,1);
         }
     }
-
 
 
     public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
