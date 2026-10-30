@@ -111,6 +111,10 @@ public class TickLoop {
                     {
                         break;
                     }
+                    if(entity.tickCount <= 1)
+                    {
+                        OnEntityLoad.onEntityLoad(entity,level);
+                    }
                     entityTick(entity);
                 }
             }
