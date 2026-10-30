@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_dye",
+  "dye": "#minecraft:dyes",
+  "group": "dyed_armor",
+  "result": {
+    "id": "minecraft:leather_chestplate",
+    "components": {
+      "minecraft:max_damage": 1
+    }
+  },
+  "target": "minecraft:leather_chestplate"
+}

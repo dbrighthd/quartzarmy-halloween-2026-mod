@@ -13,7 +13,7 @@
   "result": {
     "id": "minecraft:copper_shovel",
     "components": {
-      "minecraft:max_damage": 20
+      "minecraft:max_damage": 100
     }
   }
 }

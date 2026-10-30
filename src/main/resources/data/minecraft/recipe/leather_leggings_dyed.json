@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_dye",
+  "dye": "#minecraft:dyes",
+  "group": "dyed_armor",
+  "result": {
+    "id": "minecraft:leather_leggings",
+    "components": {
+      "minecraft:max_damage": 1
+    }
+  },
+  "target": "minecraft:leather_leggings"
+}

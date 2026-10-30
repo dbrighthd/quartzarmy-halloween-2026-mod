@@ -90,6 +90,8 @@ public class OnEntityLoad {
                 {
                     vindicator.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(vindicator.getId() % 3 != 0 ? Items.OBSIDIAN : Items.CINNABAR));
                     vindicator.setDropChance(EquipmentSlot.MAINHAND,100);
+                    changeAttribute(vindicator,Attributes.MAX_HEALTH,15);
+                    changeAttribute(vindicator,Attributes.ATTACK_DAMAGE,3);
                 }
             }
             case Pillager pillager -> {
@@ -101,6 +103,9 @@ public class OnEntityLoad {
             }
             case Wolf wolf -> {
                 replaceEntity(level,wolf, EntityTypes.PANDA,1);
+            }
+            case Witch witch -> {
+                replaceEntity(level,witch, EntityTypes.ZOMBIE,1);
             }
             case Cat cat -> {
                 replaceEntity(level,cat, EntityTypes.CHICKEN,1);

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "minecraft:gold_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "id": "minecraft:golden_helmet",
+    "components": {
+      "minecraft:max_damage": 407,
+      "minecraft:unbreakable": {}
+    }
+  }
+}

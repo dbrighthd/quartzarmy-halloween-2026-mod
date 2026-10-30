@@ -13,7 +13,8 @@
   "result": {
     "id": "minecraft:golden_shovel",
     "components": {
-      "minecraft:max_damage": 2000
+      "minecraft:max_damage": 2000,
+      "minecraft:unbreakable": {}
     }
   }
 }
