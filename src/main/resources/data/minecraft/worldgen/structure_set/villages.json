@@ -1,9 +1,13 @@
 {
   "placement": {
-    "type": "minecraft:random_spread",
-    "salt": 10387312,
-    "separation": 8,
-    "spacing": 25
+    "type": "minecraft:concentric_rings",
+    "frequency_reduction_method": "default",
+    "frequency": 1,
+    "count": 256,
+    "distance": 4,
+    "preferred_biomes": "#minecraft:stronghold_biased_to",
+    "salt": 2,
+    "spread": 2
   },
   "structures": [
     {

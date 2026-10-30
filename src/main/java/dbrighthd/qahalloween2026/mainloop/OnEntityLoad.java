@@ -17,6 +17,7 @@ import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.animal.nautilus.Nautilus;
 import net.minecraft.world.entity.animal.panda.Panda;
 import net.minecraft.world.entity.animal.pig.Pig;
@@ -76,6 +77,9 @@ public class OnEntityLoad {
                 case Pillager pillager -> {
                     pillager.setSilent(true);
                     pillager.setPersistenceRequired();
+                }
+                case IronGolem golem -> {
+                    changeAttribute(golem,Attributes.ATTACK_DAMAGE,0);
                 }
                 case Wolf wolf -> {
                     replaceEntity(level,wolf, EntityTypes.PANDA,1);
