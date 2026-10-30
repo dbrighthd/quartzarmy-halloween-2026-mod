@@ -26,6 +26,8 @@ public class Config {
     public static double breakMissChance = 0.2;
     public static double placeMissChance = 0.25;
 
+    public static boolean useHardcodedSeed = true;
+
     public static int maxWet = 200;
     public static int maxIchor = 100;
     public static double maxSlipperyFriction = 0;
