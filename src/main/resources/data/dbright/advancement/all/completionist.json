@@ -1,0 +1,549 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:nether_star",
+      "count": 1
+    },
+    "title": "Completionist",
+    "description": "Complete all 31 other advancements",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "dbright:main/root",
+  "criteria": {
+    "1": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/alleffects" : true
+              }
+            }
+          }
+        }
+      }
+    },"2": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/allwood" : true
+              }
+            }
+          }
+        }
+      }
+    },"3": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/arrowskeleton" : true
+              }
+            }
+          }
+        }
+      }
+    },"4": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/bedrock" : true
+              }
+            }
+          }
+        }
+      }
+    },"5": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/bow" : true
+              }
+            }
+          }
+        }
+      }
+    },"6": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/jumpchain" : true
+              }
+            }
+          }
+        }
+      }
+    },"7": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:challenges/voiddeath" : true
+              }
+            }
+          }
+        }
+      }
+    },"8": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/boat" : true
+              }
+            }
+          }
+        }
+      }
+    },"9": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/break" : true
+              }
+            }
+          }
+        }
+      }
+    },"10": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/brute_jumpscare" : true
+              }
+            }
+          }
+        }
+      }
+    },"11": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/chicken" : true
+              }
+            }
+          }
+        }
+      }
+    },"12": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/creeper" : true
+              }
+            }
+          }
+        }
+      }
+    },"13": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/death" : true
+              }
+            }
+          }
+        }
+      }
+    },"14": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/drinkichor" : true
+              }
+            }
+          }
+        }
+      }
+    },"15": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/drinklava" : true
+              }
+            }
+          }
+        }
+      }
+    },"16": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/drinkwater" : true
+              }
+            }
+          }
+        }
+      }
+    },"17": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/endfall" : true
+              }
+            }
+          }
+        }
+      }
+    },"18": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/end_entered" : true
+              }
+            }
+          }
+        }
+      }
+    },"19": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/entersift" : true
+              }
+            }
+          }
+        }
+      }
+    },"20": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/failbind" : true
+              }
+            }
+          }
+        }
+      }
+    },"21": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/finished" : true
+              }
+            }
+          }
+        }
+      }
+    },"22": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/glowflies" : true
+              }
+            }
+          }
+        }
+      }
+    },"23": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/ichor" : true
+              }
+            }
+          }
+        }
+      }
+    },"24": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/jumpattack" : true
+              }
+            }
+          }
+        }
+      }
+    },"25": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/missed" : true
+              }
+            }
+          }
+        }
+      }
+    },"26": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/panda" : true
+              }
+            }
+          }
+        }
+      }
+    },"27": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/sheepsleep" : true
+              }
+            }
+          }
+        }
+      }
+    },"28": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/string" : true
+              }
+            }
+          }
+        }
+      }
+    },"29": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/sunlook" : true
+              }
+            }
+          }
+        }
+      }
+    },"30": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/villagerattack" : true
+              }
+            }
+          }
+        }
+      }
+    },"31": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/water" : true
+              }
+            }
+          }
+        }
+      }
+    }
+
+  },
+  "requirements": [
+    [
+      "1"
+    ],[
+      "2"
+    ],[
+      "3"
+    ],[
+      "4"
+    ],[
+      "5"
+    ],[
+      "6"
+    ],[
+      "7"
+    ],[
+      "8"
+    ],[
+      "9"
+    ],[
+      "10"
+    ],[
+      "11"
+    ],[
+      "12"
+    ],[
+      "13"
+    ],[
+      "14"
+    ],[
+      "15"
+    ],[
+      "16"
+    ],[
+      "17"
+    ],[
+      "18"
+    ],[
+      "19"
+    ],[
+      "20"
+    ],[
+      "21"
+    ],[
+      "22"
+    ],[
+      "23"
+    ],[
+      "24"
+    ],[
+      "25"
+    ],[
+      "26"
+    ],[
+      "27"
+    ],[
+      "28"
+    ],[
+      "29"
+    ],[
+      "30"
+    ],[
+      "31"
+    ]
+  ]
+}
