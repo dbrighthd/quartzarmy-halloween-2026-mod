@@ -249,9 +249,13 @@ public class TickLoop {
         player.getFoodData().setFoodLevel(20);
         player.getFoodData().setSaturation(20.0f);
         BlockPos standingOn = player.blockPosition().below();
-        if (serverLevel.getBlockState(standingOn).is(Blocks.GRASS_BLOCK))
+        if (serverLevel.getBlockState(standingOn).is(Blocks.GRASS_BLOCK) || serverLevel.getBlockState(standingOn).is(Blocks.PODZOL))
         {
             serverLevel.setBlockAndUpdate(standingOn,Blocks.DIRT_PATH.defaultBlockState());
+        }
+        if (serverLevel.getBlockState(player.blockPosition()).is(Blocks.LEAF_LITTER))
+        {
+            player.gameMode.destroyBlock(player.blockPosition());
         }
         BindSystem.bindTick(player);
         WetIchorSystem.wetIchorTick(player);
