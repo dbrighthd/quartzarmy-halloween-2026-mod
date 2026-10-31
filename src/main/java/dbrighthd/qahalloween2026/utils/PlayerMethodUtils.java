@@ -57,7 +57,10 @@ public class PlayerMethodUtils {
         playSoundAtEntityForPlayer(player, Config.missSound, 100, 2, player);
         grantAdvancement(player,"main/missed");
     }
-
+    public static boolean chainJumpCheck(ServerPlayer player)
+    {
+        return !player.isSprinting() && player.getLastClientInput().forward();
+    }
     public static void grantAdvancement(ServerPlayer player, String advancement)
     {
         String namespace = "dbright"; //listen idc if this is 'bad' it works
@@ -72,7 +75,7 @@ public class PlayerMethodUtils {
         }
     }
 
-    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntity(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntity(Entity entity, T particleType, float dx, float dy, float dz, int count, double speed)
     {
         if(entity.level() instanceof ServerLevel level)
         {
@@ -81,7 +84,7 @@ public class PlayerMethodUtils {
     }
 
 
-    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityToAllPlayers(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityToAllPlayers(Entity entity, T particleType, float dx, float dy, float dz, int count, double speed)
     {
         ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(
                 particleType,
@@ -93,7 +96,7 @@ public class PlayerMethodUtils {
                 dx,
                 dy,
                 dz,
-                speed,
+                (float)speed,
                 count
         );
 

@@ -5,13 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -80,9 +80,13 @@ public class EndFight {
         }
         if(soulEnderman.isDeadOrDying())
         {
-            for(ServerPlayer player : soulEnderman.level().getServer().getPlayerList().getPlayers())
+            MinecraftServer server = soulEnderman.level().getServer();
+            if(server != null)
             {
-                grantAdvancement(player,"main/finished");
+                for(ServerPlayer player : server.getPlayerList().getPlayers())
+                {
+                    grantAdvancement(player,"main/finished");
+                }
             }
         }
         bossBarTick(soulEnderman);

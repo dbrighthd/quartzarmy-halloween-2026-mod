@@ -17,6 +17,11 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "jumpattack_data"),
                     () -> ChainedActionData.defaultState
             );
+    public static final AttachmentType<ChainedActionData> JUMP_CHAIN_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "jump_chain_data"),
+                    () -> ChainedActionData.defaultState
+            );
     public static final AttachmentType<BindData> BIND_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "bind_data"),

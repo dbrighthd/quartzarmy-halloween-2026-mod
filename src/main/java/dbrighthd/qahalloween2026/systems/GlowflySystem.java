@@ -6,12 +6,12 @@ import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
-import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class GlowflySystem {
     public static void glowflyTick(ServerPlayer player) {
@@ -28,6 +28,10 @@ public class GlowflySystem {
             player.setGlowingTag(true);
             particleAtEntity(player, ParticleTypes.FIREFLY,0.1f,0.1f,0.1f,5,100);
             particleAtEntity(player,new TrailParticleOption(player.position().add(0,1,0), 0xFFFFAA, 10), 1, 1, 1,2, 0);
+            if(player.tickCount % 5 == 0)
+            {
+                playSoundAtEntity(player, SoundEvents.FIREFLY_BUSH_IDLE,100,1);
+            }
             glowFlyTicks--;
         }
         else

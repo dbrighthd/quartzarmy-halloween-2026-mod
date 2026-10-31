@@ -2,7 +2,6 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.BucketItem;
 
 public class Config {
     public static double creeperStartDistance = 12;
@@ -17,6 +16,9 @@ public class Config {
     public static double spikeDistance = 100;
 
     public static final int stringPerDamage = 2;
+
+    public static int tripleJumpGrace = 10;
+    public static double tripleJumpBoost = 1.7;
 
     public final static int bindCooldownTicks = 0;
     public final static int bindTimeTicks = 27;

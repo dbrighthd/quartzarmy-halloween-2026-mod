@@ -3,7 +3,6 @@ package dbrighthd.qahalloween2026.mainloop;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import dbrighthd.qahalloween2026.systems.WetIchorSystem;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;

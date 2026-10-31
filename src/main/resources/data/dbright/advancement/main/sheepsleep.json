@@ -1,5 +1,5 @@
 {
-  "parent": "dbright:main/failbind",
+  "parent": "dbright:main/triplejump",
   "display": {
     "icon": {
       "id": "minecraft:sheep_spawn_egg",

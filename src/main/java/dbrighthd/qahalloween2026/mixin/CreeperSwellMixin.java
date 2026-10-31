@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026.mixin;
 
+import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -31,21 +32,11 @@ public abstract class CreeperSwellMixin {
         Creeper creeper = (Creeper) (Object) this;
 
         if (creeper.getSwellDir() > 0) {
-            if (creeper.level() instanceof ServerLevel serverLevel  && creeper.swell == 0)
+            if (creeper.swell == 0)
             {
                 creeper.setPermanentlyInvulnerable(true);
                 creeper.setNoAi(true);
-                serverLevel.sendParticles(
-                        ParticleTypes.PORTAL,
-                        creeper.getX(),
-                        creeper.getY()+1,
-                        creeper.getZ(),
-                        1000,
-                        0.0,
-                        0.0,
-                        0.0,
-                        5.0
-                );
+                PlayerMethodUtils.particleAtEntityOffset(creeper, new Vec3(0,1,0), ParticleTypes.PORTAL,0,0,0,1000,5);
             }
             if(creeper.swell == 18)
             {

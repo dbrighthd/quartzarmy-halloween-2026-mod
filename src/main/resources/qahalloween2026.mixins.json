@@ -25,6 +25,7 @@
     "MixinServerGamePacketListenerImpl",
     "MultiNoiseBiomeSourceMixin",
     "PlayerActionMixin",
+    "PlayerJumpMixin",
     "PlayerUseItemOnMixin",
     "PortalForcerMixin",
     "PortalShapeMixin",

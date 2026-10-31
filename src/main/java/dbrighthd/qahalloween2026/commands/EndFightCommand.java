@@ -8,22 +8,20 @@ import net.minecraft.commands.Commands;
 public class EndFightCommand {
     public static void register() {
         CommandRegistrationCallback.EVENT.register(
-                (dispatcher, registryAccess, environment) -> {
-                    dispatcher.register(
-                            Commands.literal("setphase")
-                                    .requires(source -> source.permissions().hasPermission(
-                                            net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER
-                                    ))
-                                    .then(Commands.argument("phase", StringArgumentType.word())
-                                            .executes(context -> {
-                                                String action = StringArgumentType.getString(context, "phase");
+                (dispatcher, _, _) -> dispatcher.register(
+                        Commands.literal("setphase")
+                                .requires(source -> source.permissions().hasPermission(
+                                        net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER
+                                ))
+                                .then(Commands.argument("phase", StringArgumentType.word())
+                                        .executes(context -> {
+                                            String action = StringArgumentType.getString(context, "phase");
 
-                                                EndFight.setPhase(EndFight.EndFightPhase.valueOf(action.toUpperCase()));
-                                                return 1;
-                                            })
-                                    )
-                    );
-                }
+                                            EndFight.setPhase(EndFight.EndFightPhase.valueOf(action.toUpperCase()));
+                                            return 1;
+                                        })
+                                )
+                )
         );
     }
 }

@@ -84,6 +84,7 @@ public class TickLoop {
 
             return true;
         });
+
         ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> {
             DeathDialog.show(newPlayer);
             newPlayer.setGameMode(GameType.SPECTATOR);
@@ -252,11 +253,12 @@ public class TickLoop {
             player.gameMode.destroyBlock(player.blockPosition());
         }
         BindSystem.bindTick(player);
+        JumpChainSystem.countJumpTick(player);
         tickPlayerSpecifics(player);
         WetIchorSystem.wetIchorTick(player);
         SheepSystem.sheepTick(player);
         GlowflySystem.glowflyTick(player);
-        JumpAttackCountSystem.countJumpTick(player);
+        JumpAttackCountSystem.countJumpAttackTick(player);
         EndRespawnSystem.endRespawnTick(player);
         if(isLookingAtSun(player))
         {

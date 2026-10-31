@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class JumpAttackCountSystem {
 
-    public static void countJumpTick(ServerPlayer player)
+    public static void countJumpAttackTick(ServerPlayer player)
     {
         if(player == null)
         {
@@ -17,13 +17,13 @@ public class JumpAttackCountSystem {
         {
             jumpAmount = 0;
         }
-        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new ChainedActionData(jumpAmount));
+        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new ChainedActionData(jumpAmount,0));
     }
 
     public static int addJumpAttack(ServerPlayer player, int amount)
     {
         int newChained = player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).chainedAmount()+amount;
-        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new ChainedActionData(newChained));
+        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new ChainedActionData(newChained,0));
         return newChained;
     }
 

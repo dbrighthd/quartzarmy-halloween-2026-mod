@@ -1,8 +1,6 @@
 package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.Qahalloween2026;
-import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -11,20 +9,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.commands.SpreadPlayersCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.storage.CommandStorage;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
-
 import java.util.Objects;
 
 public class Setup {
@@ -72,7 +62,7 @@ public class Setup {
         try{
             SpreadPlayersCommand.spreadPlayers(server.createCommandSourceStack(),position,10,10,256,false,server.getPlayerList().getPlayers());
         }
-        catch (Exception e)
+        catch (Exception _)
         {
         }
         for(ServerPlayer player : server.getPlayerList().getPlayers())
@@ -86,15 +76,13 @@ public class Setup {
     public static void placeBedrockThingy(BlockPos pos, ServerLevel level)
     {
         BlockPos referencePos = pos.subtract(new Vec3i(4,0,4));
-        StructureTemplate template = Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright","box")).orElse(null);
-        template.placeInWorld(level,referencePos,referencePos,new StructurePlaceSettings(), level.getRandom(), Block.UPDATE_ALL);
+        Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright", "box")).ifPresent(template -> template.placeInWorld(level, referencePos, referencePos, new StructurePlaceSettings(), level.getRandom(), Block.UPDATE_ALL));
     }
 
     public static void breakBedrockThingy(BlockPos pos, ServerLevel level)
     {
         BlockPos referencePos = pos.subtract(new Vec3i(4,0,4));
-        StructureTemplate template = Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright","emptybox")).orElse(null);
-        template.placeInWorld(level,referencePos,referencePos,new StructurePlaceSettings(), level.getRandom(), Block.UPDATE_ALL);
+        Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright", "emptybox")).ifPresent(template -> template.placeInWorld(level, referencePos, referencePos, new StructurePlaceSettings(), level.getRandom(), Block.UPDATE_ALL));
     }
 
     public static StartPhase spawnDataCheck(MinecraftServer server)

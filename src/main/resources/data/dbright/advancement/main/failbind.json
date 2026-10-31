@@ -16,7 +16,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "dbright:main/jumpattack",
+  "parent": "dbright:main/death",
   "criteria": {
     "the": {
       "trigger": "minecraft:impossible"

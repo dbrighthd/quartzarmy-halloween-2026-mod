@@ -39,8 +39,7 @@ public class SpotLight {
             for (int i = 0; i < amount; i++) {
                 double forwardDistance = random.nextDouble();
                 forwardDistance *= length;
-                double maxRadius = Math.tan(halfAngleRadians) * forwardDistance;
-                double radius = maxRadius;
+                double radius = Math.tan(halfAngleRadians) * forwardDistance;
                 double theta = random.nextDouble(Math.PI * 2.0);
                 double sideA = Math.cos(theta) * radius;
                 double sideB = Math.sin(theta) * radius;
@@ -55,8 +54,7 @@ public class SpotLight {
             for (int i = 0; i < amount; i++) {
                 double forwardDistance1 = length * random.nextDouble();
                 double forwardDistance2 = length * random.nextDouble();
-                double maxRadius = Math.tan(halfAngleRadians) * forwardDistance1;
-                double radius = maxRadius;
+                double radius = Math.tan(halfAngleRadians) * forwardDistance1;
                 double theta = random.nextDouble(Math.PI * 2.0);
                 double sideA = Math.cos(theta) * radius;
                 double sideB = Math.sin(theta) * radius;
