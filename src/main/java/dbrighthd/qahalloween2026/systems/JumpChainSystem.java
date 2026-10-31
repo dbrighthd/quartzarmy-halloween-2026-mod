@@ -3,11 +3,7 @@ package dbrighthd.qahalloween2026.systems;
 import dbrighthd.qahalloween2026.attachments.ChainedActionData;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.mainloop.Config;
-import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;

@@ -33,7 +33,7 @@ public class Config {
     public static int maxWet = 200;
     public static int maxIchor = 100;
     public static double maxSlipperyFriction = 0;
-    public static double maxAirSlipperyFriction = 0.4;
+    public static double maxAirSlipperyFriction = 0.7;
 
     public static double arrowSpeed = 0.1;
     public static double arrowBurstSpeed = 0.6;
@@ -41,7 +41,7 @@ public class Config {
     public static int arrowLifeTime = 160;
     public static int arrowBurst = 5;
 
-    public static int maxAxolotlsNearby = 16;
+    public static int maxAxolotlsNearby = 24;
 
     public static int sheepCooldownMax = 360;
     public static int sheepUntilSleep = 4;
