@@ -18,7 +18,7 @@ import java.util.Objects;
 public abstract class ButtonMixin {
     @Inject(method = "press(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)V", at = @At("HEAD"))
     private void tryStart(BlockState state, Level level, BlockPos pos, Player player, CallbackInfo ci){
-        if(state.is(Blocks.OAK_BUTTON) && player.getName().contains(Component.literal("dbright")) && pos.getY() > 300)
+        if(state.is(Blocks.OAK_BUTTON) && player.getName().contains(Component.literal("dbrighthd")) && pos.getY() > 300)
         {
             if(player.level().getServer() != null)
             {

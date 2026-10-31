@@ -30,6 +30,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
@@ -118,6 +119,10 @@ public class OnEntityLoad {
                 ravager.setPersistenceRequired();
                 changeAttribute(ravager,Attributes.MAX_HEALTH,10);
 
+            }
+
+            case Breeze breeze -> {
+                breeze.setPersistenceRequired();
             }
             case PiglinBrute brute -> {
                 brute.setSilent(true);
