@@ -1,6 +1,6 @@
 {
   "clock": "minecraft:overworld",
-  "period_ticks": 30000,
+  "period_ticks": 10000,
   "time_markers": {
     "fishysift:endure": {
       "show_in_commands": true,
@@ -8,11 +8,11 @@
     },
     "fishysift:thrive": {
       "show_in_commands": true,
-      "ticks": 10000
+      "ticks": 3333
     },
     "fishysift:flow": {
       "show_in_commands": true,
-      "ticks": 20000
+      "ticks": 6666
     }
   },
   "tracks": {
@@ -32,11 +32,11 @@
           "value": "#ccFFBF59"
         },
         {
-          "ticks": 10000,
+          "ticks": 3333,
           "value": "#ccAFFFE3"
         },
         {
-          "ticks": 20000,
+          "ticks": 6666,
           "value": "#cc8CDCFF"
         }
       ],
@@ -49,11 +49,11 @@
           "value": "#B0EA64"
         },
         {
-          "ticks": 10000,
+          "ticks": 3333,
           "value": "#FCFF75"
         },
         {
-          "ticks": 20000,
+          "ticks": 6666,
           "value": "#FCFF75"
         }
       ],
@@ -74,11 +74,11 @@
           "value": "#722A6C"
         },
         {
-          "ticks": 10000,
+          "ticks": 3333,
           "value": "#F4A6EE"
         },
         {
-          "ticks": 20000,
+          "ticks": 6666,
           "value": "#CE4CC3"
         }
       ],

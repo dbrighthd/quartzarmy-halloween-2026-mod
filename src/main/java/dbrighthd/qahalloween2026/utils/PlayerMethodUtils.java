@@ -59,7 +59,8 @@ public class PlayerMethodUtils {
     }
     public static boolean chainJumpCheck(ServerPlayer player)
     {
-        return !player.isSprinting() && player.getLastClientInput().forward();
+        //I genuinely forgot that toggle sprint players exist
+        return !player.isSprinting() && !player.getLastClientInput().sprint() && player.getLastClientInput().forward();
     }
     public static void grantAdvancement(ServerPlayer player, String advancement)
     {

@@ -17,7 +17,7 @@
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "slots": {
-          "occupied": 36
+          "occupied": 41
         },
         "items": []
       }

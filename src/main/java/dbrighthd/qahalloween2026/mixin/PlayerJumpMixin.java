@@ -19,21 +19,23 @@ public abstract class PlayerJumpMixin {
     private void jumpCount(CallbackInfo ci)
     {
         ServerPlayer player = (ServerPlayer)(Object)this;
-        if(chainJumpCheck(player))
+        int amount = JumpChainSystem.addJump(player);
+        if(amount < 3)
         {
-            int amount = JumpChainSystem.addJump(player);
-            if(amount < 3)
+            if(chainJumpCheck(player))
             {
                 PlayerMethodUtils.playSoundAtEntityForPlayer(player, SoundEvents.BOAT_PADDLE_LAND,100,2,player);
                 PlayerMethodUtils.particleAtEntity(player, ParticleTypes.POOF,0,0,0,5,0.05);
             }
-            else
-            {
-                grantAdvancement(player,"main/triplejump");
-                PlayerMethodUtils.playSoundAtEntityForPlayer(player, SoundEvents.VAULT_OPEN_SHUTTER,100,2,player);
-                PlayerMethodUtils.particleAtEntity(player, ParticleTypes.ELECTRIC_SPARK,0,0,0,20,0.5);
-                PlayerMethodUtils.particleAtEntity(player, ParticleTypes.POOF,0,0,0,2,0.01);
-            }
+
         }
+        else
+        {
+            grantAdvancement(player,"main/triplejump");
+            PlayerMethodUtils.playSoundAtEntityForPlayer(player, SoundEvents.VAULT_OPEN_SHUTTER,100,2,player);
+            PlayerMethodUtils.particleAtEntity(player, ParticleTypes.ELECTRIC_SPARK,0,0,0,20,0.5);
+            PlayerMethodUtils.particleAtEntity(player, ParticleTypes.POOF,0,0,0,2,0.01);
+        }
+
     }
 }

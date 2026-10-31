@@ -10,7 +10,7 @@ public class Config {
 
     public static long endIslandRadius = 8192L;
 
-    public static int endRespawnSeconds = 7;
+    public static int endRespawnSeconds = 4;
 
     public static int spikeCount = 30;
     public static double spikeDistance = 100;
@@ -23,7 +23,7 @@ public class Config {
     public final static int bindCooldownTicks = 0;
     public final static int bindTimeTicks = 27;
     public final static int stringRequiredForBind = 64;
-    public final static int healthPerBind = 8;
+    public final static int healthPerBind = 10;
 
     public static double breakMissChance = 0.2;
     public static double placeMissChance = 0.25;
@@ -54,7 +54,7 @@ public class Config {
 
     public static int glowFlyTicks = 600;
 
-    public static int siftParticleAmount = 6;
+    public static int siftParticleAmount = 3;
     public static int siftParticleHorDistance = 24;
     public static int siftParticleVertDistance = 12;
     public static int siftParticleTickMod = 1;

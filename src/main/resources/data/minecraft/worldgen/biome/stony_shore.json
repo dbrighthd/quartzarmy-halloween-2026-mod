@@ -57,15 +57,15 @@
               "weight": 5
             }
           ],
-          "underground_water_creature": [
+          "water_ambient": [
             {
-              "type": "minecraft:glow_squid",
+              "type": "minecraft:salmon",
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 6,
-                "min_inclusive": 4
+                "max_inclusive": 5,
+                "min_inclusive": 1
               },
-              "weight": 10
+              "weight": 5
             }
           ]
         }

@@ -32,6 +32,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
+import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.spider.Spider;
@@ -80,6 +81,11 @@ public class OnEntityLoad {
                     changeAttribute(vindicator,Attributes.MAX_HEALTH,15);
                     changeAttribute(vindicator,Attributes.ATTACK_DAMAGE,3);
                 }
+                else
+                {
+                    vindicator.setDropChance(EquipmentSlot.MAINHAND,0);
+                    changeAttribute(vindicator,Attributes.ATTACK_DAMAGE,2);
+                }
             }
             case Pillager pillager -> {
                 if(pillager.level().dimension() == Level.OVERWORLD)
@@ -110,7 +116,13 @@ public class OnEntityLoad {
                 ravager.setSilent(true);
                 ravager.setPersistenceRequired();
                 changeAttribute(ravager,Attributes.MAX_HEALTH,10);
-                changeAttribute(ravager, Attributes.ATTACK_DAMAGE, 1);
+
+            }
+            case PiglinBrute brute -> {
+                brute.setSilent(true);
+                brute.setPersistenceRequired();
+                changeAttribute(brute,Attributes.MAX_HEALTH,10);
+                brute.setDropChance(EquipmentSlot.MAINHAND,0);
             }
             case Silverfish silverfish -> {
                 silverfish.setSilent(true);
@@ -137,6 +149,34 @@ public class OnEntityLoad {
                 offers.add(new MerchantOffer(
                         new ItemCost(Items.LEAF_LITTER, 1),
                         createMisInfoBook(),
+                        1000000,
+                        0,
+                        0
+                ));
+                offers.add(new MerchantOffer(
+                        new ItemCost(Items.LEAF_LITTER, 5),
+                        new ItemStack(Items.BLAST_FURNACE),
+                        1000000,
+                        0,
+                        0
+                ));
+                offers.add(new MerchantOffer(
+                        new ItemCost(Items.LEAF_LITTER, 1),
+                        new ItemStack(Items.STRING),
+                        1000000,
+                        0,
+                        0
+                ));
+                offers.add(new MerchantOffer(
+                        new ItemCost(Items.LEAF_LITTER, 1),
+                        new ItemStack(Items.COAL),
+                        1000000,
+                        0,
+                        0
+                ));
+                offers.add(new MerchantOffer(
+                        new ItemCost(Items.LEAF_LITTER, 32),
+                        new ItemStack(Items.ARROW,64),
                         1000000,
                         0,
                         0

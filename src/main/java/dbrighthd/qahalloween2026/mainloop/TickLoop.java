@@ -36,6 +36,7 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -55,6 +56,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
@@ -63,9 +65,12 @@ import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
 import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.tickPlayerSpecifics;
 import static dbrighthd.qahalloween2026.mainloop.Setup.spawnDataCheck;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.getCurrentTide;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class TickLoop {
+    public static boolean hasGlowFlies = false;
+    public static GeneralUtils.Tide tide;
     public static void init()
     {
         ServerTickEvents.END_SERVER_TICK.register(TickLoop::tick);
@@ -94,6 +99,9 @@ public class TickLoop {
 
     public static void tick(MinecraftServer server)
     {
+
+
+        tide = getCurrentTide(server.overworld());
         if(spawnDataCheck(server) == Setup.StartPhase.IN_GAME)
         {
             for(ServerPlayer player : server.getPlayerList().getPlayers())
@@ -164,6 +172,14 @@ public class TickLoop {
                 }
             }
             case Boat boat -> boat.setDeltaMovement(0, 1, 0);
+            case Ravager ravager ->
+            {
+                if (Objects.requireNonNull(tide) == GeneralUtils.Tide.Endure) {
+                    changeAttribute(ravager, Attributes.ATTACK_DAMAGE, 4);
+                } else {
+                    changeAttribute(ravager, Attributes.ATTACK_DAMAGE, 1);
+                }
+            }
             case Sheep sheep -> sheep.setHealth(100);
             case Arrow arrow -> {
                 TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
@@ -252,12 +268,17 @@ public class TickLoop {
         {
             player.gameMode.destroyBlock(player.blockPosition());
         }
+        if(player.level().dimension() == Level.NETHER)
+        {
+            siftPlayerTick(player);
+        }
         BindSystem.bindTick(player);
         JumpChainSystem.countJumpTick(player);
         tickPlayerSpecifics(player);
         WetIchorSystem.wetIchorTick(player);
         SheepSystem.sheepTick(player);
         GlowflySystem.glowflyTick(player);
+        hasGlowFlies = hasGlowFlies || GlowflySystem.isPlayerInfected(player);
         JumpAttackCountSystem.countJumpAttackTick(player);
         EndRespawnSystem.endRespawnTick(player);
         if(isLookingAtSun(player))
@@ -296,6 +317,19 @@ public class TickLoop {
         miscAdvancementChecks(player);
     }
 
+    public static void siftPlayerTick(ServerPlayer player)
+    {
+        if (Objects.requireNonNull(tide) == GeneralUtils.Tide.Thrive) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1, 1, true, true));
+            if(player.tickCount % 40 == 0)
+            {
+                player.heal(1);
+            }
+        } else {
+            player.removeEffect(MobEffects.REGENERATION);
+        }
+        player.sendOverlayMessage(Component.literal("Current Tide: " + getCurrentTide(player.level()).name()));
+    }
     public static void miscAdvancementChecks(ServerPlayer player)
     {
         if(WetIchorSystem.isPlayerIchorized(player) && WetIchorSystem.isPlayerWet(player) && GlowflySystem.isPlayerInfected(player) && SheepSystem.isPlayerSleepy(player))
@@ -338,7 +372,7 @@ public class TickLoop {
                 BlockPos pos = new BlockPos(x, y, z);
                 if (level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir())
                 {
-                    level.sendParticles(player, particleType, false, true, x+0.5, y + aboveBelow, z+0.5, 3, 0.25, dy, 0.25, 0);
+                    level.sendParticles(player, particleType, false, true, x+0.5, y + aboveBelow, z+0.5, 1, 0.25, dy, 0.25, 0);
                     break;
                 }
             }
@@ -352,7 +386,7 @@ public class TickLoop {
 
     public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
     {
-        ServerPlayer player = (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(20).selector((p,_) -> GlowflySystem.isPlayerInfected(p)), axolotl);
+        ServerPlayer player = hasGlowFlies ? (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(30).selector((p,_) -> GlowflySystem.isPlayerInfected(p)), axolotl) : null;
         if (player != null) {axolotl.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, player);}
         if(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent() && !GlowflySystem.isPlayerInfected(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()))
         {
@@ -365,7 +399,7 @@ public class TickLoop {
                 axolotl.jumpFromGround();
                 playSoundAtEntity(axolotl,SoundEvents.SALMON_FLOP,1,1);
             }
-            changeAttribute(axolotl,Attributes.MOVEMENT_SPEED,3);
+            changeAttribute(axolotl,Attributes.MOVEMENT_SPEED,5);
             changeAttribute(axolotl,Attributes.AIR_DRAG_MODIFIER,0.5);
 
         }
@@ -432,4 +466,5 @@ public class TickLoop {
         ClientboundRemoveEntitiesPacket destroyPacket = new ClientboundRemoveEntitiesPacket(targetEntity.getId());
         player.connection.send(destroyPacket);
     }
+
 }

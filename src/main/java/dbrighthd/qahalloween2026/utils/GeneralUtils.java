@@ -80,9 +80,9 @@ public class GeneralUtils {
                                 Filterable.passThrough(
                                         Component.literal("For the pearls, do what the children yearn for.")),
                                 Filterable.passThrough(
-                                        Component.literal("For the blaze, look in my attic or something idk")),
+                                        Component.literal("For the blaze, look in my attic or something idk. If I were you I would make sure I set my spawn on my bed here before going up there")),
                                 Filterable.passThrough(
-                                        Component.literal("After that, well, I would recommend collecting a lot of blocks for what is to come."))
+                                        Component.literal("After that, well, I would recommend collecting a LOT of blocks for what is to come."))
                         ),
                         true
                 ));
@@ -136,5 +136,27 @@ public class GeneralUtils {
                 ));
         book.set(DataComponents.ITEM_MODEL, Identifier.fromNamespaceAndPath("minecraft","knowledge_book"));
         return book;
+    }
+    public static Tide getCurrentTide(ServerLevel level)
+    {
+        long time = level.getOverworldClockTime();
+        int siftPeriod = 10000;
+        long timeInperiod =time%siftPeriod;
+        if(timeInperiod < 3333)
+        {
+            return  Tide.Endure;
+        }
+        if(timeInperiod < 6666)
+        {
+            return Tide.Thrive;
+        }
+        return Tide.Flow;
+    }
+
+    public enum Tide {
+        Endure,
+        Thrive,
+        Flow
+
     }
 }
