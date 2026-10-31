@@ -40,6 +40,8 @@ public class Setup {
         level.getGameRules().set(GameRules.KEEP_INVENTORY, true, level.getServer());
         level.getGameRules().set(GameRules.ADVANCE_WEATHER, false  , level.getServer());
         level.getGameRules().set(GameRules.IMMEDIATE_RESPAWN, true, level.getServer());
+        level.getGameRules().set(GameRules.SPAWN_PHANTOMS,false,level.getServer());
+        level.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS,false,level.getServer());
     }
 
     public static void firstSetup(MinecraftServer server)

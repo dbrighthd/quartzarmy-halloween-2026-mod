@@ -247,14 +247,7 @@ public class TickLoop {
 
     public static void playerTick(ServerPlayer player, ServerLevel serverLevel)
     {
-        if(player.isDeadOrDying())
-        {
-            grantAdvancement(player,"main/death");
-            if(player.getY() < (player.level().dimension() == Level.END ? 0 : -64))
-            {
-                grantAdvancement(player,"challenges/voiddeath");
-            }
-        }
+
 
         player.getFoodData().setFoodLevel(20);
         player.getFoodData().setSaturation(20.0f);
@@ -286,13 +279,18 @@ public class TickLoop {
                 if(player.getY() < 0)
                 {
                     grantAdvancement(player,"main/endfall");
-                    attribute.setBaseValue(-0.5);
+                    attribute.setBaseValue(-0.36);
                 }
                 else
                 {
                     attribute.setBaseValue(0.08);
                 }
             }
+            changeAttribute(player,Attributes.FALL_DAMAGE_MULTIPLIER,0);
+        }
+        else
+        {
+            changeAttribute(player,Attributes.FALL_DAMAGE_MULTIPLIER,1);
         }
 
         if (player.level().dimension().equals(Level.NETHER) && player.level() instanceof ServerLevel level && level.getGameTime() % Config.siftParticleTickMod == 0)
@@ -310,6 +308,14 @@ public class TickLoop {
         if(WetIchorSystem.isPlayerIchorized(player) && WetIchorSystem.isPlayerWet(player) && GlowflySystem.isPlayerInfected(player) && SheepSystem.isPlayerSleepy(player))
         {
             grantAdvancement(player,"challenges/alleffects");
+        }
+        if(player.isDeadOrDying())
+        {
+            grantAdvancement(player,"main/death");
+            if(player.getY() < (player.level().dimension() == Level.END ? 0 : -64))
+            {
+                grantAdvancement(player,"challenges/voiddeath");
+            }
         }
     }
 

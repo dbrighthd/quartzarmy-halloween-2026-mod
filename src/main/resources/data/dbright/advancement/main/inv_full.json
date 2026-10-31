@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:bundle",
+      "count": 1
+    },
+    "title": "ough im so full",
+    "description": "have a full inventory",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "dbright:main/drinkichor",
+  "criteria": {
+    "death": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "slots": {
+          "occupied": 36
+        },
+        "items": []
+      }
+    }
+  }
+}

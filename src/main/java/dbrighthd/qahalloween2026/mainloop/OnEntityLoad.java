@@ -88,14 +88,18 @@ public class OnEntityLoad {
 
                 if(vindicator.level().dimension() == Level.OVERWORLD)
                 {
-                    vindicator.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(vindicator.getId() % 3 != 0 ? Items.OBSIDIAN : Items.CINNABAR));
+                    vindicator.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.OBSIDIAN));
                     vindicator.setDropChance(EquipmentSlot.MAINHAND,100);
                     changeAttribute(vindicator,Attributes.MAX_HEALTH,15);
                     changeAttribute(vindicator,Attributes.ATTACK_DAMAGE,3);
                 }
             }
             case Pillager pillager -> {
-                pillager.setSilent(true);
+                if(pillager.level().dimension() == Level.OVERWORLD)
+                {
+                    pillager.setSilent(true);
+                }
+                changeAttribute(pillager,Attributes.MAX_HEALTH,8);
                 pillager.setPersistenceRequired();
             }
             case IronGolem golem -> {
@@ -118,6 +122,7 @@ public class OnEntityLoad {
             case Ravager ravager -> {
                 ravager.setSilent(true);
                 ravager.setPersistenceRequired();
+                changeAttribute(ravager,Attributes.MAX_HEALTH,10);
                 changeAttribute(ravager, Attributes.ATTACK_DAMAGE, 1);
             }
             case Silverfish silverfish -> {

@@ -29,6 +29,7 @@ public class WetIchorSystem {
         boolean ichorized = ichorDataThisTick.ichorState() > 0;
         double frictionValue =  wet ? Config.maxSlipperyFriction : 1;
         changeAttribute(player, Attributes.FRICTION_MODIFIER,frictionValue);
+        changeAttribute(player, Attributes.AIR_DRAG_MODIFIER,wet ? Config.maxAirSlipperyFriction : 1);
         if(wet)
         {
             particleAtEntity(player,ParticleTypes.RAIN,0.5f,1,0.5f,10,1);

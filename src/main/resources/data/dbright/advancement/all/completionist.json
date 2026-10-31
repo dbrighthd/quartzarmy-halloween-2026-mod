@@ -5,7 +5,7 @@
       "count": 1
     },
     "title": "Completionist",
-    "description": "Complete all 31 other advancements",
+    "description": "Complete all 32 other advancements",
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
@@ -367,7 +367,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/jumpattack" : true
+                "dbright:main/inv_full" : true
               }
             }
           }
@@ -382,7 +382,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/missed" : true
+                "dbright:main/jumpattack" : true
               }
             }
           }
@@ -397,7 +397,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/panda" : true
+                "dbright:main/missed" : true
               }
             }
           }
@@ -412,7 +412,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/sheepsleep" : true
+                "dbright:main/panda" : true
               }
             }
           }
@@ -427,7 +427,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/string" : true
+                "dbright:main/sheepsleep" : true
               }
             }
           }
@@ -442,7 +442,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/sunlook" : true
+                "dbright:main/string" : true
               }
             }
           }
@@ -457,13 +457,28 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/villagerattack" : true
+                "dbright:main/sunlook" : true
               }
             }
           }
         }
       }
     },"31": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/villagerattack" : true
+              }
+            }
+          }
+        }
+      }
+    },"32": {
       "trigger": "minecraft:tick",
       "conditions": {
         "player": {
@@ -544,6 +559,8 @@
       "30"
     ],[
       "31"
+    ],[
+      "32"
     ]
   ]
 }
