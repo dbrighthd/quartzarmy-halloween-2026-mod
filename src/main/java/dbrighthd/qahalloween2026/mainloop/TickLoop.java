@@ -184,30 +184,30 @@ public class TickLoop {
             case Arrow arrow -> {
                 TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
                 Entity target = level.getEntity(arrowData.target());
-                if (arrowData.sourceType() == TargetData.SourceType.SKELETON) {
-                    if (arrow.tickCount > Config.arrowBurst) {
-                        arrow.setBaseDamage(20);
-                    }
-                    if (target != null && arrow.tickCount <= Config.arrowTrackTime) {
 
-                        Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
+                if(arrowData.sourceType() == TargetData.SourceType.SKELETON || arrowData.sourceType() == TargetData.SourceType.PLAYER) {
+                    if (arrowData.sourceType() == TargetData.SourceType.SKELETON) {
+                        if (arrow.tickCount > Config.arrowBurst) {
+                            arrow.setBaseDamage(20);
+                        }
+                        if (target != null && arrow.tickCount <= Config.arrowTrackTime) {
 
-                        Vec3 direction = targetPos.subtract(arrow.position()).normalize();
+                            Vec3 targetPos = new Vec3(target.getX(), target.getY(0.5), target.getZ());
+                            Vec3 direction = targetPos.subtract(arrow.position()).normalize();
+                            arrow.setDeltaMovement(direction.scale(arrow.tickCount >= Config.arrowBurst ? Config.arrowSpeed : Config.arrowBurstSpeed));
+                            particleAtEntity(arrow, new TrailParticleOption(target.position().add(0, 1, 0), 0xFF0000, 10), 0f, 0f, 0f, 10, 0);
 
-                        arrow.setDeltaMovement(direction.scale(arrow.tickCount >= Config.arrowBurst ? Config.arrowSpeed : Config.arrowBurstSpeed));
-                        particleAtEntity(arrow, new TrailParticleOption(target.position().add(0, 1, 0), 0xFF0000, 10), 0f, 0f, 0f, 10, 0);
 
-
-                    }
-                    if (arrow.tickCount > Config.arrowLifeTime) {
-                        arrow.kill(level);
+                        }
+                        if (arrow.tickCount > Config.arrowLifeTime) {
+                            arrow.kill(level);
+                        }
                     }
                     sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(arrow));
                     PositionMoveRotation change = new PositionMoveRotation(arrow.position(), arrow.getDeltaMovement(), arrow.getYRot(), arrow.getXRot());
                     ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(arrow.getId(), change, Set.of(), arrow.onGround());
                     sendPacketToAllPlayers(level, teleportPacket);
                 }
-
 
             }
             case BreezeWindCharge breezeWindCharge -> {

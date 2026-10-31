@@ -30,11 +30,20 @@ public abstract class MultiNoiseBiomeSourceMixin {
     ) {
         Holder<Biome> biome = cir.getReturnValue();
 
-        if (biome.is(Biomes.SNOWY_PLAINS) || biome.is(Biomes.SNOWY_TAIGA) || biome.is(Biomes.SNOWY_BEACH) || biome.is(Biomes.ICE_SPIKES)) {
+        if (biome.is(Biomes.SNOWY_PLAINS) || biome.is(Biomes.SNOWY_TAIGA)|| biome.is(Biomes.ICE_SPIKES)) {
             Holder<Biome> replacement = this.collectPossibleBiomes()
                     .toList()
                     .stream()
                     .filter(holder -> holder.is(Biomes.DAPPLED_FOREST))
+                    .findFirst()
+                    .orElseThrow();
+            cir.setReturnValue(replacement);
+        }
+        if (biome.is(Biomes.SNOWY_BEACH)) {
+            Holder<Biome> replacement = this.collectPossibleBiomes()
+                    .toList()
+                    .stream()
+                    .filter(holder -> holder.is(Biomes.BEACH))
                     .findFirst()
                     .orElseThrow();
             cir.setReturnValue(replacement);

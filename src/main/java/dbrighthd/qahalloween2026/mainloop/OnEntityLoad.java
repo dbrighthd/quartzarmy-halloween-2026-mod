@@ -50,6 +50,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.UUID;
@@ -273,12 +274,16 @@ public class OnEntityLoad {
                     arrow.setBaseDamage(0);
                 } else {
                     if (owner instanceof Player player && !arrow.hasAttached(DataAttachments.TARGET_DATA)) {
-                        arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
-                        PlayerMethodUtils.addAndSendMovementIfPlayer(owner, arrow.getDeltaMovement().scale(-20), false);
+                        arrow.setDeltaMovement(Vec3.ZERO);
+                        Vec3 correctedMotion = player.getHeadLookAngle().normalize().scale(Config.arrowSpeed);
+                        PlayerMethodUtils.addAndSendMovementIfPlayer(owner, correctedMotion.scale(-20), false);
                         arrow.setDeltaMovement(0, 0, 0);
                         arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), TargetData.SourceType.PLAYER));
                         arrow.setOwner(arrow);
-                        grantAdvancement((ServerPlayer) player, "main/bow");
+                        if(!(Math.abs(correctedMotion.x()) < 0.01 && Math.abs(correctedMotion.y()) > 0.098 && Math.abs(correctedMotion.z()) < 0.01))
+                        {
+                            grantAdvancement((ServerPlayer) player, "challenges/bow");
+                        }
                         arrow.setBaseDamage(0);
                     }
                 }
