@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 public class Qahalloween2026 implements ModInitializer {
 
     public static final String MOD_ID = "qahalloween2026";
-    public static final boolean DEV = true;
+    public static final boolean DEV = false;
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(Setup::bootingSetup);

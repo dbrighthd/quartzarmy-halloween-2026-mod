@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026.mixin;
 
+import dbrighthd.qahalloween2026.mainloop.Setup;
 import dbrighthd.qahalloween2026.systems.JumpChainSystem;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +20,10 @@ public abstract class PlayerJumpMixin {
     private void jumpCount(CallbackInfo ci)
     {
         ServerPlayer player = (ServerPlayer)(Object)this;
+        if(!Setup.hasStarted(player.level().getServer()))
+        {
+            return;
+        }
         int amount = JumpChainSystem.addJump(player);
         if(amount < 3)
         {

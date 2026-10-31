@@ -34,6 +34,10 @@ public class Setup {
         level.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS,false,server);
     }
 
+    public static boolean hasStarted(MinecraftServer server)
+    {
+        return spawnDataCheck(server) == StartPhase.IN_GAME;
+    }
     public static void firstSetup(MinecraftServer server)
     {
         ServerLevel level = server.overworld();
