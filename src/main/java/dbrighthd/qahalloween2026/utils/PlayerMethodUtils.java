@@ -1,7 +1,6 @@
 package dbrighthd.qahalloween2026.utils;
 
 import dbrighthd.qahalloween2026.mainloop.Config;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.core.Holder;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -78,18 +76,9 @@ public class PlayerMethodUtils {
     {
         if(entity.level() instanceof ServerLevel level)
         {
-            level.sendParticles(
-                    particleType,
-                    entity.getX(),
-                    entity.getY(),
-                    entity.getZ(),
-                    count,
-                    dx,
-                    dy,
-                    dz,
-                    speed
-            );    }
+            level.sendParticles(particleType, entity.getX(), entity.getY(), entity.getZ(), count, dx, dy, dz, speed);
         }
+    }
 
 
     public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityToAllPlayers(Entity entity, T particleType, float dx, float dy, float dz, int count, int speed)

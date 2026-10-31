@@ -11,7 +11,6 @@ import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,7 +61,7 @@ public class PlayerActionMixin {
         BindSystem.giveString(player,Config.stringPerBlockBreak);
 
         ServerPlayerGameMode gameMode = player.gameMode;
-        if(state.is(Blocks.NETHERRACK))
+        if(state.is(Blocks.NETHERRACK)) //this is specifically for the brute jumpscare
         {
             gameMode.destroyBlock(original);
             for(int x = -1; x <= 1; x++)

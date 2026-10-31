@@ -47,20 +47,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.SpawnData;
+
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.Vec3;
 
-import javax.xml.transform.Source;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
-import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
@@ -74,7 +70,7 @@ public class TickLoop {
     {
         ServerTickEvents.END_SERVER_TICK.register(TickLoop::tick);
         ServerTickEvents.END_SERVER_TICK.register(EventsStorage::refreshAndDoStuff);
-        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> {
             if (entity instanceof Skeleton
                     && source.getDirectEntity() instanceof Arrow arrow) {
                 TargetData arrowData = arrow.getAttachedOrCreate(DataAttachments.TARGET_DATA);
@@ -88,7 +84,7 @@ public class TickLoop {
 
             return true;
         });
-        ServerPlayerEvents.AFTER_RESPAWN.register((serverPlayer, newPlayer, what) -> {
+        ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> {
             DeathDialog.show(newPlayer);
             newPlayer.setGameMode(GameType.SPECTATOR);
         });
@@ -163,7 +159,7 @@ public class TickLoop {
             case Enderman enderman -> {
                 if (level.dimension() == Level.END) {
 
-                    endermanTick(enderman, level);
+                    endermanTick(enderman);
                 }
             }
             case Boat boat -> boat.setDeltaMovement(0, 1, 0);
@@ -228,11 +224,6 @@ public class TickLoop {
         float progress = (player.getInventory().countItem(Items.STRING)% stringRequiredForBind)/(float) stringRequiredForBind;
         int stacks = player.getInventory().countItem(Items.STRING)/ stringRequiredForBind;
         player.connection.send(new ClientboundSetExperiencePacket(progress, stringRequiredForBind, stacks));
-    }
-    private static UUID dashBossBarId(ServerPlayer player) {
-        return UUID.nameUUIDFromBytes(
-                (MOD_ID + ":string:" + player.getUUID()).getBytes(StandardCharsets.UTF_8)
-        );
     }
 
     public static void killDragonAndBeginEnderFight(EnderDragon dragon, ServerLevel level)
@@ -383,7 +374,7 @@ public class TickLoop {
 
     }
 
-    public static void endermanTick(Enderman enderman, ServerLevel serverLevel)
+    public static void endermanTick(Enderman enderman)
     {
         endFightTick(enderman);
     }
@@ -434,6 +425,7 @@ public class TickLoop {
 
     }
 
+    @SuppressWarnings("unused")
     public static void hideEntityFromPlayer(ServerPlayer player, Entity targetEntity) {
         ClientboundRemoveEntitiesPacket destroyPacket = new ClientboundRemoveEntitiesPacket(targetEntity.getId());
         player.connection.send(destroyPacket);

@@ -1,11 +1,8 @@
 package dbrighthd.qahalloween2026.mainloop;
 
-import com.mojang.datafixers.optics.Wander;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +13,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
-import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.chicken.ChickenVariants;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
@@ -32,7 +28,6 @@ import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.illager.Pillager;
@@ -53,9 +48,6 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.dimension.end.EnderDragonFight;
-import net.minecraft.world.level.entity.EntityTickList;
-import net.minecraft.world.level.levelgen.feature.EndSpikeFeature;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.List;
@@ -66,11 +58,6 @@ import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 
 public class OnEntityLoad {
-    public static void init() {
-        ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
-        });
-    }
-
     public static void onEntityLoad(Entity entity, ServerLevel level)
     {
         switch (entity) {

@@ -27,7 +27,8 @@ public class JumpAttackCountSystem {
         return newChained;
     }
 
-    public static int getJumpChain(ServerPlayer player)
+    @SuppressWarnings("unused")
+    public static int getJumpAttackChain(ServerPlayer player)
     {
         return player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).chainedAmount();
     }

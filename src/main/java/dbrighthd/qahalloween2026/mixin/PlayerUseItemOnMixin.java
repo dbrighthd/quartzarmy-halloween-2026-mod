@@ -3,8 +3,6 @@ package dbrighthd.qahalloween2026.mixin;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -13,7 +11,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -39,32 +36,32 @@ public class PlayerUseItemOnMixin {
             method = "handleUseItemOn",
             at = @At("STORE"),
             name = "blockHit")
-    private BlockHitResult changePlacementTarget(BlockHitResult originalHit, ServerboundUseItemOnPacket packet) {
+    private BlockHitResult changePlacementTarget(BlockHitResult blockHit, ServerboundUseItemOnPacket packet) {
         if (!player.level().getServer().isSameThread()) {
-            return originalHit;
+            return blockHit;
         }
-        BlockPos clicked = originalHit.getBlockPos();
-        Direction intendedDirection = originalHit.getDirection();
+        BlockPos clicked = blockHit.getBlockPos();
+        Direction intendedDirection = blockHit.getDirection();
 
         InteractionHand hand = packet.hand();
         ItemStack stack = player.getItemInHand(hand);
         if(!(stack.getItem() instanceof BlockItem blockItem))
         {
-            return originalHit;
+            return blockHit;
         }
-        BlockPlaceContext contect = new BlockPlaceContext(new UseOnContext(player, hand, originalHit));
+        BlockPlaceContext contect = new BlockPlaceContext(new UseOnContext(player, hand, blockHit));
         BlockState placementState = blockItem.getBlock().getStateForPlacement(contect);
 
-        if (!player.level().isUnobstructed(placementState,clicked.relative(intendedDirection), CollisionContext.of(player)))
+        if (placementState == null || !player.level().isUnobstructed(placementState,clicked.relative(intendedDirection), CollisionContext.of(player)))
         {
-            return originalHit;
+            return blockHit;
         }
 
         BlockPos intended = clicked.relative(intendedDirection);
         BlockPos target = getRandomPlaceTarget(placementState, intended);
 
         if (target.equals(intended)) {
-            return originalHit;
+            return blockHit;
         }
         informMiss(player);
         return new BlockHitResult(Vec3.atCenterOf(target).subtract(0,-1,0), Direction.UP, target, false);

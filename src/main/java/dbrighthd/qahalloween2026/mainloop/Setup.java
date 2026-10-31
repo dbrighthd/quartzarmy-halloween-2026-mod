@@ -36,12 +36,12 @@ public class Setup {
         {
             Setup.start(server);
         }
-        level.getGameRules().set(GameRules.NATURAL_HEALTH_REGENERATION, false, level.getServer());
-        level.getGameRules().set(GameRules.KEEP_INVENTORY, true, level.getServer());
-        level.getGameRules().set(GameRules.ADVANCE_WEATHER, false  , level.getServer());
-        level.getGameRules().set(GameRules.IMMEDIATE_RESPAWN, true, level.getServer());
-        level.getGameRules().set(GameRules.SPAWN_PHANTOMS,false,level.getServer());
-        level.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS,false,level.getServer());
+        level.getGameRules().set(GameRules.NATURAL_HEALTH_REGENERATION, false, server);
+        level.getGameRules().set(GameRules.KEEP_INVENTORY, true, server);
+        level.getGameRules().set(GameRules.ADVANCE_WEATHER, false,server);
+        level.getGameRules().set(GameRules.IMMEDIATE_RESPAWN, true,server);
+        level.getGameRules().set(GameRules.SPAWN_PHANTOMS,false,server);
+        level.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS,false,server);
     }
 
     public static void firstSetup(MinecraftServer server)

@@ -1,11 +1,9 @@
 package dbrighthd.qahalloween2026.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dbrighthd.qahalloween2026.mainloop.EndFight;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 
 public class EndFightCommand {
     public static void register() {

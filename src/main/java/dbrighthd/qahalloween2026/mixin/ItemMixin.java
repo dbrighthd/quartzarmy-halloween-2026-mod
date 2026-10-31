@@ -4,7 +4,6 @@ package dbrighthd.qahalloween2026.mixin;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import dbrighthd.qahalloween2026.systems.WetIchorSystem;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

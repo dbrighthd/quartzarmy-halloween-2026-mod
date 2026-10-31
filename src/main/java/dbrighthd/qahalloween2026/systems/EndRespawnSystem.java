@@ -24,6 +24,10 @@ public class EndRespawnSystem {
         int ticks = player.getAttachedOrCreate(DataAttachments.ENDRESPAWN_DATA).ticksLeft();
 
         ServerLevel end = player.level().getServer().getLevel(Level.END);
+        if(end == null)
+        {
+            return;
+        }
         Vec3 freezePos = Vec3.atBottomCenterOf(end.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,new BlockPos(20,0,0)));
         if(ticks > 1)
         {

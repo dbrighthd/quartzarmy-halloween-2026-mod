@@ -93,14 +93,14 @@ public class EndFight {
 
         switch(endFightPhase)
         {
-            case DORMANT -> {dormantPhase(soulEnderman);}
-            case START -> { startPhase(soulEnderman);}
-            case TELEPORTING -> {teleportingPhase(soulEnderman);}
-            case BROODING -> {broodingPhase(soulEnderman);}
-            case SALMON -> {salmonPhase(soulEnderman);}
-            case ZOMBIE -> {zombiePhase(soulEnderman);}
-            case ATTACKING -> {attackingPhase(soulEnderman);}
-            case CREEPER -> {creeperPhase(soulEnderman);}
+            case DORMANT -> dormantPhase(soulEnderman);
+            case START -> startPhase(soulEnderman);
+            case TELEPORTING -> teleportingPhase(soulEnderman);
+            case BROODING -> broodingPhase(soulEnderman);
+            case SALMON -> salmonPhase(soulEnderman);
+            case ZOMBIE -> zombiePhase(soulEnderman);
+            case ATTACKING -> attackingPhase(soulEnderman);
+            case CREEPER -> creeperPhase(soulEnderman);
 
         }
         phaseDuration++;
@@ -284,7 +284,6 @@ public class EndFight {
         }
         soulEnderman.setPos(broodPos);
         soulEnderman.setNoGravity(true);
-        RandomSource random = soulEnderman.getRandom();
         if(phaseDuration < fireflyTime)
         {
             particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0xFFFFAA, 10), 10, 10, 10,10, 0);
@@ -318,7 +317,7 @@ public class EndFight {
         }
         if(phaseDuration > axolotlSummonTime + axolotlAirTime + 140)
         {
-            for(Axolotl axolotl : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.AXOLOTL,(axolotl)->{return true;}))
+            for(Axolotl axolotl : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.AXOLOTL,(_)-> true))
             {
                 axolotl.kill((ServerLevel)axolotl.level());
             }
@@ -340,7 +339,6 @@ public class EndFight {
         }
         soulEnderman.setPos(broodPos);
         soulEnderman.setNoGravity(true);
-        RandomSource random = soulEnderman.getRandom();
         if(phaseDuration < zombieSummonTime-10)
         {
             if(phaseDuration % 5 == 0)
@@ -354,13 +352,13 @@ public class EndFight {
             spawnCircle(soulEnderman, List.of(EntityTypes.ZOMBIE),5,1);
 
         }
-        for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)-> true))
+        for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(_)-> true))
         {
             particleAtEntityOffsetToAllPlayers(zombie,new Vec3(0,1,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.5f, 0.1f,10, 0);
         }
         if(phaseDuration > zombieKillTime)
         {
-            for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(zombie)-> true))
+            for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(_)-> true))
             {
                 zombie.discard();
             }
@@ -380,7 +378,6 @@ public class EndFight {
         }
         soulEnderman.setPos(broodPos);
         soulEnderman.setNoGravity(true);
-        RandomSource random = soulEnderman.getRandom();
         if(phaseDuration < creeperSummonTime-10)
         {
             if(phaseDuration % 5 == 0)
@@ -397,7 +394,7 @@ public class EndFight {
         }
 
         boolean hasCreeper = false;
-        for(Creeper creeper : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.CREEPER,(creeper)->{return true;}))
+        for(Creeper creeper : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.CREEPER,(_)-> true))
         {
             hasCreeper = true;
             particleAtEntityOffsetToAllPlayers(creeper,new Vec3(0,1,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.5f, 0.1f,10, 0);
@@ -407,7 +404,7 @@ public class EndFight {
         {
             if(!hasCreeper)
             {
-                for(Skeleton skeleton : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SKELETON,(skeleton)->{return true;}))
+                for(Skeleton skeleton : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SKELETON,(_)-> true))
                 {
                     skeleton.discard();
                 }
@@ -446,9 +443,9 @@ public class EndFight {
         EndFightPhase phase;
         switch (phaseNum % 3)
         {
-            case 0 -> {phase = EndFightPhase.ZOMBIE;}
-            case 1 -> {phase = EndFightPhase.CREEPER;}
-            default -> {phase = EndFightPhase.SALMON;}
+            case 0 -> phase = EndFightPhase.ZOMBIE;
+            case 1 -> phase = EndFightPhase.CREEPER;
+            default -> phase = EndFightPhase.SALMON;
         }
         return phase;
     }

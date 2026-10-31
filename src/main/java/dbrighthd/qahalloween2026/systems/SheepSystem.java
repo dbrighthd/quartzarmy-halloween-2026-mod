@@ -10,8 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
-import javax.print.attribute.standard.Severity;
-
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 
 public class SheepSystem {
