@@ -426,6 +426,11 @@ public class TickLoop {
 
     public static void zombieTick(Zombie zombie, ServerLevel serverLevel)
     {
+        if(zombie.getItemBySlot(EquipmentSlot.HEAD).is(Items.CARVED_PUMPKIN))
+        {
+            zombie.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.AIR));
+        }
+
         Vec3 belowBlock = zombie.position().subtract(0,1,0);
         boolean clutch = (zombie.fallDistance >= 2);
         boolean inDanger = false;
