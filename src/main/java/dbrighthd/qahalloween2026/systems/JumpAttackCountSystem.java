@@ -1,7 +1,7 @@
 package dbrighthd.qahalloween2026.systems;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
-import dbrighthd.qahalloween2026.attachments.JumpAttackData;
+import dbrighthd.qahalloween2026.attachments.ChainedActionData;
 import net.minecraft.server.level.ServerPlayer;
 
 public class JumpAttackCountSystem {
@@ -12,23 +12,23 @@ public class JumpAttackCountSystem {
         {
             return;
         }
-        int jumpAmount = player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).attacksChained();
+        int jumpAmount = player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).chainedAmount();
         if(player.onGround())
         {
             jumpAmount = 0;
         }
-        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new JumpAttackData(jumpAmount));
+        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new ChainedActionData(jumpAmount));
     }
 
     public static int addJumpAttack(ServerPlayer player, int amount)
     {
-        int newChained = player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).attacksChained()+amount;
-        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new JumpAttackData(newChained));
+        int newChained = player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).chainedAmount()+amount;
+        player.setAttached(DataAttachments.JUMP_ATTACK_DATA,new ChainedActionData(newChained));
         return newChained;
     }
 
     public static int getJumpChain(ServerPlayer player)
     {
-        return player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).attacksChained();
+        return player.getAttachedOrCreate(DataAttachments.JUMP_ATTACK_DATA).chainedAmount();
     }
 }

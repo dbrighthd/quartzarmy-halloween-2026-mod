@@ -7,25 +7,25 @@ import net.minecraft.resources.Identifier;
 import static dbrighthd.qahalloween2026.Qahalloween2026.MOD_ID;
 
 public class DataAttachments {
-    public static final AttachmentType<IchorData> ICHOR_DATA =
+    public static final AttachmentType<TimerData> ICHOR_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "ichor_data"),
-                    () -> IchorData.defaultState
+                    () -> TimerData.defaultState
             );
-    public static final AttachmentType<JumpAttackData> JUMP_ATTACK_DATA =
+    public static final AttachmentType<ChainedActionData> JUMP_ATTACK_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "jumpattack_data"),
-                    () -> JumpAttackData.defaultState
+                    () -> ChainedActionData.defaultState
             );
     public static final AttachmentType<BindData> BIND_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "bind_data"),
                     () -> BindData.defaultState
             );
-    public static final AttachmentType<WetData> WET_DATA =
+    public static final AttachmentType<TimerData> WET_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "wet_data"),
-                    () -> WetData.defaultState
+                    () -> TimerData.defaultState
             );
     public static final AttachmentType<TargetData> TARGET_DATA =
             AttachmentRegistry.createDefaulted(
@@ -37,14 +37,14 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "sheep_data"),
                     () -> SheepData.defaultState
             );
-    public static final AttachmentType<GlowflyData> GLOWFLY_DATA =
+    public static final AttachmentType<TimerData> GLOWFLY_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "glowfly_data"),
-                    () -> GlowflyData.defaultState
+                    () -> TimerData.defaultState
             );
-    public static final AttachmentType<EndRespawnData> ENDRESPAWN_DATA =
+    public static final AttachmentType<TimerData> ENDRESPAWN_DATA =
             AttachmentRegistry.createDefaulted(
                     Identifier.fromNamespaceAndPath(MOD_ID, "endrespawn_data"),
-                    () -> EndRespawnData.defaultState
+                    () -> TimerData.defaultState
             );
 }

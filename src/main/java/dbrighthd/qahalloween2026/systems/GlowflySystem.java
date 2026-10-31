@@ -1,25 +1,21 @@
 package dbrighthd.qahalloween2026.systems;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
-import dbrighthd.qahalloween2026.attachments.GlowflyData;
-import dbrighthd.qahalloween2026.attachments.WetData;
+import dbrighthd.qahalloween2026.attachments.TimerData;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
-import static dbrighthd.qahalloween2026.mainloop.Config.bindTimeTicks;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
 
 public class GlowflySystem {
     public static void glowflyTick(ServerPlayer player) {
-        GlowflyData dataThisTick = player.getAttachedOrCreate(DataAttachments.GLOWFLY_DATA);
+        TimerData dataThisTick = player.getAttachedOrCreate(DataAttachments.GLOWFLY_DATA);
         int glowFlyTicks = dataThisTick.ticksLeft();
 
         if(player.level().getBlockState(player.blockPosition()).getBlock() == Blocks.FIREFLY_BUSH || player.level().getBlockState(player.blockPosition().above()).getBlock() == Blocks.FIREFLY_BUSH)
@@ -38,7 +34,7 @@ public class GlowflySystem {
         {
             player.setGlowingTag(false);
         }
-        player.setAttached(DataAttachments.GLOWFLY_DATA,new GlowflyData(glowFlyTicks));
+        player.setAttached(DataAttachments.GLOWFLY_DATA,new TimerData(glowFlyTicks));
     }
 
     public static boolean isPlayerInfected(LivingEntity player)
@@ -48,6 +44,6 @@ public class GlowflySystem {
 
     public static void setInfected(Player player, int infectedTicks)
     {
-        player.setAttached(DataAttachments.GLOWFLY_DATA,new GlowflyData(infectedTicks));
+        player.setAttached(DataAttachments.GLOWFLY_DATA,new TimerData(infectedTicks));
     }
 }
