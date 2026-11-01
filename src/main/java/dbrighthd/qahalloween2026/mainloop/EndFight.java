@@ -141,7 +141,7 @@ public class EndFight {
         if(soulified)
         {
             bossBar.setColor(BossEvent.BossBarColor.BLUE);
-            bossBar.setName(Component.literal("Soul Corrupted Enderman"));
+            bossBar.setName(Component.literal("Soul Coderotted Enderman"));
         }
         if (!soulEnderman.isAlive()) {
             bossBar.removeAllPlayers();

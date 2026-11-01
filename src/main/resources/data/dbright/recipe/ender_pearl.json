@@ -5,7 +5,22 @@
     "minecraft:echo_shard"
   ],
   "result": {
-    "id": "ender_pearl",
-    "components": {}
+    "id": "minecraft:chorus_fruit",
+    "components": {
+      "minecraft:item_name": "Ender Pearl",
+      "minecraft:item_model": "ender_pearl",
+      "minecraft:consumable": {
+        "consume_seconds": 0.5,
+        "animation": "eat",
+        "has_consume_particles": true,
+        "on_consume_effects": [
+          {
+            "type": "minecraft:teleport_randomly",
+            "diameter": 50,
+            "directional_particles": true
+          }
+        ]
+      }
+    }
   }
 }

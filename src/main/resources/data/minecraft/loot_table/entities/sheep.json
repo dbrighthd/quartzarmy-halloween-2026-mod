@@ -4,28 +4,33 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "minecraft:cooked_mutton",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": 16
-          }
-        },
-        {
-          "type": "minecraft:item",
-          "name": "string",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": 1
-          }
-        },
-        {
-          "type": "minecraft:item",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": 10
-          },
-          "name": "minecraft:string"
+          "type": "minecraft:group",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:string",
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 4
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:cooked_mutton",
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 16
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:string",
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 1
+              }
+            }
+          ]
         }
       ],
       "rolls": 1

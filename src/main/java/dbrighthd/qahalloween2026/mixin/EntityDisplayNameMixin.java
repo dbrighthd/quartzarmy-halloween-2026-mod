@@ -56,7 +56,7 @@ public abstract class EntityDisplayNameMixin {
             cir.setReturnValue(Component.literal("Fusefly"));
         }
         if (entity instanceof Enderman) {
-            cir.setReturnValue(Component.literal("Soul Corrupted Enderman"));
+            cir.setReturnValue(Component.literal("Soul Coderotted Enderman"));
         }
         if (entity instanceof Ravager) {
             cir.setReturnValue(Component.literal("Dartback"));
