@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -188,8 +189,9 @@ public class EndFight {
 
     public static void dormantPhase(Enderman soulEnderman)
     {
-        ServerLevel level = (ServerLevel) soulEnderman.level();
-        if(!level.players().isEmpty() && level.players().stream().allMatch(player -> player.distanceToSqr(soulEnderman) <= 100) && !begun)
+        PlayerList playerTabList = soulEnderman.level().getServer().getPlayerList();
+        List<ServerPlayer> playerList = playerTabList.getPlayers();
+        if(!playerList.isEmpty() && playerList.stream().allMatch(player -> player.distanceToSqr(soulEnderman) <= 100) && !begun)
         {
             soulEnderman.setGlowingTag(false);
             playSoundAtEntity(soulEnderman, SoundEvents.ENDERMAN_STARE, 100, 1);

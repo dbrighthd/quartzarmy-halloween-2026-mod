@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.breeze.Breeze;
@@ -49,6 +50,9 @@ public abstract class EntityDisplayNameMixin {
         }
         if (entity instanceof Breeze) {
             cir.setReturnValue(Component.literal("Sentinel"));
+        }
+        if (entity instanceof Enderman) {
+            cir.setReturnValue(Component.literal("Soul Corrupted Enderman"));
         }
         if (entity instanceof Ravager) {
             cir.setReturnValue(Component.literal("Dartback"));

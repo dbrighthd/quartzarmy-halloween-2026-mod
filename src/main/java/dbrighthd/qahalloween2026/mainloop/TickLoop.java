@@ -82,7 +82,7 @@ public class TickLoop {
                 Entity target = arrow.level().getEntity(arrowData.target());
                 if(target instanceof Player player)
                 {
-                    grantAdvancement((ServerPlayer)player,"main/arrowskeleton");
+                    grantAdvancement((ServerPlayer)player,"challenges/arrowskeleton");
                 }
 
             }

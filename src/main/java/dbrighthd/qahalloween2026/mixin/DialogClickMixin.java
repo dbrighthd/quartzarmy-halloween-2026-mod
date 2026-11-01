@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Set;
+
 import static dbrighthd.qahalloween2026.systems.EndRespawnSystem.setRespawnTicks;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.respawnEffects;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.getRandomPlayer;
@@ -43,6 +45,7 @@ public abstract class DialogClickMixin {
                 if(toteleport != null)
                 {
                     player.canRandomlyTeleportTo(toteleport.getX(), toteleport.getY(), toteleport.getZ());
+                    player.teleportTo(toteleport.level(),toteleport.getX(),toteleport.getY(),toteleport.getZ(), Set.of(),player.getYRot(),player.getXRot(),false);
                     player.setGameMode(GameType.DEFAULT_MODE);
                     respawnEffects(player);
                     player.connection.send(ClientboundClearDialogPacket.INSTANCE);

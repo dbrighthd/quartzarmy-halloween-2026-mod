@@ -84,6 +84,7 @@ public class BindSystem {
         {
             return;
         }
+        grantAdvancement(player,"main/failbind");
         player.sendOverlayMessage(Component.literal("Binding Cancelled!"));
         playSoundAtEntity(player, SoundEvents.ITEM_BREAK.value(),1.0f,1f);
         player.setAttached(DataAttachments.BIND_DATA, BindData.defaultState);
