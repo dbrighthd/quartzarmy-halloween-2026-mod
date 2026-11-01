@@ -37,6 +37,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -137,9 +138,11 @@ public class TickLoop {
 
     public static void beforeTick(ServerPlayer player)
     {
-        if(player.position().y < 300)
+        player.getFoodData().setFoodLevel(20);
+        player.getFoodData().setSaturation(20.0f);
+        if(player.position().y < 300 || player.position().y > 305)
         {
-            BlockPos tpTo = player.level().getRespawnData().pos().atY(301);
+                BlockPos tpTo = player.level().getRespawnData().pos().atY(301);
             player.teleportTo(tpTo.getX(), tpTo.getY(), tpTo.getZ());
         }
         if(player.gameMode.isSurvival())
@@ -160,6 +163,7 @@ public class TickLoop {
         switch (entity) {
             case Axolotl axolotl -> axolotlTick(axolotl, level);
             case Chicken chicken -> chickenTick(chicken, level);
+            case Silverfish silverfish -> pufferFihTick(silverfish,level);
             case EnderDragon dragon -> killDragonAndBeginEnderFight(dragon,level);
             case Phantom phantom -> phantom.setRemainingFireTicks(-10);
             case Panda panda -> pandaTick(panda);
@@ -211,6 +215,10 @@ public class TickLoop {
 
             }
             case BreezeWindCharge breezeWindCharge -> {
+                if(breezeWindCharge.getOwner() instanceof Player)
+                {
+                    return;
+                }
                 TargetData arrowData = breezeWindCharge.getAttachedOrCreate(DataAttachments.TARGET_DATA);
                 Entity target = level.getEntity(arrowData.target());
                 if (target != null && breezeWindCharge.tickCount <= Config.arrowTrackTime) {
@@ -320,7 +328,8 @@ public class TickLoop {
     public static void siftPlayerTick(ServerPlayer player)
     {
         if (Objects.requireNonNull(tide) == GeneralUtils.Tide.Thrive) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1, 1, true, true));
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2, 1, true, false));
+            player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 2, 0, true, false));
             if(player.tickCount % 40 == 0)
             {
                 player.heal(1);
@@ -357,6 +366,44 @@ public class TickLoop {
 
         }
 
+    }
+
+    public static void pufferFihTick(Silverfish fusefly, ServerLevel level)
+    {
+
+        fusefly.setNoGravity(true);
+        fusefly.setSilent(true);
+        BlockPos below = fusefly.blockPosition().below();
+        BlockPos belowTwo = fusefly.blockPosition().below(2);
+        if(!level.getBlockState(below).is(Blocks.AIR))
+        {
+            fusefly.setDeltaMovement(fusefly.getDeltaMovement().x,0.1, fusefly.getDeltaMovement().z);
+        }
+        else if (level.getBlockState(belowTwo).is(Blocks.AIR))
+        {
+            fusefly.setDeltaMovement(fusefly.getDeltaMovement().x,-0.1, fusefly.getDeltaMovement().z);
+        }
+        else
+        {
+            fusefly.setDeltaMovement(fusefly.getDeltaMovement().x, fusefly.getDeltaMovement().y*0.5, fusefly.getDeltaMovement().z);
+
+        }
+        if(level.getNearestPlayer(fusefly,5) != null || fusefly.getHealth() < 100)
+        {
+            if(fusefly.tickCount % 5 == 0)
+            {
+                playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_BLOW_UP,100,1);
+                particleAtEntityOffset(fusefly, new Vec3(0,0.275,0), ParticleTypes.GUST,0,0,0,1,0);
+            }
+            particleAtEntityOffset(fusefly, new Vec3(0,0.275,0), ParticleTypes.POOF,0,0,0,5,level.dimension() == Level.NETHER && tide == GeneralUtils.Tide.Thrive ? 0.2 : 0.5);
+            fusefly.setHealth(fusefly.getHealth()-5);
+        }
+        if(fusefly.isDeadOrDying() || fusefly.getAirSupply() < 1 ||  level.getNearestPlayer(fusefly,1) != null)
+        {
+            playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_STING,100,1);
+            level.explode(fusefly, fusefly.getX(), fusefly.getY(), fusefly.getZ(), level.dimension() == Level.NETHER ? tide == GeneralUtils.Tide.Endure ? 3: tide == GeneralUtils.Tide.Thrive ? 1 : 2 : 3.0f, Level.ExplosionInteraction.NONE);
+            fusefly.discard();
+        }
     }
 
     public static <T extends net.minecraft.core.particles.ParticleOptions> void SiftParticles(ServerLevel level, ServerPlayer player, T particleType, double aboveBelow, double dy)

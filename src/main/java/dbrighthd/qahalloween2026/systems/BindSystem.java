@@ -35,7 +35,7 @@ public class BindSystem {
         int updatedCooldown = data.bindCooldown();
         if(updatedCooldown == 0 && data.bindState() == 0)
         {
-            if(player.isShiftKeyDown() && canBind(player))
+            if(player.isShiftKeyDown() && canBind(player) && !player.onGround())
             {
                 ContainerHelper.clearOrCountMatchingItems(player.getInventory(), stack -> stack.is(Items.STRING), 64, false);
                 updatedState = bindTimeTicks;
@@ -44,7 +44,12 @@ public class BindSystem {
 
                 playSoundAtEntity(player, SoundEvents.WIND_CHARGE_BURST.value(),1.0f,0.5f);
             } else if (player.isShiftKeyDown()) {
-                player.sendOverlayMessage(Component.literal("Cannot bind yet!"));
+                if (!canBind(player)) {
+                    player.sendOverlayMessage(Component.literal("Cannot bind yet!"));
+                }
+                if (player.onGround()) {
+                    player.sendOverlayMessage(Component.literal("Must be in the air to bind!"));
+                }
             }
         }
         if(updatedCooldown > 0)

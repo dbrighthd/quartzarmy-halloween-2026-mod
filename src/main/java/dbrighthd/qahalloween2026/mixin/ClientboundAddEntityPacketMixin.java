@@ -9,6 +9,7 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
@@ -57,6 +58,9 @@ public abstract class ClientboundAddEntityPacketMixin {
         }
         else if (entity instanceof WanderingTrader) {
             this.type = EntityTypes.VILLAGER;
+        }
+        else if (entity instanceof Silverfish) {
+            this.type = EntityTypes.PUFFERFISH;
         }
         else if (entity instanceof Rabbit && entity.level().dimension() == Level.NETHER) {
             this.type = EntityTypes.ALLAY;

@@ -2,9 +2,11 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -21,14 +23,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enderman;
+import net.minecraft.world.entity.monster.Silverfish;
+import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
@@ -43,11 +50,12 @@ public class EndFight {
     public static Vec3 broodPos = new Vec3(0,80,0);
     public static int TeleportingPhaseLength = 100;
     public static int AttackPhaseLength = 400;
-    public static int endermanMaxHealth = 200;
+    public static int endermanMaxHealth = 250;
     public static int endermanTargetSwitchTime = 60;
     public static boolean phaseSetUp = false;
     public static int phaseDuration = 0;
     public static boolean soulified = false;
+    public static boolean killed = false;
 
     public static void spawnBoss(ServerLevel endLevel) {
         soulified = false;
@@ -79,7 +87,7 @@ public class EndFight {
         {
             return;
         }
-        if(soulEnderman.isDeadOrDying())
+        if(soulEnderman.isDeadOrDying() && !killed)
         {
             MinecraftServer server = soulEnderman.level().getServer();
             if(server != null)
@@ -88,6 +96,12 @@ public class EndFight {
                 {
                     grantAdvancement(player,"main/finished");
                 }
+                if(soulEnderman.level() instanceof  ServerLevel serverLevel)
+                {
+                    BlockPos referencePos = BlockPos.containing(startPos).subtract(new Vec3i(4,2,4));
+                    Objects.requireNonNull(server).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright", "cactus")).ifPresent(template -> template.placeInWorld(serverLevel, referencePos, referencePos, new StructurePlaceSettings(), soulEnderman.getRandom(), Block.UPDATE_ALL));
+                }
+                killed=true;
             }
         }
         bossBarTick(soulEnderman);
@@ -103,6 +117,7 @@ public class EndFight {
             case TELEPORTING -> teleportingPhase(soulEnderman);
             case BROODING -> broodingPhase(soulEnderman);
             case SALMON -> salmonPhase(soulEnderman);
+            case SIFTERS -> sifterPhase(soulEnderman);
             case ZOMBIE -> zombiePhase(soulEnderman);
             case ATTACKING -> attackingPhase(soulEnderman);
             case CREEPER -> creeperPhase(soulEnderman);
@@ -419,6 +434,59 @@ public class EndFight {
         }
     }
 
+
+    public static void sifterPhase(Enderman soulEnderman)
+    {
+        soulEnderman.setNoAi(true);
+        soulEnderman.setPermanentlyInvulnerable(true);
+        int creeperSummonTime = 40;
+        if(!phaseSetUp)
+        {
+            playSoundAtEntity(soulEnderman,SoundEvents.ENDERMAN_TELEPORT,100,1);
+            phaseNum++;
+            phaseSetUp = true;
+        }
+        soulEnderman.setPos(broodPos);
+        soulEnderman.setNoGravity(true);
+        if(phaseDuration < creeperSummonTime-10)
+        {
+            if(phaseDuration % 5 == 0)
+            {
+                playSoundAtEntity(soulEnderman, SoundEvents.SOUL_ESCAPE.value(), 100, 1);
+            }
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 15, 15, 15,5, 0);
+            particleAtEntityToAllPlayers(soulEnderman,new TrailParticleOption(soulEnderman.position().add(0,1,0), 0xFFFF00, 10), 15, 15, 15,5, 0);
+
+        }
+        if(phaseDuration == creeperSummonTime)
+        {
+            spawnCircle(soulEnderman, List.of(EntityTypes.SILVERFISH,EntityTypes.BREEZE),16,1);
+        }
+
+        boolean hasFusefly = false;
+        for(Silverfish silverfish : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SILVERFISH,(_)-> true))
+        {
+            hasFusefly = true;
+            particleAtEntityOffsetToAllPlayers(silverfish,new Vec3(0,0.275,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.1f, 0.1f,10, 0);
+        }
+
+        if(phaseDuration > creeperSummonTime + 10)
+        {
+            if(!hasFusefly)
+            {
+                for(Breeze breeze : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.BREEZE,(_)-> true))
+                {
+                    breeze.discard();
+                }
+                setPhase(EndFightPhase.TELEPORTING);
+            }
+        }
+    }
+
+
+
+
+
     public static <T extends EntityType<?>> void spawnCircle(Entity sourceEntity, List<T> entityTypes, int amount, double speed)
     {
         for(int i = 0; i < amount; i++)
@@ -447,11 +515,12 @@ public class EndFight {
     public static EndFightPhase getBroodPhase()
     {
         EndFightPhase phase;
-        switch (phaseNum % 3)
+        switch (phaseNum % 4)
         {
             case 0 -> phase = EndFightPhase.ZOMBIE;
             case 1 -> phase = EndFightPhase.CREEPER;
-            default -> phase = EndFightPhase.SALMON;
+            case 2 -> phase = EndFightPhase.SALMON;
+            default -> phase = EndFightPhase.SIFTERS;
         }
         return phase;
     }
@@ -469,6 +538,7 @@ public class EndFight {
         ZOMBIE,
         ATTACKING,
         END,
+        SIFTERS,
         CREEPER,
         BROODING,
     }

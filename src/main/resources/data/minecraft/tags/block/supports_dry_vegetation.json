@@ -2,9 +2,11 @@
   "values": [
     "#minecraft:sand",
     "#minecraft:terracotta",
+    "#minecraft:leaves",
     "#minecraft:supports_vegetation",
     "minecraft:dirt_path",
     "#minecraft:grass_blocks",
+    "minecraft:gravel",
     "minecraft:stone"
   ]
 }

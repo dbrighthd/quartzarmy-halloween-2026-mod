@@ -69,7 +69,7 @@ public class OnEntityLoad {
                 phantom.setPersistenceRequired();
                 changeAttribute(phantom, Attributes.ATTACK_DAMAGE, 0.1);
                 changeAttribute(phantom, Attributes.ATTACK_KNOCKBACK, 4);
-                changeAttribute(phantom, Attributes.MAX_HEALTH, 4);
+                changeAttribute(phantom, Attributes.MAX_HEALTH, 2);
             }
             case Vindicator vindicator -> {
                 level.getServer().getScoreboard().addPlayerToTeam(vindicator.getScoreboardName(),GlobalVars.monsterTeam);
@@ -117,12 +117,13 @@ public class OnEntityLoad {
             case Ravager ravager -> {
                 ravager.setSilent(true);
                 ravager.setPersistenceRequired();
-                changeAttribute(ravager,Attributes.MAX_HEALTH,10);
+                changeAttribute(ravager,Attributes.MAX_HEALTH,8);
 
             }
 
             case Breeze breeze -> {
                 breeze.setPersistenceRequired();
+                changeAttribute(breeze,Attributes.MAX_HEALTH,6);
             }
             case PiglinBrute brute -> {
                 brute.setSilent(true);
@@ -132,9 +133,12 @@ public class OnEntityLoad {
             }
             case Silverfish silverfish -> {
                 silverfish.setSilent(true);
+                changeAttribute(silverfish,Attributes.MAX_HEALTH,100);
+                silverfish.setHealth(100);
                 silverfish.setPersistenceRequired();
             }
             case WanderingTrader trader -> {
+                changeAttribute(trader,Attributes.MOVEMENT_SPEED,0);
                 trader.setCustomName(Component.literal("This is a vintage comedy prop..."));
                 MerchantOffers offers = trader.getOffers();
                 offers.clear();
@@ -194,10 +198,12 @@ public class OnEntityLoad {
                 if (level.getFluidState(sniffer.blockPosition().below()).is(Fluids.WATER)) {
                     sniffer.discard();
                 } else {
-                    switch ((level.getRandom().nextInt()) % 3) {
+                    switch ((level.getRandom().nextInt()) % 6) {
                         case 1 -> replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
                         case 0 -> replaceEntity(level, sniffer, EntityTypes.RABBIT, 1);
-                        default -> replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
+                        case 2  -> replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
+                        case 3,4 -> replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
+                        default -> sniffer.discard();
                     }
                 }
             }

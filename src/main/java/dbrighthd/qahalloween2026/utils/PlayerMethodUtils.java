@@ -109,7 +109,7 @@ public class PlayerMethodUtils {
         }
     }
 
-    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffset(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, int speed)
+    public static  <T extends net.minecraft.core.particles.ParticleOptions> void particleAtEntityOffset(Entity entity, Vec3 offset, T particleType, float dx, float dy, float dz, int count, double speed)
     {
         if(entity.level() instanceof ServerLevel level)
         {
@@ -211,7 +211,7 @@ public class PlayerMethodUtils {
     public static @Nullable ServerPlayer getRandomPlayer(ServerPlayer original)
     {
         PlayerList list = original.level().getServer().getPlayerList();
-        List<ServerPlayer> players = list.getPlayers().stream().filter(player -> !player.getUUID().equals(original.getUUID())).toList();
+        List<ServerPlayer> players = list.getPlayers().stream().filter(player -> player.gameMode().isSurvival() && !player.getUUID().equals(original.getUUID())).toList();
         if(players.isEmpty())
         {
             return null;

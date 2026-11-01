@@ -1,7 +1,6 @@
 package dbrighthd.qahalloween2026.mixin;
 
 import net.minecraft.core.Holder;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
@@ -30,7 +29,7 @@ public abstract class MultiNoiseBiomeSourceMixin {
     ) {
         Holder<Biome> biome = cir.getReturnValue();
 
-        if (biome.is(Biomes.SNOWY_PLAINS) || biome.is(Biomes.SNOWY_TAIGA)|| biome.is(Biomes.ICE_SPIKES)) {
+        if (biome.is(Biomes.SNOWY_PLAINS)) {
             Holder<Biome> replacement = this.collectPossibleBiomes()
                     .toList()
                     .stream()
@@ -39,7 +38,25 @@ public abstract class MultiNoiseBiomeSourceMixin {
                     .orElseThrow();
             cir.setReturnValue(replacement);
         }
-        if (biome.is(Biomes.SNOWY_BEACH)) {
+        else if (biome.is(Biomes.SNOWY_TAIGA)) {
+            Holder<Biome> replacement = this.collectPossibleBiomes()
+                    .toList()
+                    .stream()
+                    .filter(holder -> holder.is(Biomes.MANGROVE_SWAMP))
+                    .findFirst()
+                    .orElseThrow();
+            cir.setReturnValue(replacement);
+        }
+        else if (biome.is(Biomes.ICE_SPIKES)) {
+            Holder<Biome> replacement = this.collectPossibleBiomes()
+                    .toList()
+                    .stream()
+                    .filter(holder -> holder.is(Biomes.CHERRY_GROVE))
+                    .findFirst()
+                    .orElseThrow();
+            cir.setReturnValue(replacement);
+        }
+        else if (biome.is(Biomes.SNOWY_BEACH)) {
             Holder<Biome> replacement = this.collectPossibleBiomes()
                     .toList()
                     .stream()

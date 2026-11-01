@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.illager.Vindicator;
@@ -50,6 +51,9 @@ public abstract class EntityDisplayNameMixin {
         }
         if (entity instanceof Breeze) {
             cir.setReturnValue(Component.literal("Sentinel"));
+        }
+        if (entity instanceof Silverfish) {
+            cir.setReturnValue(Component.literal("Fusefly"));
         }
         if (entity instanceof Enderman) {
             cir.setReturnValue(Component.literal("Soul Corrupted Enderman"));

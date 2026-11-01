@@ -7,7 +7,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.network.syncher.SynchedEntityData;
 
+import net.minecraft.world.entity.animal.fish.Pufferfish;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
+import net.minecraft.world.entity.monster.Silverfish;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerData;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.entity.npc.villager.VillagerType;
@@ -37,11 +40,16 @@ public abstract class ServerEntityMixin {
 
         if (entity instanceof WanderingTrader) {
 
-            VillagerData nitwit = new VillagerData(BuiltInRegistries.VILLAGER_TYPE.getOrThrow(VillagerType.PLAINS), BuiltInRegistries.VILLAGER_PROFESSION.getOrThrow(VillagerProfession.NITWIT), 1);
-
+            VillagerData nitwit = new VillagerData(BuiltInRegistries.VILLAGER_TYPE.getOrThrow(VillagerType.PLAINS), BuiltInRegistries.VILLAGER_PROFESSION.getOrThrow(VillagerProfession.NITWIT), 1); //I SPECIFICALLY need it to be a nitwit for the joke but also i want it to be tradable so im just maknig it a wandering trader
             List<SynchedEntityData.DataValue<?>> result = new ArrayList<>(original);
-            result.removeIf(data -> data.id() >= 19); // id for villager data. I SPECIFICALLY need it to be a nitwit for the joke but also i want it to be tradable so im just maknig it a wandering trader
-            result.add(new SynchedEntityData.DataValue<>(19, EntityDataSerializers.VILLAGER_DATA, nitwit));
+            result.removeIf(data -> data.id() >= Villager.DATA_VILLAGER_DATA.id());
+            result.add(new SynchedEntityData.DataValue<>(Villager.DATA_VILLAGER_DATA.id(), EntityDataSerializers.VILLAGER_DATA, nitwit));
+            return result;
+        }
+        if (entity instanceof Silverfish silverfish) {
+            List<SynchedEntityData.DataValue<?>> result = new ArrayList<>(original);
+            result.removeIf(data -> data.id() == Pufferfish.PUFF_STATE.id());
+            result.add(new SynchedEntityData.DataValue<>(Pufferfish.PUFF_STATE.id(), EntityDataSerializers.INT, silverfish.getHealth() < 100 ? 2 : 1));
             return result;
         }
         if (!(entity instanceof Axolotl || entity instanceof Rabbit))

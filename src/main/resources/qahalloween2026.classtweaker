@@ -5,3 +5,5 @@ accessible field net/minecraft/world/entity/monster/Creeper maxSwell I
 accessible field net/minecraft/server/level/ServerPlayerGameMode player Lnet/minecraft/server/level/ServerPlayer;
 accessible field net/minecraft/world/level/dimension/end/EnderDragonFight origin Lnet/minecraft/core/BlockPos;
 accessible method net/minecraft/server/commands/SpreadPlayersCommand spreadPlayers (Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/world/phys/Vec2;FFIZLjava/util/Collection;)I
+accessible field net/minecraft/world/entity/animal/fish/Pufferfish PUFF_STATE Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/npc/villager/Villager DATA_VILLAGER_DATA Lnet/minecraft/network/syncher/EntityDataAccessor;

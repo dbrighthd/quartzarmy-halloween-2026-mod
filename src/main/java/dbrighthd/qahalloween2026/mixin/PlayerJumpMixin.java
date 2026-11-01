@@ -32,7 +32,6 @@ public abstract class PlayerJumpMixin {
                 PlayerMethodUtils.playSoundAtEntityForPlayer(player, SoundEvents.BOAT_PADDLE_LAND,100,2,player);
                 PlayerMethodUtils.particleAtEntity(player, ParticleTypes.POOF,0,0,0,5,0.05);
             }
-
         }
         else
         {
@@ -42,6 +41,5 @@ public abstract class PlayerJumpMixin {
             PlayerMethodUtils.particleAtEntity(player, ParticleTypes.ELECTRIC_SPARK,0,0,0,20,0.5);
             PlayerMethodUtils.particleAtEntity(player, ParticleTypes.POOF,0,0,0,2,0.01);
         }
-
     }
 }

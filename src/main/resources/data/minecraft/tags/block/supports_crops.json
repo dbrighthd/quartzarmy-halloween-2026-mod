@@ -1,9 +1,7 @@
 {
   "values": [
-    "minecraft:farmland",
-    "minecraft:dirt_path",
-    "#minecraft:grass_blocks",
-    "#minecraft:substrate_overworld"
-    
+    "#minecraft:blocks_motion",
+    "minecraft:water",
+    "minecraft:lava"
   ]
 }
