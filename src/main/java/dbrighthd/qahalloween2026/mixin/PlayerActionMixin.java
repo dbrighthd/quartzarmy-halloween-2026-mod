@@ -116,7 +116,14 @@ public class PlayerActionMixin {
             BlockPos pos = original.relative(direction);
             if (!player.level().getBlockState(pos).isAir())
             {
-                candidates.add(pos);
+                for (Direction innerDirection : Direction.values()) //ruby told me to make it only "miss" onto blocks that are "visible", i made it check if there are any exposed air blocks
+                {
+                    BlockPos innerPos = pos.relative(innerDirection);
+                    if (player.level().getBlockState(innerPos).isAir())
+                    {
+                        candidates.add(pos);
+                    }
+                }
             }
         }
 
