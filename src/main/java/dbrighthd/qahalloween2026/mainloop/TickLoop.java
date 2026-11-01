@@ -336,6 +336,7 @@ public class TickLoop {
             }
         } else {
             player.removeEffect(MobEffects.REGENERATION);
+            player.removeEffect(MobEffects.RESISTANCE);
         }
         player.sendOverlayMessage(Component.literal("Current Tide: " + getCurrentTide(player.level()).name()));
     }
