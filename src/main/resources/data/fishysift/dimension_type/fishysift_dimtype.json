@@ -45,7 +45,7 @@
     "minecraft:visual/fog_color": "#ffffff",
     "minecraft:visual/sky_color": "#ffffff"
   },
-  "coordinate_scale": 0.5,
+  "coordinate_scale": 1,
   "default_clock": "minecraft:overworld",
   "has_ceiling": false,
   "has_ender_dragon_fight": false,

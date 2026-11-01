@@ -49,7 +49,7 @@ public abstract class ServerEntityMixin {
         if (entity instanceof Silverfish silverfish) {
             List<SynchedEntityData.DataValue<?>> result = new ArrayList<>(original);
             result.removeIf(data -> data.id() == Pufferfish.PUFF_STATE.id());
-            result.add(new SynchedEntityData.DataValue<>(Pufferfish.PUFF_STATE.id(), EntityDataSerializers.INT, silverfish.getHealth() < 100 ? 2 : 1));
+            result.add(new SynchedEntityData.DataValue<>(Pufferfish.PUFF_STATE.id(), EntityDataSerializers.INT, silverfish.tickCount < 40 ? 0 : (silverfish.getHealth() < 99 ? 2 : 1)));
             return result;
         }
         if (!(entity instanceof Axolotl || entity instanceof Rabbit))

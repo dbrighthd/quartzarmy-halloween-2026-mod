@@ -27,10 +27,6 @@ public class PlayerSpecificStuff {
 
     public static void bugpuncherTick(ServerPlayer player)
     {
-        if(BindSystem.isInBind(player))
-        {
-            return;
-        }
         double overshootAmount = 4;
         int round = 16;
         BlockPos playerAbovePos = player.getOnPos().above(16);
@@ -41,13 +37,17 @@ public class PlayerSpecificStuff {
 
         Vec3 targetPos = playerSpotlightPos.add(targetPosSub.normalize().scale(dist+overshootAmount));
 
-        int color = 1;
+        int color = -1;
 
+        if(BindSystem.isInBind(player))
+        {
+            color = 1;
+        }
         if (WetIchorSystem.isPlayerWet(player))
         {
             color = 12;
         }
-        if(player.getHealth() <= 1)
+        if(player.getHealth() <= 3)
         {
             color = (player.tickCount/10 % 2 == 0) ? 1 : 15;
         }
@@ -67,8 +67,12 @@ public class PlayerSpecificStuff {
         {
             color = (player.tickCount % 2 == 0) ? 5 : 2;
         }
-        SpotLight.ResolvedSpotlight spotlight = new SpotLight.ResolvedSpotlight(1,playerSpotlightPos,targetPos,color,15);
-        SpotLight.spawnSpotlightParticles(player.level(),spotlight,100);
+        if(color > -1)
+        {
+            SpotLight.ResolvedSpotlight spotlight = new SpotLight.ResolvedSpotlight(1,playerSpotlightPos,targetPos,color,15);
+            SpotLight.spawnSpotlightParticles(player.level(),spotlight,100);
+        }
+
     }
 
     public enum MeanTag {

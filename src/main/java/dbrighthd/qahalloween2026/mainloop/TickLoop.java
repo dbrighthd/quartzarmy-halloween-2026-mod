@@ -9,6 +9,7 @@ import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -60,6 +61,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static dbrighthd.qahalloween2026.mainloop.Config.creeperSuckForce;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
@@ -329,14 +331,12 @@ public class TickLoop {
     {
         if (Objects.requireNonNull(tide) == GeneralUtils.Tide.Thrive) {
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2, 1, true, false));
-            player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 2, 0, true, false));
             if(player.tickCount % 40 == 0)
             {
                 player.heal(1);
             }
         } else {
             player.removeEffect(MobEffects.REGENERATION);
-            player.removeEffect(MobEffects.RESISTANCE);
         }
         player.sendOverlayMessage(Component.literal("Current Tide: " + getCurrentTide(player.level()).name()));
     }
@@ -371,7 +371,6 @@ public class TickLoop {
 
     public static void pufferFihTick(Silverfish fusefly, ServerLevel level)
     {
-
         fusefly.setNoGravity(true);
         fusefly.setSilent(true);
         BlockPos below = fusefly.blockPosition().below();
@@ -389,11 +388,20 @@ public class TickLoop {
             fusefly.setDeltaMovement(fusefly.getDeltaMovement().x, fusefly.getDeltaMovement().y*0.5, fusefly.getDeltaMovement().z);
 
         }
-        if(level.getNearestPlayer(fusefly,5) != null || fusefly.getHealth() < 100)
+        if(fusefly.tickCount < 40)
+        {
+            return;
+        }
+        if(fusefly.tickCount == 41)
+        {
+            fusefly.setHealth(101);
+            playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_BLOW_OUT,1,1);
+        }
+        if(level.getNearestPlayer(fusefly,2) != null || fusefly.getHealth() < 100)
         {
             if(fusefly.tickCount % 5 == 0)
             {
-                playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_BLOW_UP,100,1);
+                playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_BLOW_UP,1,1);
                 particleAtEntityOffset(fusefly, new Vec3(0,0.275,0), ParticleTypes.GUST,0,0,0,1,0);
             }
             particleAtEntityOffset(fusefly, new Vec3(0,0.275,0), ParticleTypes.POOF,0,0,0,5,level.dimension() == Level.NETHER && tide == GeneralUtils.Tide.Thrive ? 0.2 : 0.5);
@@ -402,8 +410,25 @@ public class TickLoop {
         if(fusefly.isDeadOrDying() || fusefly.getAirSupply() < 1 ||  level.getNearestPlayer(fusefly,1) != null)
         {
             playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_STING,100,1);
-            level.explode(fusefly, fusefly.getX(), fusefly.getY(), fusefly.getZ(), level.dimension() == Level.NETHER ? tide == GeneralUtils.Tide.Endure ? 3: tide == GeneralUtils.Tide.Thrive ? 1 : 2 : 3.0f, Level.ExplosionInteraction.NONE);
+            level.explode(fusefly, fusefly.getX(), fusefly.getY(), fusefly.getZ(), 0, Level.ExplosionInteraction.NONE);
+            List<Entity> nearby = fusefly.level().getEntities(fusefly, fusefly.getBoundingBox().inflate(3), entity -> entity.distanceToSqr(fusefly) <= 3 * 3);
+            for(Entity entity : nearby)
+            {
+                Vec3 explode = fusefly.position().subtract(entity.position().add(0,-1,0)).normalize().scale(-4);
+                Vec3 movement = new Vec3(explode.x,1,explode.z);
+                addAndSendMovementIfPlayer(entity, movement, false);
+                if(entity instanceof ServerPlayer player)
+                {
+                    player.setIgnoreFallDamageFromCurrentImpulse(true,player.position());
+                    grantAdvancement(player,"main/pufferfish");
+                }
+
+            }
+            Entity newFuseFly = EntityTypes.SILVERFISH.create(level,EntitySpawnReason.COMMAND);
+            newFuseFly.setPos(fusefly.position());
+            level.addFreshEntity(newFuseFly);
             fusefly.discard();
+
         }
     }
 

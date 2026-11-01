@@ -134,7 +134,8 @@ public class OnEntityLoad {
             }
             case Silverfish silverfish -> {
                 silverfish.setSilent(true);
-                changeAttribute(silverfish,Attributes.MAX_HEALTH,100);
+                changeAttribute(silverfish,Attributes.MAX_HEALTH,101);
+                changeAttribute(silverfish,Attributes.ATTACK_DAMAGE,0);
                 silverfish.setHealth(100);
                 silverfish.setPersistenceRequired();
             }
@@ -199,12 +200,11 @@ public class OnEntityLoad {
                 if (level.getFluidState(sniffer.blockPosition().below()).is(Fluids.WATER)) {
                     sniffer.discard();
                 } else {
-                    switch ((level.getRandom().nextInt()) % 6) {
+                    switch ((level.getRandom().nextInt()) % 5) {
                         case 1 -> replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
-                        case 0 -> replaceEntity(level, sniffer, EntityTypes.RABBIT, 1);
                         case 2  -> replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
                         case 3,4 -> replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
-                        default -> sniffer.discard();
+                        default -> replaceEntity(level, sniffer, EntityTypes.RABBIT, 1);
                     }
                 }
             }

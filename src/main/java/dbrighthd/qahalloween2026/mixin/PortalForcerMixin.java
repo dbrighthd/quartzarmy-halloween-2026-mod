@@ -28,7 +28,7 @@ public abstract class PortalForcerMixin {
     @Final
     private ServerLevel level;
 
-    @Inject(method = "createPortal", at = @At("RETURN"))
+    @Inject(method = "createPortal", at = @At("RETURN"), cancellable = true)
     private void placeCustomPortal(BlockPos origin, Direction.Axis portalAxis, CallbackInfoReturnable<Optional<BlockUtil.FoundRectangle>> cir)
     {
         Optional<BlockUtil.FoundRectangle> result = cir.getReturnValue();
