@@ -86,6 +86,7 @@ public class OnEntityLoad {
                 else
                 {
                     vindicator.setDropChance(EquipmentSlot.MAINHAND,0);
+                    changeAttribute(vindicator,Attributes.MAX_HEALTH,10);
                     changeAttribute(vindicator,Attributes.ATTACK_DAMAGE,2);
                 }
             }
