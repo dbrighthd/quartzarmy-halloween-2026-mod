@@ -11,7 +11,7 @@
   "result": {
     "id": "minecraft:copper_boots",
     "components": {
-      "minecraft:max_damage": 100
+      "minecraft:max_damage": 200
     }
   }
 }

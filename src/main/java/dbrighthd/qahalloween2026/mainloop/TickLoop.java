@@ -397,7 +397,7 @@ public class TickLoop {
             fusefly.setHealth(101);
             playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_BLOW_OUT,1,1);
         }
-        if(level.getNearestPlayer(fusefly,2) != null || fusefly.getHealth() < 100)
+        if(level.getNearestPlayer(fusefly,4) != null || fusefly.getHealth() < 100)
         {
             if(fusefly.tickCount % 5 == 0)
             {
@@ -407,7 +407,7 @@ public class TickLoop {
             particleAtEntityOffset(fusefly, new Vec3(0,0.275,0), ParticleTypes.POOF,0,0,0,5,level.dimension() == Level.NETHER && tide == GeneralUtils.Tide.Thrive ? 0.2 : 0.5);
             fusefly.setHealth(fusefly.getHealth()-5);
         }
-        if(fusefly.isDeadOrDying() || fusefly.getAirSupply() < 1 ||  level.getNearestPlayer(fusefly,1) != null)
+        if(fusefly.isDeadOrDying() || fusefly.getAirSupply() < 1 ||  level.getNearestPlayer(fusefly,2) != null)
         {
             playSoundAtEntity(fusefly,SoundEvents.PUFFER_FISH_STING,100,1);
             level.explode(fusefly, fusefly.getX(), fusefly.getY(), fusefly.getZ(), 0, Level.ExplosionInteraction.NONE);

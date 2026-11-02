@@ -48,8 +48,8 @@ public class EndFight {
     public static boolean begun;
     public static Vec3 startPos = new Vec3(0,80,0);
     public static Vec3 broodPos = new Vec3(0,80,0);
-    public static int TeleportingPhaseLength = 100;
-    public static int AttackPhaseLength = 400;
+    public static int TeleportingPhaseLength = 120;
+    public static int AttackPhaseLength = 380;
     public static int endermanMaxHealth = 350;
     public static int endermanTargetSwitchTime = 60;
     public static boolean phaseSetUp = false;

@@ -13,7 +13,7 @@
   "result": {
     "id": "minecraft:copper_axe",
     "components": {
-      "minecraft:max_damage": 100
+      "minecraft:max_damage": 200
     }
   }
 }
