@@ -32,6 +32,8 @@ public class Setup {
         level.getGameRules().set(GameRules.IMMEDIATE_RESPAWN, true,server);
         level.getGameRules().set(GameRules.SPAWN_PHANTOMS,false,server);
         level.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS,false,server);
+        level.getGameRules().set(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER,0,server);
+
     }
 
     public static boolean hasStarted(MinecraftServer server)
