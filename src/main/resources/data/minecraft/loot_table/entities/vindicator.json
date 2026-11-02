@@ -7,9 +7,9 @@
           "type": "minecraft:item",
           "modifier": {
             "type": "minecraft:set_count",
-            "count": 10
+            "count": 1
           },
-          "name": "minecraft:string"
+          "name": "minecraft:obsidian"
         }
       ],
       "rolls": 1
