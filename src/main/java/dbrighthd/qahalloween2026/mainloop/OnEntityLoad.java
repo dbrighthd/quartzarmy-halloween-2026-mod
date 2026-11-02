@@ -12,6 +12,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.camel.CamelHusk;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.chicken.ChickenVariants;
 import net.minecraft.world.entity.animal.cow.Cow;
@@ -203,8 +204,8 @@ public class OnEntityLoad {
                     switch ((level.getRandom().nextInt()) % 5) {
                         case 1 -> replaceEntity(level, sniffer, EntityTypes.RAVAGER, 1);
                         case 2  -> replaceEntity(level, sniffer, EntityTypes.BREEZE, 1);
-                        case 3,4 -> replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
-                        default -> replaceEntity(level, sniffer, EntityTypes.RABBIT, 1);
+                        case 3 -> replaceEntity(level, sniffer, EntityTypes.RABBIT, 1);
+                        default -> replaceEntity(level, sniffer, EntityTypes.SILVERFISH, 1);
                     }
                 }
             }
