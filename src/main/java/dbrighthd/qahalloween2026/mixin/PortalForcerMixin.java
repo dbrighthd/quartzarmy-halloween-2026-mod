@@ -39,7 +39,7 @@ public abstract class PortalForcerMixin {
 
         BlockPos portalPos = result.get().minCorner.above(2);
 
-        BlockPos referencePos = portalPos.subtract(new Vec3i(4,2,2));
+        BlockPos referencePos = portalAxis == Direction.Axis.X ? portalPos.subtract(new Vec3i(4,2,2)) :  portalPos.subtract(new Vec3i(-2,2,4)) ;
         StructureTemplate template = Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("fishysift","sift_portal")).orElse(null);
 
         Rotation rotation = Rotation.NONE;
