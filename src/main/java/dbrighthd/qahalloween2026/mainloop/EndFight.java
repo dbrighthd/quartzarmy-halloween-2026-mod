@@ -50,7 +50,7 @@ public class EndFight {
     public static Vec3 broodPos = new Vec3(0,80,0);
     public static int TeleportingPhaseLength = 100;
     public static int AttackPhaseLength = 400;
-    public static int endermanMaxHealth = 250;
+    public static int endermanMaxHealth = 350;
     public static int endermanTargetSwitchTime = 60;
     public static boolean phaseSetUp = false;
     public static int phaseDuration = 0;
@@ -463,20 +463,20 @@ public class EndFight {
             spawnCircle(soulEnderman, List.of(EntityTypes.SILVERFISH,EntityTypes.BREEZE),16,1);
         }
 
-        boolean hasFusefly = false;
-        for(Silverfish silverfish : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SILVERFISH,(_)-> true))
+        boolean hasSentinel = false;
+        for(Breeze breeze : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.BREEZE,(_)-> true))
         {
-            hasFusefly = true;
-            particleAtEntityOffsetToAllPlayers(silverfish,new Vec3(0,0.275,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.1f, 0.1f,10, 0);
+            hasSentinel = true;
+            particleAtEntityOffsetToAllPlayers(breeze,new Vec3(0,0.275,0),new TrailParticleOption(soulEnderman.position().add(0,1,0), 0x00FFFF, 10), 0.1f, 0.1f, 0.1f,10, 0);
         }
 
         if(phaseDuration > creeperSummonTime + 10)
         {
-            if(!hasFusefly)
+            if(!hasSentinel)
             {
-                for(Breeze breeze : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.BREEZE,(_)-> true))
+                for(Silverfish silverfish : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SILVERFISH,(_)-> true))
                 {
-                    breeze.discard();
+                    silverfish.discard();
                 }
                 setPhase(EndFightPhase.TELEPORTING);
             }
