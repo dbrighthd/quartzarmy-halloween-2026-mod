@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:shield",
+      "count": 1
+    },
+    "title": "Get a shield",
+    "description": "its probably useful idk",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "dbright:main/root",
+  "criteria": {
+    "the": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:shield"
+          }
+        ]
+      }
+    }
+  }
+}

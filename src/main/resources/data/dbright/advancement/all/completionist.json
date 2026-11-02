@@ -5,7 +5,7 @@
       "count": 1
     },
     "title": "Completionist",
-    "description": "Complete all 34 other advancements",
+    "description": "Complete all 35 other advancements",
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
@@ -457,7 +457,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/string" : true
+                "dbright:main/shield" : true
               }
             }
           }
@@ -472,7 +472,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/sunlook" : true
+                "dbright:main/string" : true
               }
             }
           }
@@ -487,7 +487,7 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/triplejump" : true
+                "dbright:main/sunlook" : true
               }
             }
           }
@@ -502,13 +502,28 @@
           "predicate": {
             "minecraft:type_specific/player": {
               "advancements": {
-                "dbright:main/villagerattack" : true
+                "dbright:main/triplejump" : true
               }
             }
           }
         }
       }
     },"34": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:type_specific/player": {
+              "advancements": {
+                "dbright:main/villagerattack" : true
+              }
+            }
+          }
+        }
+      }
+    },"35": {
       "trigger": "minecraft:tick",
       "conditions": {
         "player": {
@@ -595,6 +610,8 @@
       "33"
     ],[
       "34"
+    ],[
+      "35"
     ]
   ]
 }
