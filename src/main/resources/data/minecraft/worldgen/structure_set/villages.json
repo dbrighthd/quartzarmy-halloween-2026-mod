@@ -3,14 +3,14 @@
     "type": "minecraft:random_spread",
     "frequency_reduction_method": "default",
     "frequency": 1,
-    "salt": 15,
+    "salt": 670,
     "locate_offset": [
       0,
       1,
       0
     ],
-    "spacing": 20,
-    "separation": 15
+    "spacing": 15,
+    "separation": 14
   },
   "structures": [
     {
