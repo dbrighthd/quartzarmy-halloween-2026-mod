@@ -3,6 +3,7 @@ package dbrighthd.qahalloween2026.mainloop;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +20,10 @@ import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.feline.Cat;
+import net.minecraft.world.entity.animal.feline.CatVariant;
+import net.minecraft.world.entity.animal.feline.CatVariants;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
+import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.animal.nautilus.Nautilus;
 import net.minecraft.world.entity.animal.panda.Panda;
@@ -54,6 +58,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
+import java.time.format.TextStyle;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,8 +113,8 @@ public class OnEntityLoad {
             case Witch witch -> {
                 replaceEntity(level,witch, EntityTypes.ZOMBIE,1);
             }
-            case Cat cat -> {
-                replaceEntity(level,cat, EntityTypes.CHICKEN,1);
+            case Frog frog -> {
+                replaceEntity(level,frog, EntityTypes.CAT,1);
             }
             case Panda panda -> {
                 panda.setMainGene(Panda.Gene.AGGRESSIVE);
@@ -229,7 +234,14 @@ public class OnEntityLoad {
                     replaceEntityIfLessThanAround(level, dolphin, EntityTypes.AXOLOTL, 1, Config.maxAxolotlsNearby);
             case Cow cow -> replaceEntity(level, cow, EntityTypes.CHICKEN, 1);
             case Chicken chicken -> chicken.setVariant(level.registryAccess().get(ChickenVariants.TEMPERATE).get());
-
+            case Cat cat -> {
+                cat.setVariant(level.registryAccess().get(CatVariants.RED).get());
+                cat.setPersistenceRequired();
+                changeAttribute(cat,Attributes.MOVEMENT_SPEED,0);
+                cat.setCustomName(Component.literal("Hi").withStyle(ChatFormatting.BOLD));
+                cat.setSilent(true);
+                cat.setPermanentlyInvulnerable(true);
+            }
             case Rabbit rabbit -> {
                 if (level.dimension() == Level.OVERWORLD) {
                     replaceEntity(level, rabbit, EntityTypes.PHANTOM, 2);

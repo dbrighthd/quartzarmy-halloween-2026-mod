@@ -32,6 +32,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.animal.panda.Panda;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
@@ -164,6 +165,7 @@ public class TickLoop {
         ServerLevel level = (ServerLevel)entity.level();
         switch (entity) {
             case Axolotl axolotl -> axolotlTick(axolotl, level);
+            case Cat cat -> catTick(cat, level);
             case Chicken chicken -> chickenTick(chicken, level);
             case Silverfish silverfish -> pufferFihTick(silverfish,level);
             case EnderDragon dragon -> killDragonAndBeginEnderFight(dragon,level);
@@ -261,6 +263,11 @@ public class TickLoop {
             spawnBoss(level);
             dragon.discard();
         }
+    }
+
+    public static void catTick(Cat cat, ServerLevel level)
+    {
+        cat.setLying(true);
     }
 
     public static void playerTick(ServerPlayer player, ServerLevel serverLevel)
