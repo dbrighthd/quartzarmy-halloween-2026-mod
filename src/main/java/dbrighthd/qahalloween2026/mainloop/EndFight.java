@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enderman;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.breeze.Breeze;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
@@ -375,6 +376,10 @@ public class EndFight {
         }
         if(phaseDuration == zombieSummonTime)
         {
+            for(Phantom phantom : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.PHANTOM,(_)-> true))
+            {
+                phantom.discard();
+            }
             spawnCircle(soulEnderman, List.of(EntityTypes.ZOMBIE,EntityTypes.PHANTOM),10,1);
 
         }
@@ -465,7 +470,11 @@ public class EndFight {
         }
         if(phaseDuration == creeperSummonTime)
         {
-            spawnCircle(soulEnderman, List.of(EntityTypes.SILVERFISH,EntityTypes.BREEZE),16,1);
+            for(Silverfish silverfish : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SILVERFISH,(_)-> true))
+            {
+                silverfish.discard();
+            }
+            spawnCircle(soulEnderman, List.of(EntityTypes.SILVERFISH,EntityTypes.BREEZE),16,1.5);
         }
 
         boolean hasSentinel = false;
@@ -479,10 +488,6 @@ public class EndFight {
         {
             if(!hasSentinel)
             {
-                for(Silverfish silverfish : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.SILVERFISH,(_)-> true))
-                {
-                    silverfish.discard();
-                }
                 setPhase(EndFightPhase.TELEPORTING);
             }
         }

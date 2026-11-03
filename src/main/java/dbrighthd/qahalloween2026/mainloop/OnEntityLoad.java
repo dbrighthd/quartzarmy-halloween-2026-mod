@@ -74,7 +74,14 @@ public class OnEntityLoad {
                 phantom.setPersistenceRequired();
                 changeAttribute(phantom, Attributes.ATTACK_DAMAGE, 0.1);
                 changeAttribute(phantom, Attributes.ATTACK_KNOCKBACK, 4);
-                changeAttribute(phantom, Attributes.MAX_HEALTH, 2);
+                if(phantom.level().dimension() == Level.END)
+                {
+                    changeAttribute(phantom, Attributes.MAX_HEALTH, 6);
+                }
+                else
+                {
+                    changeAttribute(phantom, Attributes.MAX_HEALTH, 2);
+                }
             }
             case Vindicator vindicator -> {
                 level.getServer().getScoreboard().addPlayerToTeam(vindicator.getScoreboardName(),GlobalVars.monsterTeam);
@@ -133,6 +140,10 @@ public class OnEntityLoad {
                 silverfish.setSilent(true);
                 changeAttribute(silverfish,Attributes.MAX_HEALTH,101);
                 changeAttribute(silverfish,Attributes.ATTACK_DAMAGE,0);
+                if(silverfish.level().dimension() == Level.END)
+                {
+                    changeAttribute(silverfish,Attributes.AIR_DRAG_MODIFIER,0.5);
+                }
                 silverfish.setHealth(100);
                 silverfish.setPersistenceRequired();
             }
@@ -230,6 +241,10 @@ public class OnEntityLoad {
                 cat.setPersistenceRequired();
                 changeAttribute(cat,Attributes.MOVEMENT_SPEED,0);
                 cat.setCustomName(Component.literal("Hi").withStyle(ChatFormatting.BOLD));
+                if(!cat.isSilent())
+                {
+                    spawnAtEntity(level,cat, EntityTypes.CHICKEN,1);
+                }
                 cat.setSilent(true);
                 cat.setPermanentlyInvulnerable(true);
             }

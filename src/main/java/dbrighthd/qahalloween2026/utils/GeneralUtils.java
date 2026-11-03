@@ -27,6 +27,12 @@ public class GeneralUtils {
     @SuppressWarnings("rawtypes")
     public static void replaceEntity(ServerLevel level, Entity entity, EntityType newType, int count)
     {
+        spawnAtEntity(level,entity,newType,count);
+        entity.discard();
+    }
+    @SuppressWarnings("rawtypes")
+    public static void spawnAtEntity(ServerLevel level, Entity entity, EntityType newType, int count)
+    {
         for(int i = 0; i < count; i++)
         {
             Entity entityToSpawn = newType.create(
@@ -42,9 +48,7 @@ public class GeneralUtils {
 
             }
         }
-        entity.discard();
     }
-
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void replaceEntityIfLessThanAround(ServerLevel serverLevel, Entity entity, EntityType newType, int countToSpawn, int maxCount)
