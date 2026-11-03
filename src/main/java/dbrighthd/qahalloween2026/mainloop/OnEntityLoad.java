@@ -268,7 +268,7 @@ public class OnEntityLoad {
             case ItemEntity item -> {
                 ItemStack stack = item.getItem();
 
-                if (!stack.has(DataComponents.CUSTOM_MODEL_DATA) && !stack.is(Items.STRING)) {
+                if (!stack.has(DataComponents.CUSTOM_MODEL_DATA) && !stack.is(Items.STRING) && !stack.is(Items.ARROW) && !stack.is(Items.OBSIDIAN)) {
                     int modelData = level.getRandom().nextInt(Config.stackAmounts) + 1;
 
                     stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of((float) modelData), List.of(), List.of(), List.of()));
@@ -279,6 +279,7 @@ public class OnEntityLoad {
             case Arrow arrow -> {
 
                 Entity owner = arrow.getOwner();
+                arrow.setCritArrow(false);
                 if (owner instanceof Skeleton mob) {
                     arrow.setDeltaMovement(arrow.getDeltaMovement().normalize().scale(Config.arrowSpeed));
                     arrow.setNoGravity(true);
@@ -290,14 +291,14 @@ public class OnEntityLoad {
                     arrow.setBaseDamage(0);
                 } else {
                     if (owner instanceof Player player && !arrow.hasAttached(DataAttachments.TARGET_DATA)) {
-                        arrow.setDeltaMovement(Vec3.ZERO);
+                        arrow.setNoGravity(true);
                         Vec3 correctedMotion = player.getHeadLookAngle().normalize().scale(Config.arrowSpeed);
                         if(player.level().dimension() == Level.END && player.position().y < 30 && correctedMotion.y > 0)
                         {
                             correctedMotion = new Vec3(correctedMotion.x,0.2,correctedMotion.z);
                         }
                         PlayerMethodUtils.addAndSendMovementIfPlayer(owner, correctedMotion.scale(-20), false);
-                        arrow.setDeltaMovement(0, 0, 0);
+                        arrow.setDeltaMovement(player.getHeadLookAngle().normalize().scale(0.001));
                         arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), TargetData.SourceType.PLAYER));
                         arrow.setOwner(arrow);
                         player.setIgnoreFallDamageFromCurrentImpulse(true,player.position());

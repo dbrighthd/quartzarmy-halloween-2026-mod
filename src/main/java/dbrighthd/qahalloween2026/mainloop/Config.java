@@ -39,6 +39,7 @@ public class Config {
     public static double arrowBurstSpeed = 0.6;
     public static int arrowTrackTime = 80;
     public static int arrowLifeTime = 160;
+    public static int playerArrowLifeTime = 40;
     public static int arrowBurst = 5;
 
     public static int maxAxolotlsNearby = 24;

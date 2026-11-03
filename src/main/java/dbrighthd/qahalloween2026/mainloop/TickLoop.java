@@ -7,6 +7,7 @@ import dbrighthd.qahalloween2026.dialogs.DeathDialog;
 import dbrighthd.qahalloween2026.systems.*;
 import dbrighthd.qahalloween2026.events.EventsStorage;
 import dbrighthd.qahalloween2026.utils.GeneralUtils;
+import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.animal.panda.Panda;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Ravager;
@@ -179,7 +181,25 @@ public class TickLoop {
                     endermanTick(enderman);
                 }
             }
-            case Boat boat -> boat.setDeltaMovement(0, 1, 0);
+            case Boat boat -> {
+                if(boat.tickCount > 40)
+                {
+                    boat.setDeltaMovement(0, 2, 0);
+                }
+                else
+                {
+                    boat.setDeltaMovement(0, 0.1, 0);
+                }
+                if(boat.hasControllingPassenger())
+                {
+                    boat.ejectPassengers();
+                    boat.teleportRelative(0,0.1,0);
+                }
+                if(boat.position().y > 256)
+                {
+                    boat.discard();
+                }
+            }
             case Ravager ravager ->
             {
                 if (Objects.requireNonNull(tide) == GeneralUtils.Tide.Endure) {
@@ -208,13 +228,20 @@ public class TickLoop {
 
                         }
                         if (arrow.tickCount > Config.arrowLifeTime) {
-                            arrow.kill(level);
+                            killArrow(arrow, level,0.5);
+                        }
+                    }
+                    else
+                    {
+                        if (arrow.tickCount > Config.playerArrowLifeTime) {
+                            killArrow(arrow, level,1);
                         }
                     }
                     sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(arrow));
                     PositionMoveRotation change = new PositionMoveRotation(arrow.position(), arrow.getDeltaMovement(), arrow.getYRot(), arrow.getXRot());
                     ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(arrow.getId(), change, Set.of(), arrow.onGround());
                     sendPacketToAllPlayers(level, teleportPacket);
+
                 }
 
             }
@@ -253,6 +280,22 @@ public class TickLoop {
         float progress = (player.getInventory().countItem(Items.STRING)% stringRequiredForBind)/(float) stringRequiredForBind;
         int stacks = player.getInventory().countItem(Items.STRING)/ stringRequiredForBind;
         player.connection.send(new ClientboundSetExperiencePacket(progress, stringRequiredForBind, stacks));
+    }
+
+    public static void killArrow(Arrow arrow, ServerLevel level, double dropChance)
+    {
+        PlayerMethodUtils.particleAtEntity(arrow, ParticleTypes.POOF,0,0,0,5,0.05);
+        if(dropChance > arrow.getRandom().nextDouble())
+        {
+            ItemEntity item = EntityTypes.ITEM.create(level,EntitySpawnReason.COMMAND);
+            if(item != null)
+            {
+                item.setItem(new ItemStack(Items.ARROW));
+                item.setPos(arrow.position());
+                level.addFreshEntity(item);
+            }
+        }
+        arrow.kill(level);
     }
 
     public static void killDragonAndBeginEnderFight(EnderDragon dragon, ServerLevel level)
