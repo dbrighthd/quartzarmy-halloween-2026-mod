@@ -296,7 +296,7 @@ public class OnEntityLoad {
                         arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), TargetData.SourceType.PLAYER));
                         arrow.setOwner(arrow);
                         player.setIgnoreFallDamageFromCurrentImpulse(true,player.position());
-                        if(!(Math.abs(correctedMotion.x()) < 0.01 && Math.abs(correctedMotion.y()) > 0.098 && Math.abs(correctedMotion.z()) < 0.01))
+                        if(!(correctedMotion.y() > -0.01))
                         {
                             grantAdvancement((ServerPlayer) player, "challenges/bow");
                         }
