@@ -27,6 +27,7 @@ import java.util.List;
 
 public class PlayerMethodUtils {
 
+    @SuppressWarnings("rawtypes")
     public static void sendPacketToAllPlayers(ServerLevel serverLevel, Packet packet)
     {
         for (ServerPlayer player : serverLevel.players())

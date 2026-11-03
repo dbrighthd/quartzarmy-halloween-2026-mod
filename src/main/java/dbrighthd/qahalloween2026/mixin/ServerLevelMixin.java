@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin {
-    @Inject(method = "Lnet/minecraft/server/level/ServerLevel;getSeed()J", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getSeed()J", at = @At("HEAD"), cancellable = true)
     private void changeSeed(CallbackInfoReturnable<Long> cir) {
         if(Config.useHardcodedSeed)
         {

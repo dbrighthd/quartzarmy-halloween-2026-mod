@@ -9,7 +9,6 @@ import dbrighthd.qahalloween2026.utils.GeneralUtils;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -62,7 +61,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static dbrighthd.qahalloween2026.mainloop.Config.creeperSuckForce;
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
@@ -165,7 +163,7 @@ public class TickLoop {
         ServerLevel level = (ServerLevel)entity.level();
         switch (entity) {
             case Axolotl axolotl -> axolotlTick(axolotl, level);
-            case Cat cat -> catTick(cat, level);
+            case Cat cat -> catTick(cat);
             case Chicken chicken -> chickenTick(chicken, level);
             case Silverfish silverfish -> pufferFihTick(silverfish,level);
             case EnderDragon dragon -> killDragonAndBeginEnderFight(dragon,level);
@@ -265,7 +263,7 @@ public class TickLoop {
         }
     }
 
-    public static void catTick(Cat cat, ServerLevel level)
+    public static void catTick(Cat cat)
     {
         cat.setLying(true);
     }
@@ -432,8 +430,11 @@ public class TickLoop {
 
             }
             Entity newFuseFly = EntityTypes.SILVERFISH.create(level,EntitySpawnReason.COMMAND);
-            newFuseFly.setPos(fusefly.position());
-            level.addFreshEntity(newFuseFly);
+            if(newFuseFly != null)
+            {
+                newFuseFly.setPos(fusefly.position());
+                level.addFreshEntity(newFuseFly);
+            }
             fusefly.discard();
 
         }

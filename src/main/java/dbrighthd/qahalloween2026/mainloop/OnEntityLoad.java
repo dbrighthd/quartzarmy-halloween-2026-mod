@@ -13,14 +13,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
-import net.minecraft.world.entity.animal.camel.CamelHusk;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.chicken.ChickenVariants;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.feline.Cat;
-import net.minecraft.world.entity.animal.feline.CatVariant;
 import net.minecraft.world.entity.animal.feline.CatVariants;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.animal.frog.Frog;
@@ -58,7 +56,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
-import java.time.format.TextStyle;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,6 +64,7 @@ import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.grantAdvancement;
 
 public class OnEntityLoad {
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static void onEntityLoad(Entity entity, ServerLevel level)
     {
         switch (entity) {
@@ -104,18 +102,10 @@ public class OnEntityLoad {
                 changeAttribute(pillager,Attributes.MAX_HEALTH,8);
                 pillager.setPersistenceRequired();
             }
-            case IronGolem golem -> {
-                changeAttribute(golem,Attributes.ATTACK_DAMAGE,0);
-            }
-            case Wolf wolf -> {
-                replaceEntity(level,wolf, EntityTypes.PANDA,1);
-            }
-            case Witch witch -> {
-                replaceEntity(level,witch, EntityTypes.ZOMBIE,1);
-            }
-            case Frog frog -> {
-                replaceEntity(level,frog, EntityTypes.CAT,1);
-            }
+            case IronGolem golem -> changeAttribute(golem,Attributes.ATTACK_DAMAGE,0);
+            case Wolf wolf -> replaceEntity(level,wolf, EntityTypes.PANDA,1);
+            case Witch witch -> replaceEntity(level,witch, EntityTypes.ZOMBIE,1);
+            case Frog frog -> replaceEntity(level,frog, EntityTypes.CAT,1);
             case Panda panda -> {
                 panda.setMainGene(Panda.Gene.AGGRESSIVE);
                 panda.setHiddenGene(Panda.Gene.AGGRESSIVE);

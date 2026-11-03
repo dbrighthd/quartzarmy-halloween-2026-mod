@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class GeneralUtils {
+
+    @SuppressWarnings("rawtypes")
     public static void replaceEntity(ServerLevel level, Entity entity, EntityType newType, int count)
     {
         for(int i = 0; i < count; i++)
@@ -43,6 +45,8 @@ public class GeneralUtils {
         entity.discard();
     }
 
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void replaceEntityIfLessThanAround(ServerLevel serverLevel, Entity entity, EntityType newType, int countToSpawn, int maxCount)
     {
         int count = serverLevel.getEntities(newType, entity.getBoundingBox().inflate(16), selectEntity -> selectEntity != entity).size();

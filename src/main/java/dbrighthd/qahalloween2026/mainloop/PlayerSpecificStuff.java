@@ -3,18 +3,14 @@ package dbrighthd.qahalloween2026.mainloop;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import dbrighthd.qahalloween2026.systems.WetIchorSystem;
-import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Set;
-
-import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 
 public class PlayerSpecificStuff {
     public static void tickPlayerSpecifics(ServerPlayer player) {

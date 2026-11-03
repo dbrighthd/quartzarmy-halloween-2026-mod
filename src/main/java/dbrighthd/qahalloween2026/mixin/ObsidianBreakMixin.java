@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BlockBehaviour.BlockStateBase.class)
 public abstract class ObsidianBreakMixin {
     //why isnt this data driven
+    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "requiresCorrectToolForDrops", at = @At("HEAD"), cancellable = true)
     private void removeToolRequirement(CallbackInfoReturnable<Boolean> cir)
     {

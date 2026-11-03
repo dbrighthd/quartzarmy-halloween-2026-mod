@@ -204,7 +204,12 @@ public class EndFight {
 
     public static void dormantPhase(Enderman soulEnderman)
     {
-        PlayerList playerTabList = soulEnderman.level().getServer().getPlayerList();
+        MinecraftServer server = soulEnderman.level().getServer();
+        if(server == null)
+        {
+            return;
+        }
+        PlayerList playerTabList = server.getPlayerList();
         List<ServerPlayer> playerList = playerTabList.getPlayers();
         if(!playerList.isEmpty() && playerList.stream().allMatch(player -> player.distanceToSqr(soulEnderman) <= 100) && !begun)
         {

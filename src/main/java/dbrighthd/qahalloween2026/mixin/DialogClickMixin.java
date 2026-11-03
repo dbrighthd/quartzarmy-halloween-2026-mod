@@ -57,9 +57,7 @@ public abstract class DialogClickMixin {
                 player.connection.send(ClientboundClearDialogPacket.INSTANCE);
 
             }
-            case "dbright:kill_teighter" -> {
-                killTeighter(player.level().getServer());
-            }
+            case "dbright:kill_teighter" -> killTeighter(player.level().getServer());
 
             default -> {
                 player.setGameMode(GameType.DEFAULT_MODE);
