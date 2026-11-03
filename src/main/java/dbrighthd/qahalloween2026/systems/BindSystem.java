@@ -20,7 +20,7 @@ public class BindSystem {
 
     public static void bindTick(ServerPlayer player)
     {
-        if(player == null)
+        if(player == null || !player.gameMode.isSurvival())
         {
             return;
         }
