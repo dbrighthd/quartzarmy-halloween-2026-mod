@@ -52,4 +52,9 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "endrespawn_data"),
                     () -> TimerData.defaultState
             );
+    public static final AttachmentType<TimerData> ZOMBIE_MLG_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "zombiemlg_data"),
+                    () -> TimerData.defaultState
+            );
 }

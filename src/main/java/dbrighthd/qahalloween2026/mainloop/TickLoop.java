@@ -2,6 +2,7 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
+import dbrighthd.qahalloween2026.attachments.TimerData;
 import dbrighthd.qahalloween2026.dialogs.DeathDialog;
 import dbrighthd.qahalloween2026.systems.*;
 import dbrighthd.qahalloween2026.events.EventsStorage;
@@ -514,6 +515,7 @@ public class TickLoop {
             zombie.setItemSlot(EquipmentSlot.HEAD,new ItemStack(Items.AIR));
         }
 
+        int mlgTicks = zombie.getAttachedOrCreate(DataAttachments.ZOMBIE_MLG_DATA).ticksLeft();
         Vec3 belowBlock = zombie.position().subtract(0,1,0);
         Vec3 belowBlockFallCheck = zombie.position().subtract(0,3,0);
         BlockState fallState = serverLevel.getBlockState(BlockPos.containing(belowBlockFallCheck));
@@ -533,11 +535,12 @@ public class TickLoop {
             }
             zombie.lookAt(EntityAnchorArgument.Anchor.EYES, belowBlock);
         }
-        zombie.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(clutch ? Items.WATER_BUCKET : inDanger ? Items.OAK_PLANKS : Items.AIR,1));
+        zombie.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(mlgTicks > 1 ? Items.BUCKET : mlgTicks > 0 ? Items.WATER_BUCKET : clutch ? Items.WATER_BUCKET : inDanger ? Items.OAK_PLANKS : Items.AIR,1));
         if(!zombie.onGround() && zombie.getDeltaMovement().y <= 0 && !serverLevel.getBlockState(BlockPos.containing(belowBlock.subtract(0,1,0))).canBeReplaced()  && serverLevel.getBlockState(BlockPos.containing(belowBlock)).canBeReplaced()) {
             if(clutch)
             {
                 playSoundAtEntity(zombie, SoundEvents.BUCKET_EMPTY,1,1);
+                mlgTicks = 5;
                 serverLevel.setBlockAndUpdate(BlockPos.containing(belowBlock), Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, 15));
             }
             else
@@ -548,7 +551,7 @@ public class TickLoop {
             }
             zombie.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT);
         }
-
+        zombie.setAttached(DataAttachments.ZOMBIE_MLG_DATA,new TimerData(Math.max(mlgTicks-1,0)));
     }
 
     @SuppressWarnings("unused")
