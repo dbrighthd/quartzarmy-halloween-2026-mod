@@ -11,8 +11,11 @@ import net.minecraft.server.dialog.action.StaticAction;
 import net.minecraft.server.dialog.body.PlainMessage;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.isTeighterInGame;
 
 public class DeathDialog {
 
@@ -41,32 +44,18 @@ public class DeathDialog {
         );
 
         Dialog dialog;
+        List<ActionButton> buttons = new ArrayList<>();
+        buttons.addLast(button("Teleport to Random Player", "random_player"));
+        buttons.addLast(button("Stay at Spawnpoint", "spawnpoint"));
         if(EndFight.soulified)
         {
-            dialog = new MultiActionDialog(
-                    common,
-                    List.of(
-                            button("Random Player", "random_player"),
-                            button("Spawnpoint", "spawnpoint"),
-                            button("Continue Boss Fight", "continue_fight")
-                    ),
-                    Optional.empty(),
-                    1
-            );
+            buttons.addLast(button("Continue Boss Fight", "continue_fight"));
         }
-        else
+        if(isTeighterInGame(player))
         {
-           dialog = new MultiActionDialog(
-                    common,
-                    List.of(
-                            button("Random Player", "random_player"),
-                            button("Spawnpoint", "spawnpoint")
-                    ),
-                    Optional.empty(),
-                    1
-            );
+            buttons.addLast(button("Kill Teighter", "kill_teighter"));
         }
-
+        dialog = new MultiActionDialog(common, buttons, Optional.empty(), 1);
 
         player.openDialog(Holder.direct(dialog));
     }

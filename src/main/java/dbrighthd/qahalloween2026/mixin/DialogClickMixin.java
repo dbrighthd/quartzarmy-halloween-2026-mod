@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Set;
 
+import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.killTeighter;
 import static dbrighthd.qahalloween2026.systems.EndRespawnSystem.setRespawnTicks;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.respawnEffects;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.getRandomPlayer;
@@ -55,6 +56,9 @@ public abstract class DialogClickMixin {
                 setRespawnTicks(player, Config.endRespawnSeconds*20);
                 player.connection.send(ClientboundClearDialogPacket.INSTANCE);
 
+            }
+            case "dbright:kill_teighter" -> {
+                killTeighter(player.level().getServer());
             }
 
             default -> {

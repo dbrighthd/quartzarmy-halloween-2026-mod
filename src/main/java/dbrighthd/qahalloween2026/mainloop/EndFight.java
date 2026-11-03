@@ -370,7 +370,7 @@ public class EndFight {
         }
         if(phaseDuration == zombieSummonTime)
         {
-            spawnCircle(soulEnderman, List.of(EntityTypes.ZOMBIE),5,1);
+            spawnCircle(soulEnderman, List.of(EntityTypes.ZOMBIE,EntityTypes.PHANTOM),10,1);
 
         }
         for(Zombie zombie : ((ServerLevel)soulEnderman.level()).getEntities(EntityTypes.ZOMBIE,(_)-> true))

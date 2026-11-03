@@ -3,11 +3,18 @@ package dbrighthd.qahalloween2026.mainloop;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.systems.GlowflySystem;
 import dbrighthd.qahalloween2026.systems.WetIchorSystem;
+import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Set;
+
+import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 
 public class PlayerSpecificStuff {
     public static void tickPlayerSpecifics(ServerPlayer player) {
@@ -16,13 +23,33 @@ public class PlayerSpecificStuff {
         {
             return;
         }
+        boolean isEntraBit = false;
         for(String tag : tags)
         {
-            if(tag.equals(MeanTag.BUGPUNCHER.name()))
+            if(tag.equals(MeanTag.BugPuncher.name()))
             {
                 bugpuncherTick(player);
             }
+            else if(tag.equals(MeanTag.EntraBit.name()))
+            {
+                isEntraBit = true;
+                entraBitTick(player);
+            }
         }
+        if(!isEntraBit)
+        {
+            unEntraBit(player);
+        }
+    }
+
+    public static void entraBitTick(ServerPlayer entraBit)
+    {
+        entraBit.addPostEffect(Identifier.parse("minecraft:creeper"));
+    }
+
+    public static void unEntraBit(ServerPlayer notEntraBit)
+    {
+        notEntraBit.removePostEffect(Identifier.parse("minecraft:creeper"));
     }
 
     public static void bugpuncherTick(ServerPlayer player)
@@ -75,7 +102,36 @@ public class PlayerSpecificStuff {
 
     }
 
+    public static boolean isTeighterInGame(ServerPlayer player)
+    {
+        MinecraftServer server = player.level().getServer();
+        PlayerList playerList = server.getPlayerList();
+        for(ServerPlayer playerInList : playerList.getPlayers())
+        {
+            if(playerInList.entityTags().contains(MeanTag.Teighter.name()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void killTeighter(MinecraftServer server)
+    {
+        PlayerList playerList = server.getPlayerList();
+        for(ServerPlayer playerInList : playerList.getPlayers())
+        {
+            if(playerInList.entityTags().contains(MeanTag.Teighter.name()))
+            {
+                playerInList.kill(playerInList.level());
+            }
+        }
+    }
+
     public enum MeanTag {
-        BUGPUNCHER,
+        BugPuncher,
+        Teighter,
+        EntraBit,
+        Moth,
     }
 }
