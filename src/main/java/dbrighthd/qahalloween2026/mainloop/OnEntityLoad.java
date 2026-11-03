@@ -56,6 +56,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -291,6 +292,10 @@ public class OnEntityLoad {
                     if (owner instanceof Player player && !arrow.hasAttached(DataAttachments.TARGET_DATA)) {
                         arrow.setDeltaMovement(Vec3.ZERO);
                         Vec3 correctedMotion = player.getHeadLookAngle().normalize().scale(Config.arrowSpeed);
+                        if(player.level().dimension() == Level.END && player.position().y < 30 && correctedMotion.y > 0)
+                        {
+                            correctedMotion = new Vec3(correctedMotion.x,0.2,correctedMotion.z);
+                        }
                         PlayerMethodUtils.addAndSendMovementIfPlayer(owner, correctedMotion.scale(-20), false);
                         arrow.setDeltaMovement(0, 0, 0);
                         arrow.setAttached(DataAttachments.TARGET_DATA, new TargetData(new UUID(0, 1), TargetData.SourceType.PLAYER));

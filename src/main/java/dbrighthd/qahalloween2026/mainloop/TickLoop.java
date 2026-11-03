@@ -53,6 +53,7 @@ import net.minecraft.world.level.Level;
 
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.Vec3;
 
@@ -319,6 +320,7 @@ public class TickLoop {
         }
         else
         {
+            changeAttribute(player,Attributes.GRAVITY,0.08);
             changeAttribute(player,Attributes.FALL_DAMAGE_MULTIPLIER,1);
         }
 
@@ -354,7 +356,7 @@ public class TickLoop {
         if(player.isDeadOrDying())
         {
             grantAdvancement(player,"main/death");
-            if(player.getY() < (player.level().dimension() == Level.END ? 0 : -64))
+            if(player.getY() < 0 && player.level().dimension() == Level.END)
             {
                 grantAdvancement(player,"challenges/voiddeath");
             }
@@ -513,10 +515,12 @@ public class TickLoop {
         }
 
         Vec3 belowBlock = zombie.position().subtract(0,1,0);
-        boolean clutch = (zombie.fallDistance >= 2);
+        Vec3 belowBlockFallCheck = zombie.position().subtract(0,3,0);
+        BlockState fallState = serverLevel.getBlockState(BlockPos.containing(belowBlockFallCheck));
+        boolean clutch = (zombie.fallDistance >= 2 || fallState.is(Blocks.AIR) && zombie.fallDistance > 0.5);
         boolean inDanger = false;
 
-        if(serverLevel.getNearestPlayer(zombie,5) != null)
+        if(serverLevel.getNearestPlayer(zombie,6) != null)
         {
             if(serverLevel.getBlockState(zombie.blockPosition().above(2)).is(BlockTags.LEAVES))
             {
