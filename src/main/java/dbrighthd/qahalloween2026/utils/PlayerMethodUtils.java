@@ -48,16 +48,28 @@ public class PlayerMethodUtils {
 
     public static void informMiss(ServerPlayer player)
     {
-        player.connection.send(
-                new ClientboundSetTitleTextPacket(Component.empty())
-        );
 
         player.connection.send(
                 new ClientboundSetSubtitleTextPacket(Component.literal("Miss!").withColor(TextColor.RED))
         );
+        player.connection.send(
+                new ClientboundSetTitleTextPacket(Component.empty())
+        );
         playSoundAtEntityForPlayer(player, Config.missSound, 100, 2, player);
         grantAdvancement(player,"main/missed");
     }
+
+    public static void informWin(ServerPlayer player)
+    {
+
+        player.connection.send(
+                new ClientboundSetSubtitleTextPacket(Component.literal("congrations"))
+        );
+        player.connection.send(
+                new ClientboundSetTitleTextPacket(Component.literal("your did it"))
+        );
+    }
+
     public static boolean chainJumpCheck(ServerPlayer player)
     {
         //I genuinely forgot that toggle sprint players exist

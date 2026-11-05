@@ -60,6 +60,7 @@ public class EndFight {
 
     public static void spawnBoss(ServerLevel endLevel) {
         soulified = false;
+        killed=false;
         Enderman soulEnderman = EntityTypes.ENDERMAN.create(endLevel, EntitySpawnReason.EVENT);
         endFightPhase = EndFightPhase.DORMANT;
         if(soulEnderman == null)
@@ -96,12 +97,16 @@ public class EndFight {
                 for(ServerPlayer player : server.getPlayerList().getPlayers())
                 {
                     grantAdvancement(player,"main/finished");
+                    informWin(player);
                 }
                 if(soulEnderman.level() instanceof  ServerLevel serverLevel)
                 {
                     BlockPos referencePos = BlockPos.containing(startPos).subtract(new Vec3i(4,2,4));
                     Objects.requireNonNull(server).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright", "cactus")).ifPresent(template -> template.placeInWorld(serverLevel, referencePos, referencePos, new StructurePlaceSettings(), soulEnderman.getRandom(), Block.UPDATE_ALL));
                 }
+                particleAtEntityToAllPlayers(soulEnderman, ParticleTypes.SONIC_BOOM, 2, 2, 2, 30, 0);
+                particleAtEntityToAllPlayers(soulEnderman, ParticleTypes.SCULK_SOUL, 2, 2, 2, 300, 1);
+                playSoundAtEntity(soulEnderman,SoundEvents.HORSE_DEATH,100,1);
                 killed=true;
             }
         }
