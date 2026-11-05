@@ -32,12 +32,10 @@ public class PlayerUseItemOnMixin {
     @Shadow
     public ServerPlayer player;
 
-    @ModifyVariable(
-            method = "handleUseItemOn",
-            at = @At("STORE"),
-            name = "blockHit")
+    @ModifyVariable(method = "handleUseItemOn", at = @At("STORE"), name = "blockHit")
     private BlockHitResult changePlacementTarget(BlockHitResult blockHit, ServerboundUseItemOnPacket packet) {
-        if (!player.level().getServer().isSameThread()) {
+        if (!player.level().getServer().isSameThread()) //if I don't have this then this code triggers twice
+        {
             return blockHit;
         }
         BlockPos clicked = blockHit.getBlockPos();

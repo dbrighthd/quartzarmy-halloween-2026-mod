@@ -17,10 +17,7 @@ public class EndSpawnMixin {
     @Mutable
     public static BlockPos END_SPAWN_POINT;
 
-    @Inject(
-            method = "<clinit>",
-            at = @At("TAIL")
-    )
+    @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void qahalloween$changeEndSpawnPoint(CallbackInfo ci)
     {
         END_SPAWN_POINT = new BlockPos(200, 50, 0);

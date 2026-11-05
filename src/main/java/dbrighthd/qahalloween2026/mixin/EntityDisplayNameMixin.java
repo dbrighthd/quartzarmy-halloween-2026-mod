@@ -20,14 +20,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public abstract class EntityDisplayNameMixin {
 
-    @Inject(
-            method = "getDisplayName",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private void replaceAxolotlDisplayName(
-            CallbackInfoReturnable<Component> cir
-    ) {
+    @Inject(method = "getDisplayName", at = @At("HEAD"), cancellable = true)
+    private void replaceAxolotlDisplayName(CallbackInfoReturnable<Component> cir)
+    {
         Entity entity = (Entity) (Object)this;
         if (entity instanceof Axolotl) {
             cir.setReturnValue(

@@ -16,12 +16,7 @@ public abstract class HurtMixin {
             method = "hurtServer",
             at = @At("HEAD")
     )
-    private void onHurt(
-            ServerLevel level,
-            DamageSource source,
-            float amount,
-            CallbackInfoReturnable<Boolean> cir
-    ) {
+    private void onHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         ServerPlayer player = (ServerPlayer)(Object) this;
         EventsStorage.hurtThisTick.put(player.getUUID(), (int)amount);
     }

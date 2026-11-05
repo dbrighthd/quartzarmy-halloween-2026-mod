@@ -24,10 +24,7 @@ public abstract class SpikeCacheLoaderMixin {
         int count = Config.spikeCount;
         double distance = Config.spikeDistance;
 
-        IntArrayList sizes = Util.toShuffledList(
-                IntStream.range(0, count),
-                RandomSource.createThreadLocalInstance(seed)
-        );
+        IntArrayList sizes = Util.toShuffledList(IntStream.range(0, count), RandomSource.createThreadLocalInstance(seed));
 
         List<EndSpikeFeature.EndSpike> result = new ArrayList<>();
 
@@ -42,9 +39,7 @@ public abstract class SpikeCacheLoaderMixin {
             int height = 76 + size * 3;
             boolean guarded = false;
 
-            result.add(new EndSpikeFeature.EndSpike(
-                    x, z, radius, height, guarded
-            ));
+            result.add(new EndSpikeFeature.EndSpike(x, z, radius, height, guarded));
         }
 
         cir.setReturnValue(result);

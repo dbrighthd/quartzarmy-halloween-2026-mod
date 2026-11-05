@@ -44,7 +44,7 @@ public class Config {
 
     public static int maxAxolotlsNearby = 24;
 
-    public static int sheepCooldownMax = 360;
+    public static int sheepCooldownMax = 1000;
     public static int sheepUntilSleep = 4;
     public static int sleepTime = 240;
     public static int stringPerSheep = 32;

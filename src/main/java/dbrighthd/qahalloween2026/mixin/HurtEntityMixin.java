@@ -18,12 +18,7 @@ public abstract class HurtEntityMixin {
             method = "hurtServer",
             at = @At("HEAD")
     )
-    private void onDamaged(
-            ServerLevel level,
-            DamageSource source,
-            float damage,
-            CallbackInfoReturnable<Boolean> cir
-    ) {
+    private void onDamaged(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity target = (LivingEntity) (Object) this;
         Entity attacker = source.getEntity();
         if(attacker instanceof Player player && !target.isInvulnerable())
