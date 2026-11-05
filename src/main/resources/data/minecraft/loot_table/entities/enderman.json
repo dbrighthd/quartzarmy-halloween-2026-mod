@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "nether_star",
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "minecraft:item_name": "Pirate Shop Token",
+              "minecraft:glider": {},
+              "minecraft:equippable": {
+                "slot": "chest"
+              },
+              "minecraft:rarity": "epic",
+              "minecraft:damage_resistant": {
+                "types": "minecraft:cactus"
+              }
+            }
+          }
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "minecraft:entities/ravager"
+}
