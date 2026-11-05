@@ -112,6 +112,20 @@ public class PlayerSpecificStuff {
         return false;
     }
 
+    public static String getTeighterName(ServerPlayer player)
+    {
+        MinecraftServer server = player.level().getServer();
+        PlayerList playerList = server.getPlayerList();
+        for(ServerPlayer playerInList : playerList.getPlayers())
+        {
+            if(playerInList.entityTags().contains(MeanTag.Teighter.name()))
+            {
+                return playerInList.getName().getString();
+            }
+        }
+        return "";
+    }
+
     public static void killTeighter(MinecraftServer server)
     {
         PlayerList playerList = server.getPlayerList();

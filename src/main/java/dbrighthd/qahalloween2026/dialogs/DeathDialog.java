@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.getTeighterName;
 import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.isTeighterInGame;
 
 public class DeathDialog {
@@ -53,7 +54,7 @@ public class DeathDialog {
         }
         if(isTeighterInGame(player))
         {
-            buttons.addLast(button("Kill Teighter", "kill_teighter"));
+            buttons.addLast(button("Kill " + getTeighterName(player), "kill_teighter"));
         }
         dialog = new MultiActionDialog(common, buttons, Optional.empty(), 1);
 
