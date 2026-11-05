@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 
 import java.util.Objects;
+import java.util.Set;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.stringRequiredForBind;
 import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.tickPlayerSpecifics;
@@ -129,6 +130,11 @@ public class PlayerTick {
                 }
             }
             changeAttribute(player,Attributes.FALL_DAMAGE_MULTIPLIER,0);
+            if(player.position().length() > 700)
+            {
+                //i thought this would be a funny way to limit position and. yeah kinda
+                player.teleportTo(player.level(),player.position().x * 0.97, player.position().y, player.position().z * 0.97, Set.of(), player.getYRot(), player.getXRot(), false);
+            }
         }
         else
         {
