@@ -5,6 +5,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +23,9 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.sendPacketToAllPlayers;
 
 public class GeneralUtils {
 
@@ -58,6 +63,14 @@ public class GeneralUtils {
         replaceEntity(serverLevel, entity, newType, count < maxCount? countToSpawn : 0);
     }
 
+
+    public static void sendEntityPositionAndMotionPackets(ServerLevel level, Entity entity)
+    {
+        sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(entity));
+        PositionMoveRotation change = new PositionMoveRotation(entity.position(), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
+        ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(entity.getId(), change, Set.of(), entity.onGround());
+        sendPacketToAllPlayers(level, teleportPacket);
+    }
 
     public static void changeAttribute(LivingEntity entity, Holder<Attribute> attribute, double value)
     {

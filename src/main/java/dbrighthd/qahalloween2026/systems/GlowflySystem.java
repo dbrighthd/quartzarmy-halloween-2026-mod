@@ -15,6 +15,10 @@ import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class GlowflySystem {
     public static void glowflyTick(ServerPlayer player) {
+        if(player == null || !player.gameMode.isSurvival())
+        {
+            return;
+        }
         TimerData dataThisTick = player.getAttachedOrCreate(DataAttachments.GLOWFLY_DATA);
         int glowFlyTicks = dataThisTick.ticksLeft();
 

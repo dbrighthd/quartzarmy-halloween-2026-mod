@@ -85,15 +85,15 @@ public class SpotLight {
     }
     private static int getLegacyWoolRgb(int color) {
         return switch (color) {
-            case 1  -> 0xE9ECEC;
-            case 2  -> 0xF07613;
-            case 3  -> 0xBD44B3;
-            case 4  -> 0x3AAFD9;
-            case 5  -> 0xF8C627;
-            case 6  -> 0x70B919;
-            case 7  -> 0xED8DAC;
-            case 8  -> 0x3E4447;
-            case 9  -> 0x8E8E86;
+            case 1 -> 0xE9ECEC;
+            case 2 -> 0xF07613;
+            case 3 -> 0xBD44B3;
+            case 4 -> 0x3AAFD9;
+            case 5 -> 0xF8C627;
+            case 6 -> 0x70B919;
+            case 7 -> 0xED8DAC;
+            case 8 -> 0x3E4447;
+            case 9 -> 0x8E8E86;
             case 10 -> 0x158991;
             case 11 -> 0x792AAC;
             case 12 -> 0x35399D;

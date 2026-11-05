@@ -18,6 +18,10 @@ public class WetIchorSystem {
 
     public static void wetIchorTick(ServerPlayer player)
     {
+        if(player == null || !player.gameMode.isSurvival())
+        {
+            return;
+        }
         boolean sift = player.level().dimension() == Level.NETHER;
         TimerData wetDataThisTick = updateWet(player.getAttachedOrCreate(DataAttachments.WET_DATA),player.isInWaterOrRain(), sift);
         TimerData ichorDataThisTick = updateIchor(player.getAttachedOrCreate(DataAttachments.ICHOR_DATA),player.isInWaterOrRain(), sift);

@@ -41,7 +41,7 @@ public class Setup {
     {
         return spawnDataCheck(server) == StartPhase.IN_GAME;
     }
-    public static void firstSetup(MinecraftServer server)
+    private static void firstSetup(MinecraftServer server)
     {
         ServerLevel level = server.overworld();
         level.getGameRules().set(GameRules.ADVANCE_TIME, false, level.getServer());
@@ -61,7 +61,7 @@ public class Setup {
         playerSetup(server);
     }
 
-    public static void playerSetup(MinecraftServer server)
+    private static void playerSetup(MinecraftServer server)
     {
         ServerLevel level = server.overworld();
 
@@ -80,13 +80,13 @@ public class Setup {
     }
 
 
-    public static void placeBedrockThingy(BlockPos pos, ServerLevel level)
+    private static void placeBedrockThingy(BlockPos pos, ServerLevel level)
     {
         BlockPos referencePos = pos.subtract(new Vec3i(4,0,4));
         Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright", "box")).ifPresent(template -> template.placeInWorld(level, referencePos, referencePos, new StructurePlaceSettings(), level.getRandom(), Block.UPDATE_ALL));
     }
 
-    public static void breakBedrockThingy(BlockPos pos, ServerLevel level)
+    private static void breakBedrockThingy(BlockPos pos, ServerLevel level)
     {
         BlockPos referencePos = pos.subtract(new Vec3i(4,0,4));
         Objects.requireNonNull(level.getServer()).getStructureTemplateManager().get(Identifier.fromNamespaceAndPath("dbright", "emptybox")).ifPresent(template -> template.placeInWorld(level, referencePos, referencePos, new StructurePlaceSettings(), level.getRandom(), Block.UPDATE_ALL));
