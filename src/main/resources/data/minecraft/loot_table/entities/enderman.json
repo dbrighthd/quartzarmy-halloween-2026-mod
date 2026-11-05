@@ -14,7 +14,7 @@
               "minecraft:equippable": {
                 "slot": "chest"
               },
-              "minecraft:rarity": "epic",
+              "minecraft:rarity": "uncommon",
               "minecraft:damage_resistant": {
                 "types": "minecraft:cactus"
               }
@@ -25,5 +25,5 @@
       "rolls": 1
     }
   ],
-  "random_sequence": "minecraft:entities/ravager"
+  "random_sequence": "minecraft:entities/enderman"
 }
