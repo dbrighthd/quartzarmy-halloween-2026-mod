@@ -36,6 +36,7 @@ public abstract class PlayerJumpMixin {
         else
         {
             grantAdvancement(player,"main/triplejump");
+            JumpChainSystem.setIsInBigJump(player,true);
             player.setIgnoreFallDamageFromCurrentImpulse(true,player.position());
             PlayerMethodUtils.playSoundAtEntityForPlayer(player, SoundEvents.VAULT_OPEN_SHUTTER,100,2,player);
             PlayerMethodUtils.particleAtEntity(player, ParticleTypes.ELECTRIC_SPARK,0,0,0,20,0.5);

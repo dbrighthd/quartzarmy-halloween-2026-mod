@@ -17,7 +17,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 
 import java.util.Objects;
 
@@ -56,6 +58,7 @@ public class PlayerTick {
         WetIchorSystem.wetIchorTick(player);
         SheepSystem.sheepTick(player);
         GlowflySystem.glowflyTick(player);
+        ArrowParticleSystem.arrowParticleTick(player);
     }
 
     public static void beforeTick(ServerPlayer player)
@@ -86,6 +89,7 @@ public class PlayerTick {
             }
             if (serverLevel.getBlockState(player.blockPosition()).is(Blocks.LEAF_LITTER))
             {
+                player.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK,player.blockPosition(), Block.getId(Blocks.LEAF_LITTER.defaultBlockState()));
                 player.gameMode.destroyBlock(player.blockPosition());
             }
         }

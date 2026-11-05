@@ -18,7 +18,7 @@ public class Config {
     public static final int stringPerDamage = 2;
 
     public static int tripleJumpGrace = 10;
-    public static double tripleJumpBoost = 1.7;
+    public static double tripleJumpBoost = 1.8;
 
     public final static int bindCooldownTicks = 0;
     public final static int bindTimeTicks = 27;

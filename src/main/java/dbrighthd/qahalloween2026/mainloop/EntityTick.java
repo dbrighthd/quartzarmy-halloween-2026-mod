@@ -326,7 +326,7 @@ public class EntityTick {
         boolean clutch = (zombie.fallDistance >= 2 || fallState.is(Blocks.AIR) && zombie.fallDistance > 0.5);
         boolean inDanger = false;
 
-        if(serverLevel.getNearestPlayer(zombie,6) != null)
+        if(serverLevel.getNearestPlayer(zombie,5) != null)
         {
             if(serverLevel.getBlockState(zombie.blockPosition().above(2)).is(BlockTags.LEAVES))
             {

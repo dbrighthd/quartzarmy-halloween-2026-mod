@@ -57,4 +57,14 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "zombiemlg_data"),
                     () -> TimerData.defaultState
             );
+    public static final AttachmentType<BooleanData> PLAYER_JUMP_PARTICLE_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "playerjumpparticle_data"),
+                    () -> BooleanData.defaultState
+            );
+    public static final AttachmentType<BooleanData> PLAYER_ARROW_PARTICLE_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "playerarrowparticle_data"),
+                    () -> BooleanData.defaultState
+            );
 }

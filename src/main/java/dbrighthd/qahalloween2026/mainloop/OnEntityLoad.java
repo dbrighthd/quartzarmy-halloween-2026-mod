@@ -2,6 +2,7 @@ package dbrighthd.qahalloween2026.mainloop;
 
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.attachments.TargetData;
+import dbrighthd.qahalloween2026.systems.ArrowParticleSystem;
 import dbrighthd.qahalloween2026.utils.PlayerMethodUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -363,7 +364,7 @@ public class OnEntityLoad {
             }
             arrow.setBaseDamage(0);
         } else {
-            if (owner instanceof Player player && !arrow.hasAttached(DataAttachments.TARGET_DATA)) {
+            if (owner instanceof ServerPlayer player && !arrow.hasAttached(DataAttachments.TARGET_DATA)) {
                 arrow.setNoGravity(true);
                 Vec3 correctedMotion = player.getHeadLookAngle().normalize().scale(Config.arrowSpeed);
                 if(player.level().dimension() == Level.END && player.position().y < 30 && correctedMotion.y > 0)
@@ -377,9 +378,10 @@ public class OnEntityLoad {
                 player.setIgnoreFallDamageFromCurrentImpulse(true,player.position());
                 if(!(correctedMotion.y() > -0.01))
                 {
-                    grantAdvancement((ServerPlayer) player, "challenges/bow");
+                    grantAdvancement(player, "challenges/bow");
                 }
                 arrow.setBaseDamage(0);
+                ArrowParticleSystem.setShowArrowParticles(player,true);
             }
         }
     }

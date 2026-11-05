@@ -1,18 +1,29 @@
 package dbrighthd.qahalloween2026.systems;
 
+import dbrighthd.qahalloween2026.attachments.BooleanData;
 import dbrighthd.qahalloween2026.attachments.ChainedActionData;
 import dbrighthd.qahalloween2026.attachments.DataAttachments;
 import dbrighthd.qahalloween2026.mainloop.Config;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.chainJumpCheck;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.particleAtEntity;
 
 public class JumpChainSystem {
     public static void countJumpTick(ServerPlayer player) {
         if (player == null) {
             return;
+        }
+        if(isInBigJump(player))
+        {
+            particleAtEntity(player, ParticleTypes.CRIT,0,0,0,1,0);
+        }
+        if(player.getDeltaMovement().y < 0.5 || player.onGround())
+        {
+            JumpChainSystem.setIsInBigJump(player,false);
         }
         ChainedActionData jumpData = getJumpData(player);
         int jumpChain = jumpData.chainedAmount();
@@ -43,5 +54,15 @@ public class JumpChainSystem {
         ChainedActionData oldData = getJumpData(player);
         player.setAttached(DataAttachments.JUMP_CHAIN_DATA,new ChainedActionData(oldData.chainedAmount()+1, oldData.chainTime()));
         return oldData.chainedAmount()+1;
+    }
+
+    public static void setIsInBigJump(ServerPlayer player, boolean value)
+    {
+        player.setAttached(DataAttachments.PLAYER_JUMP_PARTICLE_DATA,new BooleanData(value));
+    }
+
+    public static boolean isInBigJump(ServerPlayer player)
+    {
+        return player.getAttachedOrCreate(DataAttachments.PLAYER_JUMP_PARTICLE_DATA).value();
     }
 }
