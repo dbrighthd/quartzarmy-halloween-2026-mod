@@ -67,4 +67,9 @@ public class DataAttachments {
                     Identifier.fromNamespaceAndPath(MOD_ID, "playerarrowparticle_data"),
                     () -> BooleanData.defaultState
             );
+    public static final AttachmentType<TimerData> INPUT_TIMER_DATA =
+            AttachmentRegistry.createDefaulted(
+                    Identifier.fromNamespaceAndPath(MOD_ID, "inputtimer_data"),
+                    () -> TimerData.defaultState
+            );
 }

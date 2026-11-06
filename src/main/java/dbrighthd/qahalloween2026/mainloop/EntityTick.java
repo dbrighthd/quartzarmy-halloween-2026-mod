@@ -128,7 +128,7 @@ public class EntityTick {
 
                 }
                 if (arrow.tickCount > Config.arrowLifeTime) {
-                    killArrow(arrow, level,0.5);
+                    killArrow(arrow, level,0.05);
                 }
             }
             else
@@ -158,8 +158,6 @@ public class EntityTick {
 
             breezeWindCharge.setDeltaMovement(direction.scale(breezeWindCharge.tickCount >= Config.arrowBurst ? Config.arrowSpeed * 2 : Config.arrowBurstSpeed));
             particleAtEntity(breezeWindCharge, new TrailParticleOption(target.position().add(0, 1, 0), 0x0000FF, 10), 0f, 0f, 0f, 10, 0);
-
-
         }
         if (breezeWindCharge.tickCount > Config.arrowLifeTime) {
             breezeWindCharge.kill(level);
