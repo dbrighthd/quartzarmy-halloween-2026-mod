@@ -45,8 +45,6 @@ public class PlayerTick {
         EndRespawnSystem.endRespawnTick(player);
         PlayerTick.lookAtSunCheck(player);
         PlayerTick.endGravityCheck(player);
-        stringBar(player);
-        player.resetRecipes(player.level().getServer().getRecipeManager().getRecipes());
         miscAdvancementChecks(player);
     }
 
@@ -151,7 +149,7 @@ public class PlayerTick {
         {
             return;
         }
-        if (player.level() instanceof ServerLevel level && level.getGameTime() % Config.siftParticleTickMod == 0)
+        if (player.level() instanceof ServerLevel level && level.getGameTime() % Config.siftParticleTickMod == 0 && player.gameMode.isSurvival())
         {
             SiftParticles(level,player, ParticleTypes.SCULK_SOUL,1.02,0);
             SiftParticles(level,player,ParticleTypes.END_ROD,0.5,0.25);
@@ -165,7 +163,10 @@ public class PlayerTick {
         } else {
             player.removeEffect(MobEffects.REGENERATION);
         }
-        player.sendOverlayMessage(Component.literal("Current Tide: " + getCurrentTide(player.level()).name()));
+        if(player.tickCount % 40 == 0)
+        {
+            player.sendOverlayMessage(Component.literal("Current Tide: " + getCurrentTide(player.level()).name()));
+        }
     }
 
     public static <T extends net.minecraft.core.particles.ParticleOptions> void SiftParticles(ServerLevel level, ServerPlayer player, T particleType, double aboveBelow, double dy)

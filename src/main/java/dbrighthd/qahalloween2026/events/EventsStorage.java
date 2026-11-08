@@ -1,6 +1,7 @@
 package dbrighthd.qahalloween2026.events;
 
 import dbrighthd.qahalloween2026.mainloop.Config;
+import dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff;
 import dbrighthd.qahalloween2026.systems.BindSystem;
 import dbrighthd.qahalloween2026.systems.JumpAttackCountSystem;
 import dbrighthd.qahalloween2026.systems.SheepSystem;
@@ -18,12 +19,16 @@ import java.util.Map;
 import java.util.UUID;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.stringPerDamage;
+import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.mirrorCherryDamage;
+import static dbrighthd.qahalloween2026.mainloop.PlayerTick.stringBar;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class EventsStorage {
 
     public record AttackInfo(Entity entity, int hurtAmount){}
     public static Map<UUID,Integer> hurtThisTick = new HashMap<>();
+    public static Map<UUID,Integer> cherryHurtThisTick = new HashMap<>();
+
     public static Map<UUID,AttackInfo> attackedThisTick = new HashMap<>();
     public static void refreshAndDoStuff(MinecraftServer server)
     {
@@ -41,7 +46,12 @@ public class EventsStorage {
             }
             BindSystem.cancelBind(player);
         }
+        for(UUID uuid : cherryHurtThisTick.keySet())
+        {
+            mirrorCherryDamage();
+        }
         hurtThisTick.clear();
+        cherryHurtThisTick.clear();
     }
 
     public static void refreshAttackedPlayers(MinecraftServer server)

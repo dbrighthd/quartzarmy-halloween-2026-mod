@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
 import static dbrighthd.qahalloween2026.mainloop.Config.*;
+import static dbrighthd.qahalloween2026.mainloop.PlayerTick.stringBar;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 
 public class BindSystem {
@@ -37,6 +38,7 @@ public class BindSystem {
         {
             if(player.isShiftKeyDown() && canBind(player) && !(player.onGround() && player.getHealth() == 20))
             {
+                stringBar(player);
                 ContainerHelper.clearOrCountMatchingItems(player.getInventory(), stack -> stack.is(Items.STRING), 64, false);
                 updatedState = bindTimeTicks;
                 player.sendOverlayMessage(Component.literal("Binding..."));
@@ -102,6 +104,7 @@ public class BindSystem {
             return;
         }
         serverPlayer.getInventory().add(new ItemStack(Items.STRING, amount));
+        stringBar(serverPlayer);
     }
 
 }

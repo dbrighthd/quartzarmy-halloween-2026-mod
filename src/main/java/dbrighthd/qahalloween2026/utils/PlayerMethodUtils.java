@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026.utils;
 
+import dbrighthd.qahalloween2026.Qahalloween2026;
 import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
@@ -32,9 +33,16 @@ public class PlayerMethodUtils {
     {
         for (ServerPlayer player : serverLevel.players())
         {
-                player.connection.send(packet);
+            player.connection.send(packet);
         }
     }
+
+    @SuppressWarnings("rawtypes")
+    public static void sendPacketToAllRelevant(ServerLevel serverLevel, Packet packet, Entity trackedEntity)
+    {
+        serverLevel.getChunkSource().sendToTrackingPlayers(trackedEntity, packet);
+    }
+
 
     public static void playSoundAtEntity(Entity entity, SoundEvent sound, float volume, float pitch)
     {
@@ -55,6 +63,7 @@ public class PlayerMethodUtils {
         player.connection.send(
                 new ClientboundSetTitleTextPacket(Component.empty())
         );
+
         playSoundAtEntityForPlayer(player, Config.missSound, 100, 2, player);
         grantAdvancement(player,"main/missed");
     }
@@ -80,9 +89,7 @@ public class PlayerMethodUtils {
         String namespace = "dbright"; //listen idc if this is 'bad' it works
         AdvancementHolder advancementHolder = player.level().getServer().getAdvancements().get(Identifier.fromNamespaceAndPath(namespace, advancement));
         if (advancementHolder != null) {
-            AdvancementProgress progress = player.getAdvancements()
-                    .getOrStartProgress(advancementHolder);
-
+            AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancementHolder);
             for (String criterion : progress.getRemainingCriteria()) {
                 player.getAdvancements().award(advancementHolder, criterion);
             }

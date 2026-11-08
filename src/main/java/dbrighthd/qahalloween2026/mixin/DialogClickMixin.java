@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Set;
 
 import static dbrighthd.qahalloween2026.mainloop.PlayerSpecificStuff.killTeighter;
+import static dbrighthd.qahalloween2026.mainloop.PlayerTick.stringBar;
 import static dbrighthd.qahalloween2026.systems.EndRespawnSystem.setRespawnTicks;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.respawnEffects;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.getRandomPlayer;
@@ -64,5 +65,6 @@ public abstract class DialogClickMixin {
                 respawnEffects(player);
                 player.connection.send(ClientboundClearDialogPacket.INSTANCE);}
         }
+        stringBar(player);
     }
 }

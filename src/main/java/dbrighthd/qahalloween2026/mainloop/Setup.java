@@ -4,6 +4,7 @@ import dbrighthd.qahalloween2026.Qahalloween2026;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.commands.SpreadPlayersCommand;
@@ -76,6 +77,10 @@ public class Setup {
         {
             player.removeAllEffects();
             player.setGameMode(GameType.SURVIVAL);
+            if(player.entityTags().contains(PlayerSpecificStuff.MeanTag.Ruby.name()))
+            {
+                player.connection.disconnect(Component.literal("ur thing requires a reconnect at the start sorry ok come back asap"));
+            }
         }
     }
 

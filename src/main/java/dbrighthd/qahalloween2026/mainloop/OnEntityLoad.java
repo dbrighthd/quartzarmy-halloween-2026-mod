@@ -249,7 +249,7 @@ public class OnEntityLoad {
     {
         ravager.setSilent(true);
         ravager.setPersistenceRequired();
-        changeAttribute(ravager,Attributes.MAX_HEALTH,8);
+        changeAttribute(ravager,Attributes.MAX_HEALTH,12);
     }
 
     private static void onSkeletonLoad(Skeleton skeleton)

@@ -55,10 +55,10 @@ public class Config {
 
     public static int glowFlyTicks = 600;
 
-    public static int siftParticleAmount = 3;
+    public static int siftParticleAmount = 1;
     public static int siftParticleHorDistance = 24;
     public static int siftParticleVertDistance = 12;
-    public static int siftParticleTickMod = 1;
+    public static int siftParticleTickMod = 2;
 
     public static int ichorDamageAmount = 2;
     public  static  int ichorTickMod = 30;

@@ -8,3 +8,5 @@ accessible method net/minecraft/server/commands/SpreadPlayersCommand spreadPlaye
 accessible field net/minecraft/world/entity/animal/fish/Pufferfish PUFF_STATE Lnet/minecraft/network/syncher/EntityDataAccessor;
 accessible field net/minecraft/world/entity/npc/villager/Villager DATA_VILLAGER_DATA Lnet/minecraft/network/syncher/EntityDataAccessor;
 accessible method net/minecraft/world/entity/animal/feline/Cat setVariant (Lnet/minecraft/core/Holder;)V
+accessible field net/minecraft/network/protocol/game/ClientboundAddEntityPacket type Lnet/minecraft/world/entity/EntityType;
+mutable field net/minecraft/network/protocol/game/ClientboundAddEntityPacket type Lnet/minecraft/world/entity/EntityType;

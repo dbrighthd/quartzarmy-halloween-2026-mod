@@ -1,5 +1,6 @@
 package dbrighthd.qahalloween2026.utils;
 
+import dbrighthd.qahalloween2026.mainloop.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -26,6 +27,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.sendPacketToAllPlayers;
+import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.sendPacketToAllRelevant;
 
 public class GeneralUtils {
 
@@ -66,10 +68,16 @@ public class GeneralUtils {
 
     public static void sendEntityPositionAndMotionPackets(ServerLevel level, Entity entity)
     {
-        sendPacketToAllPlayers(level, new ClientboundSetEntityMotionPacket(entity));
+
+        if(entity.tickCount % 10 == 0 || entity.tickCount <= Config.arrowBurst) {
+            sendPacketToAllRelevant(level, new ClientboundSetEntityMotionPacket(entity), entity);
+        }
         PositionMoveRotation change = new PositionMoveRotation(entity.position(), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
         ClientboundTeleportEntityPacket teleportPacket = new ClientboundTeleportEntityPacket(entity.getId(), change, Set.of(), entity.onGround());
-        sendPacketToAllPlayers(level, teleportPacket);
+        if(entity.tickCount % 10 == 0  || entity.tickCount <= Config.arrowBurst)
+        {
+            sendPacketToAllRelevant(level, teleportPacket, entity);
+        }
     }
 
     public static void changeAttribute(LivingEntity entity, Holder<Attribute> attribute, double value)

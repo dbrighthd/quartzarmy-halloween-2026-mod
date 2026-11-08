@@ -8,6 +8,7 @@ import net.minecraft.network.chat.contents.ObjectContents;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerScoreboard;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
 
 import java.util.Optional;
@@ -17,6 +18,7 @@ public class GlobalVars {
     public static GeneralUtils.Tide tide;
     public static PlayerTeam monsterTeam;
     public static PlayerTeam goldTeam;
+    public static ServerPlayer tudad;
     public static void init()
     {
         ServerLifecycleEvents.SERVER_STARTED.register(minecraftServer -> {

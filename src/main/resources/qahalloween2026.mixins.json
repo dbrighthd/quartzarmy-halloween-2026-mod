@@ -25,6 +25,7 @@
     "MixinServerGamePacketListenerImpl",
     "MultiNoiseBiomeSourceMixin",
     "ObsidianBreakMixin",
+    "OnItemPickupMixin",
     "PlayerActionMixin",
     "PlayerJumpMixin",
     "PlayerUseItemOnMixin",

@@ -50,6 +50,8 @@ import java.util.Objects;
 
 import static dbrighthd.qahalloween2026.mainloop.EndFight.endFightTick;
 import static dbrighthd.qahalloween2026.mainloop.EndFight.spawnBoss;
+import static dbrighthd.qahalloween2026.mainloop.GlobalVars.tudad;
+import static dbrighthd.qahalloween2026.mainloop.TickLoop.hideEntityFromPlayer;
 import static dbrighthd.qahalloween2026.utils.GeneralUtils.changeAttribute;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.*;
 import static dbrighthd.qahalloween2026.utils.PlayerMethodUtils.playSoundAtEntity;
@@ -270,7 +272,11 @@ public class EntityTick {
 
     public static void axolotlTick(Axolotl axolotl, ServerLevel serverLevel)
     {
-        ServerPlayer player = GlobalVars.hasGlowFlies ? (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(30).selector((p, _) -> GlowflySystem.isPlayerInfected(p)), axolotl) : null;
+        ServerPlayer player = GlobalVars.hasGlowFlies ? (ServerPlayer)serverLevel.getNearestPlayer(TargetingConditions.forCombat().range(30).selector((p, _) -> GlowflySystem.isPlayerInfected(p) && !p.entityTags().contains(PlayerSpecificStuff.MeanTag.Tudad.name())), axolotl) : null;
+        if(tudad != null)
+        {
+            hideEntityFromPlayer(tudad,axolotl);
+        }
         if (player != null) {axolotl.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, player);}
         if(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent() && !GlowflySystem.isPlayerInfected(axolotl.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()))
         {

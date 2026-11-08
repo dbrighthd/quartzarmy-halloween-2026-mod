@@ -17,7 +17,7 @@ public class ArrowParticleSystem {
         }
         if(getShowArrowParticles(player))
         {
-            PlayerMethodUtils.particleAtEntityOffsetToAllPlayers(player,new Vec3(0,1,0), ParticleTypes.CRIT,0,0,0,1,0);
+            PlayerMethodUtils.particleAtEntityOffset(player,new Vec3(0,1,0), ParticleTypes.CRIT,0,0,0,1,0);
         }
     }
 
